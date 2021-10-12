@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class TreeBehaviour : MonoBehaviour
+public class TreeBehaviour : MonoBehaviour, IInteractable
 {
 	[SerializeField] private ResourceDataSO _data;
 
@@ -31,5 +29,16 @@ public class TreeBehaviour : MonoBehaviour
 		// then we reverse it, so that up on the screen is further away, thus towards negative.
 		newOrder = (int)(transform.position.y * orderIncrease) * -1;
 		_sr.sortingOrder = newOrder;
+	}
+
+	public void Interact(int damage)
+	{
+		_health -= damage;
+		print($"Remaining Health: {_health}");
+
+		if (_health <= 0) {
+			print($"{gameObject} is falling!");
+			Destroy(gameObject);
+		}
 	}
 }

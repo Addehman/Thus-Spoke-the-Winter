@@ -3,19 +3,25 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-	public event Action SpawnNewForest;
+	[SerializeField] private Vector2 playerDirection;
 	[SerializeField] private float walkSpeed = 20f, sprintSpeed = 40f;
-#if UNITY_EDITOR
-	[SerializeField] private float movementInput;
-#endif
+	[SerializeField] private int doDamage_tree = 20;
+	[SerializeField] private Transform _interactTrigger, interactableTransformInRange;
+
+	public event Action SpawnNewForest;
 
 	private Transform _transform;
 	private Animator _animator;
 	private SpriteRenderer _spriteRenderer;
 	private Rigidbody2D _rb;
+	private BoxCollider2D interactTriggerCollider;
 	private Vector2 wrapPos;
+	private IInteractable interactableInRange;
 	private int orderIncrease = 100;
-	private float horizontal, vertical;
+	private float horizontal, vertical,
+		triggerOffsetX_Horizontal = 0.16f, triggerOffsetX_Vertical = -0.01f, 
+		triggerOffsetY_Up = 0.05f, triggerOffsetY_Down = -0.3f, triggerOffsetY_Horizontal = -0.22f;
+	private bool left = false, up = false, right = false, down = false;
 
 
 	private void Start()
@@ -25,9 +31,9 @@ public class PlayerController : MonoBehaviour
 		_spriteRenderer = GetComponent<SpriteRenderer>();
 		_animator = GetComponent<Animator>();
 
-#if UNITY_EDITOR
-		//sprintSpeed = 80f;
-#endif
+		Transform[] children = GetComponentsInChildren<Transform>();
+		_interactTrigger = children[1];
+		interactTriggerCollider = _interactTrigger.GetComponent<BoxCollider2D>();
 	}
 
 	private void Update()
@@ -38,12 +44,35 @@ public class PlayerController : MonoBehaviour
 		ScreenWrap();
 		SetOrder();
 		PlayerAnimation();
+		SetPlayerDirection();
+
+		if (Input.GetKeyDown(KeyCode.Space) && interactableInRange != null && interactableTransformInRange != null) {
+			interactableInRange.Interact(doDamage_tree);
+		}
 	}
 
 	private void FixedUpdate()
 	{
 		PlayerMovement();
 	}
+
+	private void OnTriggerEnter2D(Collider2D other)
+	{
+		var interactable = other.transform.GetComponent<IInteractable>();
+		if (interactable == null) return;
+		interactableInRange = interactable;
+		interactableTransformInRange = interactableInRange == interactable ? other.transform : null;
+	}
+
+	private void OnTriggerExit2D(Collider2D other)
+	{
+		var interactable = other.transform.GetComponent<IInteractable>();
+		if (interactable == null) return;
+		print($"{other.transform} has left trigger");
+		interactableInRange = null;
+		interactableTransformInRange = null;
+	}
+
 	/// <summary>
 	/// The way the Player is moving: Starts with low speed but quickly builds up speed in the direction its moving.
 	/// Press Left Shift to Sprint
@@ -56,10 +85,81 @@ public class PlayerController : MonoBehaviour
 			movement = movement.normalized;
 
 		_rb.velocity = movement * MovementSpeed() * Time.deltaTime;
+	}
 
-#if UNITY_EDITOR
-		movementInput = movement.sqrMagnitude; // for Debug and testing purposes
-#endif
+	private Vector2 SetPlayerDirection()
+	{
+		string id = IdentifyMoveInputUp();
+		if (!left && !up && !right && !down) {
+			return playerDirection;
+		}
+
+		if (left) {
+			SetTriggerRotation(id);
+			playerDirection = Vector2.left;
+		}
+		else if (up) {
+			SetTriggerRotation(id);
+			playerDirection = Vector2.up;
+		}
+		else if (right) {
+			SetTriggerRotation(id);
+			playerDirection = Vector2.right;
+		}
+		else {
+			SetTriggerRotation(id);
+			playerDirection = Vector2.down;
+		}
+		return playerDirection;
+	}
+
+	private string IdentifyMoveInputUp()
+	{
+		left = Input.GetKey(KeyCode.A);
+		up = Input.GetKey(KeyCode.W);
+		right = Input.GetKey(KeyCode.D);
+		down = Input.GetKey(KeyCode.S);
+
+		if (left)
+			return "left";
+		else if (up)
+			return "up";
+		else if (right)
+			return "right";
+		else
+			return "down";
+	}
+
+	private void SetTriggerRotation(string directionName)
+	{
+		float degrees, triggerOffsetX, triggerOffsetY;
+		switch (directionName) {
+			case "left":
+				degrees = 270f;
+				triggerOffsetX = triggerOffsetX_Horizontal;
+				triggerOffsetY = triggerOffsetY_Horizontal;
+				break;
+			case "up":
+				degrees = 180f;
+				triggerOffsetX = -triggerOffsetX_Vertical;
+				triggerOffsetY = triggerOffsetY_Up;
+				break;
+			case "right":
+				degrees = 90f;
+				triggerOffsetX = -triggerOffsetX_Horizontal;
+				triggerOffsetY = triggerOffsetY_Horizontal;
+				break;
+			default:
+				degrees = 0f;
+				triggerOffsetX = triggerOffsetX_Vertical;
+				triggerOffsetY = triggerOffsetY_Down;
+				break;
+		}
+		Vector3 newRotation = _interactTrigger.eulerAngles;
+		newRotation.z = degrees;
+		_interactTrigger.eulerAngles = newRotation;
+
+		interactTriggerCollider.offset = new Vector2(triggerOffsetX, triggerOffsetY);
 	}
 
 	private void ScreenWrap()
@@ -113,7 +213,7 @@ public class PlayerController : MonoBehaviour
 		return speed;
 	}
 
-	private void PlayerAnimation()
+	private void PlayerAnimation() // needs love!
 	{
 		if (!Input.GetButton("Horizontal"))
 			_animator.SetFloat("SpeedX", 0f);
@@ -124,5 +224,11 @@ public class PlayerController : MonoBehaviour
 			_animator.SetFloat("SpeedY", 0f);
 		else
 			_animator.SetFloat("SpeedY", vertical);
+	}
+
+	private void ResetTrigger()
+	{
+		interactTriggerCollider.enabled = false;
+		interactTriggerCollider.enabled = true;
 	}
 }

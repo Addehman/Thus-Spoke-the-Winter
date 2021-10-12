@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4189062443654764372}
   - component: {fileID: -2803745507690267169}
   - component: {fileID: 6262057520332177640}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: LeafTree_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
