@@ -117,13 +117,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21ddfdf33b896544a3b2163720a8bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
-  speed: 2
-  playerBorderLeft: -2.4
-  playerBorderRight: 2.4
-  playerBorderTop: 1.35
-  playerBorderBottom: -1.35
-  animator: {fileID: 332712203833756738}
+  walkSpeed: 20
+  sprintSpeed: 80
+  movementInput: 0
 --- !u!70 &332712203833756742
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -137,9 +133,9 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0060600042, y: -0.21653336}
-  m_Size: {x: 0.14947352, y: 0.14947352}
-  m_Direction: 0
+  m_Offset: {x: -0.0060600047, y: -0.23202978}
+  m_Size: {x: 0.14947358, y: 0.09444621}
+  m_Direction: 1
 --- !u!50 &332712203833756737
 Rigidbody2D:
   serializedVersion: 4
@@ -148,14 +144,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 332712203833756749}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 1
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1

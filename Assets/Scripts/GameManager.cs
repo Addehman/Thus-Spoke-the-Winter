@@ -1,24 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+	private static GameManager _instance;
+	public static GameManager Instance { get { return _instance; } }
+
+
 	[SerializeField] PlayerController player = null;
 	[SerializeField] Transform treeParent = null;
 
 	public GameObject[] trees = new GameObject[6];
 
-	float leftBorder, topBorder, rightBorder, bottomBorder;
+	public static float ScreenBorder_Left = -2.4f, ScreenBorder_Top = 1.35f, ScreenBorder_Right = 2.4f, ScreenBorder_Bottom = -1.35f;
 
-	void Start()
+
+	private void Awake()
 	{
-		leftBorder = player.playerBorderLeft;
-		topBorder = player.playerBorderTop;
-		rightBorder = player.playerBorderRight;
-		bottomBorder = player.playerBorderBottom;
+		if (_instance != null && _instance != this)
+			Destroy(this);
+		else
+			_instance = this;
+	}
 
-		SpawnNewForest();
+	private void Start()
+	{
+		player.SpawnNewForest += SpawnNewForest;
+
+		if (treeParent.gameObject.activeSelf)
+			SpawnNewForest();
 	}
 
 	public void SpawnNewForest()
@@ -32,8 +41,8 @@ public class GameManager : MonoBehaviour
 		{
 			int randomTree = (int)Random.Range(0, 6);
 
-			float posX = Random.Range(leftBorder, rightBorder);
-			float posY = Random.Range(bottomBorder, topBorder);
+			float posX = Random.Range(ScreenBorder_Left, ScreenBorder_Right);
+			float posY = Random.Range(ScreenBorder_Bottom, ScreenBorder_Top);
 
 			Vector3 randomPosition = new Vector3(posX, posY, 0);
 			GameObject newTree = trees[randomTree];
@@ -51,7 +60,7 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	void ClearForest()
+	private void ClearForest()
 	{
 		foreach (Transform tree in treeParent)
 		{
