@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class PlayerController : MonoBehaviour
 
 	public event Action SpawnNewForest;
 
+	private InputMaster controls;
 	private Transform _transform;
 	private Animator _animator;
 	private SpriteRenderer _spriteRenderer;
@@ -24,31 +26,54 @@ public class PlayerController : MonoBehaviour
 	private bool left = false, up = false, right = false, down = false;
 
 
-	private void Start()
+	private void Awake()
 	{
 		_transform = transform;
 		_rb = GetComponent<Rigidbody2D>();
 		_spriteRenderer = GetComponent<SpriteRenderer>();
 		_animator = GetComponent<Animator>();
 
+		controls = new InputMaster();
+		controls.Player.Movement.ReadValue<Vector2>();
+	}
+
+	private void Start()
+	{
 		Transform[] children = GetComponentsInChildren<Transform>();
 		_interactTrigger = children[1];
 		interactTriggerCollider = _interactTrigger.GetComponent<BoxCollider2D>();
 	}
 
+	private void OnEnable()
+	{
+		controls.Enable();
+	}
+
+	private void OnDisable()
+	{
+		controls.Disable();
+	}
+
+	private void MovementInput(Vector2 movement)
+	{
+		horizontal = movement.x;
+		vertical = movement.y;
+		//print($"horizontal: {horizontal}\nvertical: {vertical}");
+	}
+
 	private void Update()
 	{
-		horizontal = Input.GetAxis("Horizontal");
-		vertical = Input.GetAxis("Vertical");
+		//horizontal = Input.GetAxis("Horizontal");
+		//vertical = Input.GetAxis("Vertical");
 
 		ScreenWrap();
 		SetOrder();
-		PlayerAnimation();
-		SetPlayerDirection();
+		//PlayerAnimation(); // closed due to new input system is being implemented
+		//SetPlayerDirection(); // closed due to new input system is being implemented
 
-		if (Input.GetKeyDown(KeyCode.Space) && interactableInRange != null && interactableTransformInRange != null) {
-			interactableInRange.Interact(doDamage_tree);
-		}
+		//if (Input.GetKeyDown(KeyCode.Space) && interactableInRange != null && interactableTransformInRange != null) { // closed due to new input system is being implemented
+		//	interactableInRange.Interact(doDamage_tree);
+		//}
 	}
 
 	private void FixedUpdate()
@@ -68,7 +93,7 @@ public class PlayerController : MonoBehaviour
 	{
 		var interactable = other.transform.GetComponent<IInteractable>();
 		if (interactable == null) return;
-		print($"{other.transform} has left trigger");
+		//print($"{other.transform} has left trigger");
 		interactableInRange = null;
 		interactableTransformInRange = null;
 	}
@@ -79,7 +104,8 @@ public class PlayerController : MonoBehaviour
 	/// </summary>
 	private void PlayerMovement()
 	{
-		Vector2 movement = new Vector2(horizontal, vertical);
+		Vector2 movement = controls.Player.Movement.ReadValue<Vector2>();
+		print(movement);
 		// Here we make sure that we still can slowly increase or build up from 0 to 1 when starting to move, but then if the input becomes higher than it should it will be normalized.
 		if (movement.sqrMagnitude > 1f)
 			movement = movement.normalized;
@@ -207,8 +233,8 @@ public class PlayerController : MonoBehaviour
 	private float MovementSpeed()
 	{
 		float speed = walkSpeed;
-		if (Input.GetKey(KeyCode.LeftShift))
-			speed = sprintSpeed;
+		//if (Input.GetKey(KeyCode.LeftShift)) // closed due to new input system is being implemented
+		//	speed = sprintSpeed;
 
 		return speed;
 	}
