@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
 	private Transform _transform;
 	private Animator _animator;
 	private SpriteRenderer _spriteRenderer;
-	private Rigidbody2D _rb;
+	private Rigidbody _rb;
 	private BoxCollider2D interactTriggerCollider;
 	private Vector2 wrapPos;
 	private IInteractable interactableInRange;
@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
 	private void Awake()
 	{
 		_transform = transform;
-		_rb = GetComponent<Rigidbody2D>();
+		_rb = GetComponent<Rigidbody>();
 		_spriteRenderer = GetComponent<SpriteRenderer>();
 		_animator = GetComponent<Animator>();
 
@@ -39,8 +39,9 @@ public class PlayerController : MonoBehaviour
 
 	private void Start()
 	{
-		Transform[] children = GetComponentsInChildren<Transform>();
-		_interactTrigger = children[1];
+		//Transform[] children = GetComponentsInChildren<Transform>();
+		//_interactTrigger = children[1];
+		_interactTrigger = _transform.GetChild(0);
 		interactTriggerCollider = _interactTrigger.GetComponent<BoxCollider2D>();
 	}
 
@@ -105,12 +106,13 @@ public class PlayerController : MonoBehaviour
 	private void PlayerMovement()
 	{
 		Vector2 movement = controls.Player.Movement.ReadValue<Vector2>();
-		print(movement);
+		//print(movement);
+
 		// Here we make sure that we still can slowly increase or build up from 0 to 1 when starting to move, but then if the input becomes higher than it should it will be normalized.
 		if (movement.sqrMagnitude > 1f)
 			movement = movement.normalized;
 
-		_rb.velocity = movement * MovementSpeed() * Time.deltaTime;
+		_rb.velocity = new Vector3(movement.x, 0f, movement.y) * MovementSpeed() * Time.deltaTime;
 	}
 
 	private Vector2 SetPlayerDirection()
@@ -192,7 +194,7 @@ public class PlayerController : MonoBehaviour
 	{
 	//ScreenWrap and generate new forest when leaving the screen in any direction.
 		if (_transform.position.x > GameManager.ScreenBorder_Right) {
-			float yPos = _transform.position.y;
+			float yPos = _transform.position.z;
 			wrapPos = new Vector2(GameManager.ScreenBorder_Left, yPos);
 			_transform.position = wrapPos;
 
@@ -200,7 +202,7 @@ public class PlayerController : MonoBehaviour
 		}
 
 		if (_transform.position.x < GameManager.ScreenBorder_Left) {
-			float yPos = _transform.position.y;
+			float yPos = _transform.position.z;
 			wrapPos = new Vector2(GameManager.ScreenBorder_Right, yPos);
 			_transform.position = wrapPos;
 

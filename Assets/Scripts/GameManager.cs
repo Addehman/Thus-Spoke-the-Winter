@@ -42,9 +42,9 @@ public class GameManager : MonoBehaviour
 			int randomTree = (int)Random.Range(0, 6);
 
 			float posX = Random.Range(ScreenBorder_Left, ScreenBorder_Right);
-			float posY = Random.Range(ScreenBorder_Bottom, ScreenBorder_Top);
+			float posZ = Random.Range(ScreenBorder_Bottom, ScreenBorder_Top);
 
-			Vector3 randomPosition = new Vector3(posX, posY, 0);
+			Vector3 randomPosition = new Vector3(posX, 0f, posZ);
 			GameObject newTree = trees[randomTree];
 			Instantiate(newTree, randomPosition, Quaternion.identity, treeParent);
 
