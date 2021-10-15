@@ -67,7 +67,6 @@ public class PlayerController : MonoBehaviour
 		//horizontal = Input.GetAxis("Horizontal");
 		//vertical = Input.GetAxis("Vertical");
 
-		ScreenWrap();
 		//SetOrder(); // not setting order like this anymore as we use the Z-axis for distance now instead.
 		//PlayerAnimation(); // closed due to new input system is being implemented
 		//SetPlayerDirection(); // closed due to new input system is being implemented
@@ -106,10 +105,10 @@ public class PlayerController : MonoBehaviour
 	private void PlayerMovement()
 	{
 		Vector2 movement = controls.Player.Movement.ReadValue<Vector2>();
-		//print(movement);
+        //print(movement);
 
-		// Here we make sure that we still can slowly increase or build up from 0 to 1 when starting to move, but then if the input becomes higher than it should it will be normalized.
-		if (movement.sqrMagnitude > 1f)
+        // Here we make sure that we still can slowly increase or build up from 0 to 1 when starting to move, but then if the input becomes higher than it should it will be normalized.
+        if (movement.sqrMagnitude > 1f)
 			movement = movement.normalized;
 
 		_rb.velocity = new Vector3(movement.x, 0f, movement.y) * MovementSpeed() * Time.deltaTime;
@@ -188,46 +187,6 @@ public class PlayerController : MonoBehaviour
 		_interactTrigger.eulerAngles = newRotation;
 
 		interactTriggerCollider.offset = new Vector2(triggerOffsetX, triggerOffsetY);
-	}
-
-	private void ScreenWrap()
-	{
-	//ScreenWrap and generate new forest when leaving the screen in any direction.
-		if (_transform.position.x > GameManager.ScreenBorder_Right) {
-			float yPos = _transform.position.y;
-			float zPos = _transform.position.z;
-			wrapPos = new Vector3(GameManager.ScreenBorder_Left, yPos, zPos);
-			_transform.position = wrapPos;
-
-			SpawnNewForest?.Invoke();
-		}
-
-		if (_transform.position.x < GameManager.ScreenBorder_Left) {
-			float yPos = _transform.position.y;
-			float zPos = _transform.position.z;
-			wrapPos = new Vector3(GameManager.ScreenBorder_Right, yPos, zPos);
-			_transform.position = wrapPos;
-
-			SpawnNewForest?.Invoke();
-		}
-
-		if (_transform.position.y > GameManager.ScreenBorder_Top) {
-			float yPos = _transform.position.y;
-			float xPos = _transform.position.x;
-			wrapPos = new Vector3(xPos, yPos, GameManager.ScreenBorder_Bottom);
-			_transform.position = wrapPos;
-
-			SpawnNewForest?.Invoke();
-		}
-
-		if (_transform.position.y < GameManager.ScreenBorder_Bottom) {
-			float yPos = _transform.position.y;
-			float xPos = _transform.position.x;
-			wrapPos = new Vector3(xPos, yPos, GameManager.ScreenBorder_Top);
-			_transform.position = wrapPos;
-
-			SpawnNewForest?.Invoke();
-		}
 	}
 
 	private void SetOrder()

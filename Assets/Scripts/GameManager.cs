@@ -6,16 +6,16 @@ public class GameManager : MonoBehaviour
 	public static GameManager Instance { get { return _instance; } }
 
 
-	[SerializeField] PlayerController player = null;
+	[SerializeField] ScreenWrap screenWrap = null;
 	[SerializeField] Transform treeParent = null;
+	[SerializeField] private Camera _camera;
 
 	public GameObject[] trees = new GameObject[6];
 
-	public static float ScreenBorder_Left = -2.4f, ScreenBorder_Top = 1.35f, ScreenBorder_Right = 2.4f, ScreenBorder_Bottom = -1.35f;
-
-
 	private void Awake()
 	{
+		_camera = Camera.main;
+
 		if (_instance != null && _instance != this)
 			Destroy(this);
 		else
@@ -24,13 +24,13 @@ public class GameManager : MonoBehaviour
 
 	private void Start()
 	{
-		player.SpawnNewForest += SpawnNewForest;
+		screenWrap.SpawnNewForest += SpawnNewForest;
 
 		if (treeParent.gameObject.activeSelf)
 			SpawnNewForest();
 	}
 
-	public void SpawnNewForest()
+    public void SpawnNewForest()
 	{
 		ClearForest();
 
@@ -41,22 +41,31 @@ public class GameManager : MonoBehaviour
 		{
 			int randomTree = (int)Random.Range(0, 6);
 
-			float posX = Random.Range(ScreenBorder_Left, ScreenBorder_Right);
-			float posZ = Random.Range(ScreenBorder_Bottom, ScreenBorder_Top);
+			float randomViewPortPosX = Random.Range(0f, 1f);
+			float randomViewPortPosY = Random.Range(0f, 1f);
 
-			Vector3 randomPosition = new Vector3(posX, 0f, posZ);
-			GameObject newTree = trees[randomTree];
-			Instantiate(newTree, randomPosition, Quaternion.identity, treeParent);
+			Vector3 randomWorldPos = Vector3.zero;
 
-			// //Here I want it to set the order in the Sorting layer according to its Y position,
-			// //but it seems to give them a random order..
-			// Now this code works, but the order is not being assigned the "order" even though it explicitly is told to, 
-			// maybe the compiler isn't catching up doing so..
-			// order = (int)(posY * orderIncrease) * -1;
-			// print(newTree + " " + "New Order: " + order);
-			// // order = order * -1;
-			// newTree.GetComponentInChildren<SpriteRenderer>().sortingOrder = order;
-			// print(order + " Should be similar to " + posY);
+			Ray ray = _camera.ScreenPointToRay(new Vector3(Screen.width * randomViewPortPosX, Screen.height * randomViewPortPosY));
+
+
+			RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+				randomWorldPos = hit.point;
+            }
+
+            if (hit.collider is null)
+            {
+				throw new System.Exception($"{ray} did not hit");
+			}
+
+			//Randomize this number to get a different offset for each tree if wanted.
+			randomWorldPos.z -= 1f;
+
+            GameObject newTree = trees[randomTree];
+			Instantiate(newTree, randomWorldPos, newTree.transform.rotation, treeParent);
 		}
 	}
 
