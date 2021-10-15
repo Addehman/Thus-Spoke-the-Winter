@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
 		//vertical = Input.GetAxis("Vertical");
 
 		ScreenWrap();
-		SetOrder();
+		//SetOrder(); // not setting order like this anymore as we use the Z-axis for distance now instead.
 		//PlayerAnimation(); // closed due to new input system is being implemented
 		//SetPlayerDirection(); // closed due to new input system is being implemented
 
@@ -194,32 +194,36 @@ public class PlayerController : MonoBehaviour
 	{
 	//ScreenWrap and generate new forest when leaving the screen in any direction.
 		if (_transform.position.x > GameManager.ScreenBorder_Right) {
-			float yPos = _transform.position.z;
-			wrapPos = new Vector2(GameManager.ScreenBorder_Left, yPos);
+			float yPos = _transform.position.y;
+			float zPos = _transform.position.z;
+			wrapPos = new Vector3(GameManager.ScreenBorder_Left, yPos, zPos);
 			_transform.position = wrapPos;
 
 			SpawnNewForest?.Invoke();
 		}
 
 		if (_transform.position.x < GameManager.ScreenBorder_Left) {
-			float yPos = _transform.position.z;
-			wrapPos = new Vector2(GameManager.ScreenBorder_Right, yPos);
+			float yPos = _transform.position.y;
+			float zPos = _transform.position.z;
+			wrapPos = new Vector3(GameManager.ScreenBorder_Right, yPos, zPos);
 			_transform.position = wrapPos;
 
 			SpawnNewForest?.Invoke();
 		}
 
 		if (_transform.position.y > GameManager.ScreenBorder_Top) {
+			float yPos = _transform.position.y;
 			float xPos = _transform.position.x;
-			wrapPos = new Vector2(xPos, GameManager.ScreenBorder_Bottom);
+			wrapPos = new Vector3(xPos, yPos, GameManager.ScreenBorder_Bottom);
 			_transform.position = wrapPos;
 
 			SpawnNewForest?.Invoke();
 		}
 
 		if (_transform.position.y < GameManager.ScreenBorder_Bottom) {
+			float yPos = _transform.position.y;
 			float xPos = _transform.position.x;
-			wrapPos = new Vector2(xPos, GameManager.ScreenBorder_Top);
+			wrapPos = new Vector3(xPos, yPos, GameManager.ScreenBorder_Top);
 			_transform.position = wrapPos;
 
 			SpawnNewForest?.Invoke();
