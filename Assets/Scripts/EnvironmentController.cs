@@ -1,14 +1,16 @@
 ﻿using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class EnvironmentController : MonoBehaviour
 {
-	private static GameManager _instance;
-	public static GameManager Instance { get { return _instance; } }
+	private static EnvironmentController _instance;
+	public static EnvironmentController Instance { get { return _instance; } }
 
 
 	[SerializeField] ScreenWrap screenWrap = null;
 	[SerializeField] Transform treeParent = null;
 	[SerializeField] private Camera _camera;
+
+	public LayerMask ground;
 
 	public GameObject[] trees = new GameObject[6];
 
@@ -51,7 +53,7 @@ public class GameManager : MonoBehaviour
 
 			RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit, ground))
             {
 				randomWorldPos = hit.point;
             }

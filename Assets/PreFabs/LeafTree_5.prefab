@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 864744610175704098}
   - component: {fileID: 864744610175704099}
   - component: {fileID: -1445665472992905242}
-  - component: {fileID: 2543796671461754666}
+  - component: {fileID: 5175411732516711741}
   m_Layer: 3
   m_Name: LeafTree_5
   m_TagString: Untagged
@@ -97,19 +97,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 4714896ee466e1f4aae5b64331edbd4b, type: 2}
---- !u!70 &2543796671461754666
-CapsuleCollider2D:
+--- !u!135 &5175411732516711741
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 864744610175704100}
-  m_Enabled: 1
-  m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.04392117, y: -0.090514004}
-  m_Size: {x: 0.096398905, y: 0.034320656}
-  m_Direction: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.04
+  m_Center: {x: 0.04, y: 0.02, z: 0}
