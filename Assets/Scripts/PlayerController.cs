@@ -1,48 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-	[SerializeField] private Vector2 playerDirection;
 	[SerializeField] private float walkSpeed = 20f, sprintSpeed = 40f;
-	[SerializeField] private int doDamage_tree = 20;
-	[SerializeField] private Transform _interactTrigger, interactableTransformInRange;
+	[SerializeField] private List<GameObject> interactablesInRange;
 
 	public event Action SpawnNewForest;
 
 	private InputMaster controls;
 	private Transform _transform;
 	private Animator _animator;
-	private SpriteRenderer _spriteRenderer;
+	//private SpriteRenderer _spriteRenderer;
 	private Rigidbody _rb;
-	private BoxCollider2D interactTriggerCollider;
-	private Vector2 wrapPos, movement;
-	private IInteractable interactableInRange;
-	private int orderIncrease = 100;
-	private float horizontal, vertical,
-		triggerOffsetX_Horizontal = 0.16f, triggerOffsetX_Vertical = -0.01f,
-		triggerOffsetY_Up = 0.05f, triggerOffsetY_Down = -0.3f, triggerOffsetY_Horizontal = -0.22f;
-	public bool doSprint;
+	private SphereCollider interactTriggerCollider;
+	private Vector2 movement;
+	private float horizontal, vertical;
+	private bool doSprint;
 
 
 	private void Awake()
 	{
 		_transform = transform;
 		_rb = GetComponent<Rigidbody>();
-		_spriteRenderer = GetComponent<SpriteRenderer>();
+		//_spriteRenderer = GetComponent<SpriteRenderer>();
 		_animator = GetComponent<Animator>();
 
 		controls = new InputMaster();
 		controls.Player.Movement.ReadValue<Vector2>();
-	}
-
-	private void Start()
-	{
-		//Transform[] children = GetComponentsInChildren<Transform>();
-		//_interactTrigger = children[1];
-		_interactTrigger = _transform.GetChild(0);
-		interactTriggerCollider = _interactTrigger.GetComponent<BoxCollider2D>();
 	}
 
 	private void OnEnable()
@@ -51,6 +38,9 @@ public class PlayerController : MonoBehaviour
 		doSprint = false;
 		controls.Player.Sprint.started += ctx => doSprint = true;
 		controls.Player.Sprint.canceled += ctx => doSprint = false;
+		controls.Player.Interact.started += ctx => Interact();
+
+		ForestController.Instance.OnClearForest += ClearInteractablesInRangeList;
 	}
 
 	private void OnDisable()
@@ -58,20 +48,13 @@ public class PlayerController : MonoBehaviour
 		controls.Disable();
 		controls.Player.Sprint.started -= ctx => doSprint = true;
 		controls.Player.Sprint.canceled -= ctx => doSprint = false;
+		controls.Player.Interact.started -= ctx => Interact();
 	}
 
 	private void Update()
 	{
-		//horizontal = Input.GetAxis("Horizontal");
-		//vertical = Input.GetAxis("Vertical");
-
 		GetPlayerInput();
 		PlayerAnimation();
-		//SetPlayerDirection(); // closed due to new input system is being implemented
-
-		//if (Input.GetKeyDown(KeyCode.Space) && interactableInRange != null && interactableTransformInRange != null) { // closed due to new input system is being implemented
-		//	interactableInRange.Interact(doDamage_tree);
-		//}
 	}
 
 	private void FixedUpdate()
@@ -79,21 +62,27 @@ public class PlayerController : MonoBehaviour
 		PlayerMovement();
 	}
 
-	private void OnTriggerEnter2D(Collider2D other)
+	private void OnTriggerEnter(Collider other)
 	{
 		var interactable = other.transform.GetComponent<IInteractable>();
 		if (interactable == null) return;
-		interactableInRange = interactable;
-		interactableTransformInRange = interactableInRange == interactable ? other.transform : null;
+		interactablesInRange.Add(other.gameObject);
+
+		var tree = other.transform.GetComponent<TreeBehaviour>();
+		if (tree == null) return;
+		tree.OnDestroy += OnTreeDestroy;
 	}
 
-	private void OnTriggerExit2D(Collider2D other)
+	private void OnTriggerExit(Collider other)
 	{
 		var interactable = other.transform.GetComponent<IInteractable>();
 		if (interactable == null) return;
-		//print($"{other.transform} has left trigger");
-		interactableInRange = null;
-		interactableTransformInRange = null;
+		print($"{other.transform} has left trigger");
+		interactablesInRange.Remove(other.gameObject);
+
+		var tree = other.transform.GetComponent<TreeBehaviour>();
+		if (tree == null) return;
+		tree.OnDestroy -= OnTreeDestroy;
 	}
 
 	private void GetPlayerInput()
@@ -120,89 +109,6 @@ public class PlayerController : MonoBehaviour
 		_rb.velocity = new Vector3(movement.x, 0f, movement.y) * MovementSpeed(doSprint) * Time.deltaTime;
 	}
 
-	//private Vector2 SetPlayerDirection()
-	//{
-	//	string id = IdentifyDirection(movement);
-
-	//	switch (id) {
-	//		case "left":
-	//			SetTriggerRotation(id);
-	//			playerDirection = Vector2.left;
-	//			break;
-	//		case "up":
-	//			SetTriggerRotation(id);
-	//			playerDirection = Vector2.up;
-	//			break;
-	//		case "right":
-	//			SetTriggerRotation(id);
-	//			playerDirection = Vector2.right;
-	//			break;
-	//		case "down":
-	//			SetTriggerRotation(id);
-	//			playerDirection = Vector2.down;
-	//			break;
-	//	}
-
-	//	return playerDirection;
-	//}
-
-	//private string IdentifyDirection(Vector2 direction)
-	//{
-	//	if (direction.sqrMagnitude > 0f) {
-	//		if (left)
-	//			return "left";
-	//		else if (up)
-	//			return "up";
-	//		else if (right)
-	//			return "right";
-	//		else if (down)
-	//			return "down";
-	//		else
-	//			return "";
-	//	}
-	//	else {
-	//		return "";
-	//	}
-	//}
-
-	//private void SetTriggerRotation(string direction)
-	//{
-	//	float degrees, triggerOffsetX, triggerOffsetY;
-	//	switch (direction) {
-	//		case "left":
-	//			degrees = 270f;
-	//			triggerOffsetX = triggerOffsetX_Horizontal;
-	//			triggerOffsetY = triggerOffsetY_Horizontal;
-	//			break;
-	//		case "up":
-	//			degrees = 180f;
-	//			triggerOffsetX = -triggerOffsetX_Vertical;
-	//			triggerOffsetY = triggerOffsetY_Up;
-	//			break;
-	//		case "right":
-	//			degrees = 90f;
-	//			triggerOffsetX = -triggerOffsetX_Horizontal;
-	//			triggerOffsetY = triggerOffsetY_Horizontal;
-	//			break;
-	//		default:
-	//			degrees = 0f;
-	//			triggerOffsetX = triggerOffsetX_Vertical;
-	//			triggerOffsetY = triggerOffsetY_Down;
-	//			break;
-	//	}
-	//	Vector3 newRotation = _interactTrigger.eulerAngles;
-	//	newRotation.z = degrees;
-	//	_interactTrigger.eulerAngles = newRotation;
-
-	//	interactTriggerCollider.offset = new Vector2(triggerOffsetX, triggerOffsetY);
-	//}
-
-	private void SetOrder()
-	{
-		float order = _transform.position.y * orderIncrease * -1;
-		_spriteRenderer.sortingOrder = (int)order;
-	}
-
 	private float MovementSpeed(bool sprint)
 	{
 		float speed = sprint ? sprintSpeed : walkSpeed;
@@ -210,28 +116,77 @@ public class PlayerController : MonoBehaviour
 		return speed;
 	}
 
+	private void Interact()
+	{
+		if (interactablesInRange.Count == 0 || interactablesInRange[0] == null) return;
+
+		int index = GetIndexFromList(interactablesInRange, NearestObject());
+
+		var interactable = interactablesInRange[index].GetComponent<IInteractable>();
+		if (interactable == null) return;
+		interactable.OnInteract();
+	}
+
 	private void PlayerAnimation() // needs love!
 	{
 		_animator.SetFloat("SpeedX", horizontal);
 		_animator.SetFloat("SpeedY", vertical);
-
-		print($"SpeedX: {_animator.GetFloat("SpeedX")}\n SpeedY: {_animator.GetFloat("SpeedY")}");
-		
-
-		//if (!Input.GetButton("Horizontal"))
-		//	_animator.SetFloat("SpeedX", 0f);
-		//else
-		//	_animator.SetFloat("SpeedX", horizontal);
-
-		//if (!Input.GetButton("Vertical"))
-		//	_animator.SetFloat("SpeedY", 0f);
-		//else
-		//	_animator.SetFloat("SpeedY", vertical);
 	}
 
-	private void ResetTrigger()
+	public void ResetTrigger()
 	{
 		interactTriggerCollider.enabled = false;
 		interactTriggerCollider.enabled = true;
+	}
+
+	private void OnTreeDestroy(GameObject obj)
+	{
+		if (!interactablesInRange.Contains(obj)) return;
+
+		int index = GetIndexFromList(interactablesInRange, obj);
+		interactablesInRange.RemoveAt(index);
+
+		var tree = obj.transform.GetComponent<TreeBehaviour>();
+		if (tree == null) return;
+		tree.OnDestroy -= OnTreeDestroy;
+	}
+
+	private void ClearInteractablesInRangeList()
+	{
+		interactablesInRange.Clear();
+	}
+
+	private GameObject NearestObject()
+	{
+		GameObject nearestObject = null;
+		//int index = 0;
+		if (interactablesInRange.Count > 1) {
+			float nearestDistance = 100f;
+			for (int i = 0; i < interactablesInRange.Count; i++) {
+				float distance = Vector3.Distance(_transform.position, interactablesInRange[i].transform.position);
+				if (distance < nearestDistance) {
+					nearestDistance = distance;
+					nearestObject = interactablesInRange[i];
+					//index = i;
+				}
+			}
+		}
+		return nearestObject;
+	}
+
+	/// <summary>
+	/// Find the Index of a GameObject in a List<GameObject>
+	/// </summary>
+	/// <param name="list"></param>
+	/// <param name="objToLocate"></param>
+	/// <returns>an int representing the index number in the list where the GameObject is located.</returns>
+	private int GetIndexFromList(List<GameObject> list, GameObject objToLocate)
+	{
+		int index = 0;
+		for (int i = 0; i < list.Count; i++) {
+			if (list[i] == objToLocate)
+				index = i;
+		}
+		return index;
 	}
 }

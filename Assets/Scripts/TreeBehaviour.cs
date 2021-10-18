@@ -1,11 +1,14 @@
 using UnityEngine;
+using System;
 
 public class TreeBehaviour : MonoBehaviour, IInteractable
 {
 	[SerializeField] private ResourceDataSO _data;
 
+	public event Action<GameObject> OnDestroy;
+
 	//private SpriteRenderer _sr;
-	private int orderIncrease = 100, newOrder, _health;
+	private int orderIncrease = 100, newOrder, _health, _damage = 20;
 	private ResourceType _type;
 
 
@@ -31,14 +34,18 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 	//	_sr.sortingOrder = newOrder;
 	//}
 
-	public void Interact(int damage)
+	public void OnInteract()
 	{
-		_health -= damage;
+		_health -= _damage;
 		print($"Remaining Health: {_health}");
 
-		if (_health <= 0) {
-			print($"{gameObject} is falling!");
-			Destroy(gameObject);
-		}
+		if (_health <= 0) OnDestruction();
+	}
+
+	public void OnDestruction()
+	{
+		print($"{gameObject} is falling!");
+		Destroy(gameObject);
+		OnDestroy?.Invoke(gameObject);
 	}
 }

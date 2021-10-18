@@ -1,4 +1,6 @@
 public interface IInteractable
 {
-	public void Interact(int value);
+	public void OnInteract();
+
+	public void OnDestruction();
 }

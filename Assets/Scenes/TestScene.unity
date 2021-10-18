@@ -328,17 +328,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 332712203833756736, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
   m_PrefabInstance: {fileID: 332712203595213402}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &306718237 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 332712203833756743, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
-  m_PrefabInstance: {fileID: 332712203595213402}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e21ddfdf33b896544a3b2163720a8bec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &435467893
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -407,7 +396,7 @@ GameObject:
   - component: {fileID: 443019307}
   - component: {fileID: 443019308}
   m_Layer: 0
-  m_Name: TreeGroup
+  m_Name: ForestParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1006,29 +995,13 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 306718237}
-    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: _camera
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
       propertyPath: screenWrap
       value: 
       objectReference: {fileID: 1858088665}
     - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: treeParent
+      propertyPath: environmentParent
       value: 
       objectReference: {fileID: 443019307}
-    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: screenPoint
-      value: 
-      objectReference: {fileID: 297288504}
-    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: ground.m_Bits
-      value: 64
-      objectReference: {fileID: 0}
     - target: {fileID: 1003278497046935819, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
       propertyPath: m_RootOrder
       value: 1
