@@ -16,3 +16,4 @@ MonoBehaviour:
   resourceSprite: {fileID: -6042065707596721711, guid: 5886caa57150865499135c4c1ffa6201, type: 3}
   type: 2
   health: 100
+  damage: 10

@@ -565,7 +565,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &443019307
 Transform:
   m_ObjectHideFlags: 0
@@ -1509,6 +1509,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 332712203833756743, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
+      propertyPath: sprintSpeed
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 332712203833756749, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1530,6 +1534,42 @@ PrefabInstance:
       propertyPath: environmentParent
       value: 
       objectReference: {fileID: 443019307}
+    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: forestObjects.Array.size
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: forestObjects.Array.data[7]
+      value: 
+      objectReference: {fileID: 3906755439078533542, guid: 134bb0d95732e3a44a904ed098f64ea3, type: 3}
+    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: forestObjects.Array.data[8]
+      value: 
+      objectReference: {fileID: 3906755439078533542, guid: 134bb0d95732e3a44a904ed098f64ea3, type: 3}
+    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: forestObjects.Array.data[9]
+      value: 
+      objectReference: {fileID: 3906755439078533542, guid: 134bb0d95732e3a44a904ed098f64ea3, type: 3}
+    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: forestObjects.Array.data[10]
+      value: 
+      objectReference: {fileID: 3906755439078533542, guid: 134bb0d95732e3a44a904ed098f64ea3, type: 3}
+    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: forestObjects.Array.data[11]
+      value: 
+      objectReference: {fileID: 3906755439078533542, guid: 134bb0d95732e3a44a904ed098f64ea3, type: 3}
+    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: forestObjects.Array.data[12]
+      value: 
+      objectReference: {fileID: 3906755439078533542, guid: 134bb0d95732e3a44a904ed098f64ea3, type: 3}
+    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: forestObjects.Array.data[13]
+      value: 
+      objectReference: {fileID: 3906755439078533542, guid: 134bb0d95732e3a44a904ed098f64ea3, type: 3}
+    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: forestObjects.Array.data[14]
+      value: 
+      objectReference: {fileID: 3906755439078533542, guid: 134bb0d95732e3a44a904ed098f64ea3, type: 3}
     - target: {fileID: 1003278497046935819, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
       propertyPath: m_RootOrder
       value: 1

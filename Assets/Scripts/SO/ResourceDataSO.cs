@@ -9,6 +9,7 @@ public class ResourceDataSO : ScriptableObject
 	public Sprite resourceSprite;
 	public ResourceType type;
 	public int health;
+	public int damage;
 
 }
 

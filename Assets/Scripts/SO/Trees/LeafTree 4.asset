@@ -15,4 +15,5 @@ MonoBehaviour:
   name: Leaf Tree 4
   resourceSprite: {fileID: -6042065707596721711, guid: 5886caa57150865499135c4c1ffa6201, type: 3}
   type: 0
-  health: 100
+  health: 70
+  damage: 10

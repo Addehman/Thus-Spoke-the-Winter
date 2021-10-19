@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41f6a218ea9b2c54dbf3e5cbfab7c625, type: 3}
-  m_Name: LeafTree 2
+  m_Name: TallPineTree 1
   m_EditorClassIdentifier: 
-  name: Leaf Tree 2
-  resourceSprite: {fileID: 5655359742470825690, guid: 5886caa57150865499135c4c1ffa6201, type: 3}
-  type: 0
+  name: Tall Pine Tree
+  resourceSprite: {fileID: -3106848558723038272, guid: 4d675dcb2a99b1e4397dcf271c799f6d, type: 3}
+  type: 2
   health: 100
   damage: 10
