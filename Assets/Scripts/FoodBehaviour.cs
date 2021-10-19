@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public class TreeBehaviour : MonoBehaviour, IInteractable
+public class FoodBehaviour : MonoBehaviour, IInteractable
 {
 	[SerializeField] private ResourceDataSO _data;
 
@@ -29,15 +29,14 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 	public void OnInteract()
 	{
 		_health -= _damage;
-		print($"Remaining Health: {_health}");
 
 		if (_health <= 0) OnDestruction();
 	}
 
 	public void OnDestruction()
 	{
-		print($"{gameObject} is falling!");
-		Destroy(gameObject);
-		OnDestroy?.Invoke(gameObject);
+		print($"Gathered {_gameObject}");
+		Destroy(_gameObject);
+		OnDestroy?.Invoke(_gameObject);
 	}
 }
