@@ -15,5 +15,6 @@ MonoBehaviour:
   name: Tall Pine Tree
   resourceSprite: {fileID: -3106848558723038272, guid: 4d675dcb2a99b1e4397dcf271c799f6d, type: 3}
   type: 2
-  health: 100
+  health: 200
   damage: 10
+  resourceAmount: 20

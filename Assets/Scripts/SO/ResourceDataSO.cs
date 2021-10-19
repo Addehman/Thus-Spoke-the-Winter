@@ -10,6 +10,7 @@ public class ResourceDataSO : ScriptableObject
 	public ResourceType type;
 	public int health;
 	public int damage;
+	public int resourceAmount;
 
 }
 

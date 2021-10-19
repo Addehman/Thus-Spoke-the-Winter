@@ -17,3 +17,4 @@ MonoBehaviour:
   type: 0
   health: 100
   damage: 10
+  resourceAmount: 10

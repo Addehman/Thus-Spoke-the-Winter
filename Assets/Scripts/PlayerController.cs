@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private List<GameObject> interactablesInRange;
 
 	public event Action SpawnNewForest;
+	public event Action<GameObject> ResourceGathered;
 
 	private InputMaster controls;
 	private Transform _transform;
@@ -149,6 +150,7 @@ public class PlayerController : MonoBehaviour
 		var tree = obj.transform.GetComponent<TreeBehaviour>();
 		if (tree == null) return;
 		tree.OnDestroy -= OnTreeDestroy;
+		ResourceGathered?.Invoke(obj);
 	}
 
 	private void ClearInteractablesInRangeList()

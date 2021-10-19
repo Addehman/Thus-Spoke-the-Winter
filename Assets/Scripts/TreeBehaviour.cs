@@ -7,17 +7,20 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 
 	public event Action<GameObject> OnDestroy;
 
+	public ResourceType type;
+	public int resourceAmount;
+
 	private SpriteRenderer _sr;
 	private int _health, _damage;
-	private ResourceType _type;
 
 
 	void Start()
 	{
 		_sr = GetComponent<SpriteRenderer>();
 
+		type = _data.type;
+		resourceAmount = _data.resourceAmount;
 		_health = _data.health;
-		_type = _data.type;
 		_damage = _data.damage;
 		_sr.sprite = _data.resourceSprite;
 	}
