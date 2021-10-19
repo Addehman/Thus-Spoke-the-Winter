@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1003278497046935819}
   - component: {fileID: 1003278497046935818}
+  - component: {fileID: 5648477622683835973}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -56,3 +57,24 @@ MonoBehaviour:
   - {fileID: 864744610175704100, guid: 8c76da172184fe045ba9bbd1d29851b1, type: 3}
   - {fileID: 3906755439078533542, guid: 8cb842b97f8d35a4e8df8d8f5b89fdb7, type: 3}
   - {fileID: 3906755439078533542, guid: 8cb842b97f8d35a4e8df8d8f5b89fdb7, type: 3}
+--- !u!114 &5648477622683835973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1003278497046935821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4f128877d2f7f749a7b0951de1c8ac2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentInventory: 0
+  inventoryMaxCapacity: 100
+  wood: 0
+  food: 0
+  blueberry: 0
+  lingonberry: 0
+  apple: 0
+  mushroom: 0
+  venison: 0

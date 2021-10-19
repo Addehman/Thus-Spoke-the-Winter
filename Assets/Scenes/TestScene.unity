@@ -1330,27 +1330,6 @@ Transform:
   m_Father: {fileID: 1255188203}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
---- !u!1 &1547974780 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1003278497046935821, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-  m_PrefabInstance: {fileID: 1003278497028924638}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1547974781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1547974780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4f128877d2f7f749a7b0951de1c8ac2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventoryCurrentCapacity: 0
-  inventoryMaxCapacity: 100
-  wood: 0
-  food: 0
 --- !u!1 &1569500055
 GameObject:
   m_ObjectHideFlags: 0
@@ -1879,7 +1858,7 @@ PrefabInstance:
       objectReference: {fileID: 443019307}
     - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
       propertyPath: forestObjects.Array.size
-      value: 15
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
       propertyPath: forestObjects.Array.data[7]
@@ -1913,6 +1892,18 @@ PrefabInstance:
       propertyPath: forestObjects.Array.data[14]
       value: 
       objectReference: {fileID: 3906755439078533542, guid: 134bb0d95732e3a44a904ed098f64ea3, type: 3}
+    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: forestObjects.Array.data[15]
+      value: 
+      objectReference: {fileID: 5051238808586815635, guid: 1272b867aa2cf8b40af53af3fd4f20bd, type: 3}
+    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: forestObjects.Array.data[16]
+      value: 
+      objectReference: {fileID: 2016277109531003504, guid: 51f58fe355ed86d49b966f57edcae1f2, type: 3}
+    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: forestObjects.Array.data[17]
+      value: 
+      objectReference: {fileID: 8968824666414133326, guid: 00cdd219a6049904ba354759f8e626cd, type: 3}
     - target: {fileID: 1003278497046935819, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
       propertyPath: m_RootOrder
       value: 1
