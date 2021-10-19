@@ -8,6 +8,6 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        inventoryText.text = $"{Inventory.Instance.inventoryCurrentCapacity} / {Inventory.Instance.inventoryMaxCapacity}";
+        inventoryText.text = $"{Inventory.Instance.currentInventory} / {Inventory.Instance.inventoryMaxCapacity}";
     }
 }

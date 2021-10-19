@@ -10,7 +10,7 @@ public class Inventory : MonoBehaviour
     private PlayerController player;
     
     [SerializeField]
-    public int inventoryCurrentCapacity;
+    public int currentInventory;
     [SerializeField]
     public int inventoryMaxCapacity = 100;
 
@@ -40,7 +40,7 @@ public class Inventory : MonoBehaviour
 
     void Start()
     {
-        inventoryCurrentCapacity = inventoryMaxCapacity;
+        currentInventory = 0;
     }
 
     void GatherResource(GameObject obj)
@@ -50,7 +50,7 @@ public class Inventory : MonoBehaviour
         int gatheredWood = 0;
         int gatheredFood = 0;
 
-        if (inventoryCurrentCapacity <= 0)
+        if (currentInventory >= inventoryMaxCapacity)
         {
             print("Inventory is full");
             return;
@@ -125,16 +125,24 @@ public class Inventory : MonoBehaviour
             }*/
         }
 
-        /*var stone = obj.GetComponent<StoneBehaviour>();
-
-        if (stone != null)
-        {
-
-            return;
-        }*/
         wood += gatheredWood;
         food += gatheredFood;
 
+        InventoryCapacityFailsafe(gatheredWood, gatheredFood);
+
+        currentInventory = (wood + food);
+
+        print($"Food: {food}. Wood: {wood}");
+    }
+
+    void WhatResourceIsThis(GameObject obj)
+    {
+
+    }
+
+
+    void InventoryCapacityFailsafe(int gatheredWood, int gatheredFood)
+    {
         if (inventoryMaxCapacity - (wood + food) < 0)
         {
             int correction = inventoryMaxCapacity - (wood + food);
@@ -149,9 +157,8 @@ public class Inventory : MonoBehaviour
                 //correction is a negative value, therefore we "add" the negative value to subtract
                 food += correction;
             }
-        }
 
-        inventoryCurrentCapacity = inventoryMaxCapacity - (wood + food);
-        print($"Food: {food}. Wood: {wood}");
+            print("Inventory is full");
+        }
     }
 }
