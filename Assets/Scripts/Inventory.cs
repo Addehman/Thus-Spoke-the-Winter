@@ -10,15 +10,11 @@ public class Inventory : MonoBehaviour
     private PlayerController player;
     
     [SerializeField]
-    public int inventoryCurrentCapacity;
-    [SerializeField]
-    public int inventoryMaxCapacity = 100;
-
+    public int currentInventory, inventoryMaxCapacity = 100;
 
     [SerializeField]
-    private int wood;
-    [SerializeField]
-    private int food;
+    private int wood, food, blueberry, lingonberry, apple, mushroom, venison;
+
 
     private void Awake()
     {
@@ -40,7 +36,7 @@ public class Inventory : MonoBehaviour
 
     void Start()
     {
-        inventoryCurrentCapacity = inventoryMaxCapacity;
+        currentInventory = 0;
     }
 
     void GatherResource(GameObject obj)
@@ -48,9 +44,14 @@ public class Inventory : MonoBehaviour
         print($"Food: {food}. Wood: {wood}");
 
         int gatheredWood = 0;
-        int gatheredFood = 0;
+        int gatheredBlueberry = 0;
+        int gatheredLingonberry = 0;
+        int gatheredApple = 0;
+        int gatheredMushroom = 0;
+        int gatheredVenison = 0;
 
-        if (inventoryCurrentCapacity <= 0)
+
+        if (currentInventory >= inventoryMaxCapacity)
         {
             print("Inventory is full");
             return;
@@ -62,25 +63,24 @@ public class Inventory : MonoBehaviour
 
         if (tree != null)
         {
+            //These switch cases can be removed if we always att to "gatheredWood" as it is right now.
+            //Keeping it for now if we want to add specific kinds of wood later on, for example; "gatheredPineWood" or "gatheredLeafTreeWood".
             switch (tree.type)
             {
                 case ResourceType.fruitTree:
                     {
-                        /*wood += tree.resourceAmount;*/
                         gatheredWood = tree.resourceAmount;
                         break;
                     }
 
                 case ResourceType.leafTree:
                     {
-                        /*wood += tree.resourceAmount;*/
                         gatheredWood = tree.resourceAmount;
                         break;
                     }
 
                 case ResourceType.pineTree:
                     {
-                        /*wood += tree.resourceAmount;*/
                         gatheredWood = tree.resourceAmount;
                         break;
                     }
@@ -95,63 +95,95 @@ public class Inventory : MonoBehaviour
         {
             /*switch (food.type)
             {
-                case ResourceType.blueBerry:
+                case ResourceType.blueberry:
                     {
-                        food += blueBerryAmount;
+                        gatheredBlueberry += food.resourceAmount;
                         break;
                     }
 
-                case ResourceType.lingonBerry:
+                case ResourceType.lingonberry:
                     {
-                        wood += lingonBerryAmount;
+                        gatheredLingonberry += food.resourceAmount;
                         break;
                     }
 
                 case ResourceType.apple:
                     {
-                        wood += appleAmount;
+                        gatheredApple += food.resourceAmount;
                         break;
                     }
                 case ResourceType.mushroom:
                     {
-                        wood += mushroomAmount;
+                        gatheredMushroom += food.resourceAmount;
                         break;
                     }
                 case ResourceType.venison:
                     {
-                        wood += venisonAmount;
+                        gatheredVenison += food.resourceAmount;
                         break;
                     }
             }*/
         }
 
-        /*var stone = obj.GetComponent<StoneBehaviour>();
-
-        if (stone != null)
-        {
-
-            return;
-        }*/
         wood += gatheredWood;
-        food += gatheredFood;
+        blueberry += gatheredBlueberry;
+        lingonberry += gatheredLingonberry;
+        apple += gatheredApple;
+        mushroom += gatheredMushroom;
+        venison += gatheredVenison;
 
+        food = (blueberry + lingonberry + apple + mushroom + venison);
+
+
+        InventoryCapacityFailsafe(gatheredWood, gatheredBlueberry, gatheredLingonberry, 
+            gatheredApple, gatheredMushroom, gatheredVenison);
+
+
+        currentInventory = (wood + food);
+
+        print($"Food: {food}. Wood: {wood}");
+    }
+
+    /*void WhatResourceToAdd(GameObject obj)
+    {
+        //Try and implement and run this function in "GatherResource" to tidy up in "GatherResource".
+    }*/
+
+
+    void InventoryCapacityFailsafe(int gatheredWood, int gatheredBlueberry, int gatheredLingonberry, 
+        int gatheredApple, int gatheredMushroom, int gatheredVenison)
+    {
         if (inventoryMaxCapacity - (wood + food) < 0)
         {
             int correction = inventoryMaxCapacity - (wood + food);
 
             if (gatheredWood > 0)
             {
-                //correction is a negative value, therefore we "add" the negative value to subtract
+                //correction is a negative value, therefore we "add" the negative value to subtract.
                 wood += correction;
             }
-            else if (gatheredFood > 0)
+            else if (gatheredBlueberry > 0)
             {
-                //correction is a negative value, therefore we "add" the negative value to subtract
-                food += correction;
+                blueberry += correction;
             }
-        }
+            else if (gatheredLingonberry > 0)
+            {
+                lingonberry += correction;
+            }
+            else if (gatheredApple > 0)
+            {
+                apple += correction;
+            }
+            else if (gatheredMushroom > 0)
+            {
+                mushroom += correction;
+            }
+            else if (gatheredVenison > 0)
+            {
+                venison += correction;
+            }
 
-        inventoryCurrentCapacity = inventoryMaxCapacity - (wood + food);
-        print($"Food: {food}. Wood: {wood}");
+            print("Inventory is full");
+        }
     }
 }
