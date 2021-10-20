@@ -66,7 +66,12 @@ public class ForestController : MonoBehaviour
 			randomWorldPos.z += randomOffset;
 
 			GameObject newTree = forestObjects[randomTree];
-			Instantiate(newTree, randomWorldPos, newTree.transform.rotation, forestParent);
+			GameObject spawn = Instantiate(newTree, randomWorldPos, newTree.transform.rotation, forestParent);
+
+		// Here we make sure that the spawned object is not in the air.
+			Vector3 positionCorrection = spawn.transform.position;
+			positionCorrection.y = 0f;
+			spawn.transform.position = positionCorrection;
 		}
 	}
 
