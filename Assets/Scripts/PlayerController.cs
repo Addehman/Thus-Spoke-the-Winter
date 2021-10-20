@@ -69,20 +69,18 @@ public class PlayerController : MonoBehaviour
 		interactablesInRange.Add(other.gameObject);
 
 		var tree = other.transform.GetComponent<TreeBehaviour>();
-		
-		if (tree != null)
-        {
+
+		if (tree != null) {
 			tree.OnDestroy += OnResourceDestroy;
 			return;
-        }
+		}
 
 		var food = other.transform.GetComponent<FoodBehaviour>();
 
-        if (food != null)
-        {
+		if (food != null) {
 			food.OnDestroy += OnResourceDestroy;
 			return;
-        }		
+		}
 	}
 
 	private void OnTriggerExit(Collider other)
@@ -94,16 +92,14 @@ public class PlayerController : MonoBehaviour
 
 		var tree = other.transform.GetComponent<TreeBehaviour>();
 
-		if (tree != null)
-		{
+		if (tree != null) {
 			tree.OnDestroy -= OnResourceDestroy;
 			return;
 		}
 
 		var food = other.transform.GetComponent<FoodBehaviour>();
 
-		if (food != null)
-		{
+		if (food != null) {
 			food.OnDestroy -= OnResourceDestroy;
 			return;
 		}
@@ -144,17 +140,100 @@ public class PlayerController : MonoBehaviour
 	{
 		if (interactablesInRange.Count == 0 || interactablesInRange[0] == null) return;
 
-		int index = GetIndexFromList(interactablesInRange, NearestObject());
+		GameObject nearestObject = NearestObject();
+		int index = GetIndexFromList(interactablesInRange, nearestObject);
 
 		var interactable = interactablesInRange[index].GetComponent<IInteractable>();
 		if (interactable == null) return;
 		interactable.OnInteract();
+
+		// Let's turn the player's animation in the direction of what it is interacting with.
+		SetPlayerAnimationDirection(nearestObject);
 	}
 
 	private void PlayerAnimation() // needs love!
 	{
 		_animator.SetFloat("SpeedX", horizontal);
 		_animator.SetFloat("SpeedY", vertical);
+	}
+
+	private void SetPlayerAnimationDirection(GameObject faceThisObject)
+	{
+		if (faceThisObject == null) return;
+		Vector3 direction = FindDirectionFromTwoPoints(_transform.position, faceThisObject.transform.position);
+		Vector2 direction2D = new Vector2(direction.x, direction.z) * -1; // it's reversed to be more be more like a conventional grid ( Up / Right = positive )
+		
+		print($"direction2D before: {direction2D}");
+
+		// Round the Vector2 values to be comparable to Vector2.left/right/up/down/zero
+		// Middle X
+		if (direction2D.x >= -0.5f && direction2D.x <= 0.5f)
+			direction2D.x = 0f;
+		// Left
+		else if (direction2D.x < -0.5f)
+			direction2D.x = -1f;
+		// Right
+		else if (direction2D.x > 0.5f)
+			direction2D.x = 1f;
+
+		// Middle Y
+		if (direction2D.y >= -0.5f && direction2D.y <= 0.5f)
+			direction2D.y = 0f;
+		// Up
+		else if (direction2D.y > 0.5f)
+			direction2D.y = 1f;
+		// Down
+		else if (direction2D.y < -0.5f)
+			direction2D.y = -1f;
+
+	// If we get doubles/borders(0,0/1,1/-1,1/etc.) - check which of the axises that are dominant.
+		// If we get 0,0: we set the dominant to +/- 1.
+		if (direction2D == Vector2.zero) {
+			if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y)) {
+				direction2D.x = direction.x > 0f ? 1f : -1f;
+			}
+			else if (Mathf.Abs(direction.x )< Mathf.Abs(direction.y)) {
+				direction2D.y = direction.y > 0f ? 1f : -1f;
+			}
+		}
+		// if  we get 1,1: we set the submissive to 0.
+		else if (new Vector2(Mathf.Abs(direction2D.x), Mathf.Abs(direction2D.y)) == Vector2.one) {
+			if (Mathf.Abs(direction.x )> Mathf.Abs(direction.y)) {
+				direction2D.y = 0f;
+			}
+			else if (Mathf.Abs(direction.x )< Mathf.Abs(direction.y)) {
+				direction2D.x = 0f;
+			}
+		}
+		
+	// Find what direction it correlates to, to assign the animation accordingly.
+		if (direction2D == Vector2.left) {
+			_animator.SetTrigger("IdleRight");
+		}
+		else if (direction2D == Vector2.right) {
+			_animator.SetTrigger("IdleLeft");
+		}
+		else if (direction2D == Vector2.up) {
+			_animator.SetTrigger("IdleDown");
+		}
+		else if (direction2D == Vector2.down) {
+			_animator.SetTrigger("IdleUp");
+		}
+
+		print($"direction2D after: {direction2D}");
+	}
+
+	/// <summary>
+	/// Find the direction from one point to another (Normalized).
+	/// </summary>
+	/// <param name="fromPoint"></param>
+	/// <param name="toPoint"></param>
+	/// <returns>A Vector3 representing the direction.</returns>
+	private Vector3 FindDirectionFromTwoPoints(Vector3 fromPoint, Vector3 toPoint)
+	{
+		Vector3 direction = (toPoint - fromPoint).normalized/* * 10f*/;
+
+		return direction;
 	}
 
 	private void OnResourceDestroy(GameObject obj)
@@ -165,17 +244,15 @@ public class PlayerController : MonoBehaviour
 		interactablesInRange.RemoveAt(index);
 
 		var tree = obj.transform.GetComponent<TreeBehaviour>();
-		if (tree != null)
-        {
+		if (tree != null) {
 			tree.OnDestroy -= OnResourceDestroy;
 			ResourceGathered?.Invoke(obj);
 			return;
-        }
+		}
 
 		var food = obj.transform.GetComponent<FoodBehaviour>();
 
-		if (food != null)
-		{
+		if (food != null) {
 			food.OnDestroy -= OnResourceDestroy;
 			ResourceGathered?.Invoke(obj);
 		}
@@ -190,7 +267,7 @@ public class PlayerController : MonoBehaviour
 	{
 		GameObject nearestObject = null;
 		//int index = 0;
-		if (interactablesInRange.Count > 1) {
+		//if (interactablesInRange.Count > 1) {
 			float nearestDistance = 100f;
 			for (int i = 0; i < interactablesInRange.Count; i++) {
 				float distance = Vector3.Distance(_transform.position, interactablesInRange[i].transform.position);
@@ -199,7 +276,7 @@ public class PlayerController : MonoBehaviour
 					nearestObject = interactablesInRange[i];
 					//index = i;
 				}
-			}
+			//}
 		}
 		return nearestObject;
 	}

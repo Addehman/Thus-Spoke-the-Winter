@@ -41,6 +41,8 @@ public class ForestController : MonoBehaviour
 	{
 		ClearForest();
 
+		//UnityEngine.Random.InitState(seed); // To be used to control the seed of the random forest, whether it should be random or not.
+
 		int spawnCount = (int)UnityEngine.Random.Range(5, 50);
 		print("Amount of new Trees: " + spawnCount);
 
@@ -67,8 +69,9 @@ public class ForestController : MonoBehaviour
 
 			GameObject newTree = forestObjects[randomTree];
 			GameObject spawn = Instantiate(newTree, randomWorldPos, newTree.transform.rotation, forestParent);
+			//spawn.name = UnityEngine.Random.Range(0, 100000).ToString(); // This is one possible way to create an ID for the spawned objects
 
-		// Here we make sure that the spawned object is not in the air.
+			// Here we make sure that the spawned object is not in the air.
 			Vector3 positionCorrection = spawn.transform.position;
 			positionCorrection.y = 0f;
 			spawn.transform.position = positionCorrection;
