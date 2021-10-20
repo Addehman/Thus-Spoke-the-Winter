@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8968824666414133320}
   - component: {fileID: 8968824666414133321}
   - component: {fileID: 1847750178835368555}
+  - component: {fileID: 889820334093485212}
   m_Layer: 0
   m_Name: Mushroom
   m_TagString: Untagged
@@ -96,5 +97,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 185db8f9bf330c44bae1a21ef00967ce, type: 2}
-  type: 0
+  type: 6
   resourceAmount: 0
+--- !u!136 &889820334093485212
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8968824666414133326}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.03
+  m_Height: 0.12
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.0515625, z: 0}

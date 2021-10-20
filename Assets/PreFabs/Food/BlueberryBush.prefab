@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5888611190733219221}
   - component: {fileID: 413000500850725961}
   - component: {fileID: 7209175760260994481}
+  - component: {fileID: 9071436519288443855}
   m_Layer: 0
   m_Name: BlueberryBush
   m_TagString: Untagged
@@ -96,5 +97,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 51c03473af90114458efa207cce9b22a, type: 2}
-  type: 0
+  type: 4
   resourceAmount: 0
+--- !u!136 &9071436519288443855
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2016277109531003504}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.035
+  m_Height: 0.18
+  m_Direction: 0
+  m_Center: {x: 0, y: 0.045, z: 0}

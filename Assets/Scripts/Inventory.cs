@@ -57,31 +57,31 @@ public class Inventory : MonoBehaviour
             return;
         }
 
-        var tree = obj.GetComponent<TreeBehaviour>();
-        //Implement food script and remove comment below later.
-        /*var food = obj.GetComponent<Food>();*/
+        var treeBehav = obj.GetComponent<TreeBehaviour>();
 
-        if (tree != null)
+        var foodBehav = obj.GetComponent<FoodBehaviour>();
+
+        if (treeBehav != null)
         {
             //These switch cases can be removed if we always att to "gatheredWood" as it is right now.
             //Keeping it for now if we want to add specific kinds of wood later on, for example; "gatheredPineWood" or "gatheredLeafTreeWood".
-            switch (tree.type)
+            switch (treeBehav.type)
             {
                 case ResourceType.fruitTree:
                     {
-                        gatheredWood = tree.resourceAmount;
+                        gatheredWood = treeBehav.resourceAmount;
                         break;
                     }
 
                 case ResourceType.leafTree:
                     {
-                        gatheredWood = tree.resourceAmount;
+                        gatheredWood = treeBehav.resourceAmount;
                         break;
                     }
 
                 case ResourceType.pineTree:
                     {
-                        gatheredWood = tree.resourceAmount;
+                        gatheredWood = treeBehav.resourceAmount;
                         break;
                     }
                 /*case ResourceType.newTree:
@@ -91,38 +91,38 @@ public class Inventory : MonoBehaviour
                     }*/
             }
         }
-        else if (food != null)
+        else if (foodBehav != null)
         {
-            /*switch (food.type)
+            switch (foodBehav.type)
             {
                 case ResourceType.blueberry:
                     {
-                        gatheredBlueberry += food.resourceAmount;
+                        gatheredBlueberry += foodBehav.resourceAmount;
                         break;
                     }
 
                 case ResourceType.lingonberry:
                     {
-                        gatheredLingonberry += food.resourceAmount;
+                        gatheredLingonberry += foodBehav.resourceAmount;
                         break;
                     }
 
                 case ResourceType.apple:
                     {
-                        gatheredApple += food.resourceAmount;
+                        gatheredApple += foodBehav.resourceAmount;
                         break;
                     }
                 case ResourceType.mushroom:
                     {
-                        gatheredMushroom += food.resourceAmount;
+                        gatheredMushroom += foodBehav.resourceAmount;
                         break;
                     }
-                case ResourceType.venison:
+                /*case ResourceType.venison:
                     {
-                        gatheredVenison += food.resourceAmount;
+                        gatheredVenison += foodBehav.resourceAmount;
                         break;
-                    }
-            }*/
+                    }*/
+            }
         }
 
         wood += gatheredWood;

@@ -16,7 +16,6 @@ public class PlayerController : MonoBehaviour
 	private Animator _animator;
 	//private SpriteRenderer _spriteRenderer;
 	private Rigidbody _rb;
-	private SphereCollider interactTriggerCollider;
 	private Vector2 movement;
 	private float horizontal, vertical;
 	private bool doSprint;
@@ -70,8 +69,20 @@ public class PlayerController : MonoBehaviour
 		interactablesInRange.Add(other.gameObject);
 
 		var tree = other.transform.GetComponent<TreeBehaviour>();
-		if (tree == null) return;
-		tree.OnDestroy += OnTreeDestroy;
+		
+		if (tree != null)
+        {
+			tree.OnDestroy += OnResourceDestroy;
+			return;
+        }
+
+		var food = other.transform.GetComponent<FoodBehaviour>();
+
+        if (food != null)
+        {
+			food.OnDestroy += OnResourceDestroy;
+			return;
+        }		
 	}
 
 	private void OnTriggerExit(Collider other)
@@ -82,8 +93,20 @@ public class PlayerController : MonoBehaviour
 		interactablesInRange.Remove(other.gameObject);
 
 		var tree = other.transform.GetComponent<TreeBehaviour>();
-		if (tree == null) return;
-		tree.OnDestroy -= OnTreeDestroy;
+
+		if (tree != null)
+		{
+			tree.OnDestroy -= OnResourceDestroy;
+			return;
+		}
+
+		var food = other.transform.GetComponent<FoodBehaviour>();
+
+		if (food != null)
+		{
+			food.OnDestroy -= OnResourceDestroy;
+			return;
+		}
 	}
 
 	private void GetPlayerInput()
@@ -134,13 +157,7 @@ public class PlayerController : MonoBehaviour
 		_animator.SetFloat("SpeedY", vertical);
 	}
 
-	public void ResetTrigger()
-	{
-		interactTriggerCollider.enabled = false;
-		interactTriggerCollider.enabled = true;
-	}
-
-	private void OnTreeDestroy(GameObject obj)
+	private void OnResourceDestroy(GameObject obj)
 	{
 		if (!interactablesInRange.Contains(obj)) return;
 
@@ -148,9 +165,20 @@ public class PlayerController : MonoBehaviour
 		interactablesInRange.RemoveAt(index);
 
 		var tree = obj.transform.GetComponent<TreeBehaviour>();
-		if (tree == null) return;
-		tree.OnDestroy -= OnTreeDestroy;
-		ResourceGathered?.Invoke(obj);
+		if (tree != null)
+        {
+			tree.OnDestroy -= OnResourceDestroy;
+			ResourceGathered?.Invoke(obj);
+			return;
+        }
+
+		var food = obj.transform.GetComponent<FoodBehaviour>();
+
+		if (food != null)
+		{
+			food.OnDestroy -= OnResourceDestroy;
+			ResourceGathered?.Invoke(obj);
+		}
 	}
 
 	private void ClearInteractablesInRangeList()
