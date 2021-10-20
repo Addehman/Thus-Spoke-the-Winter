@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41f6a218ea9b2c54dbf3e5cbfab7c625, type: 3}
-  m_Name: Lingonberry
+  m_Name: EmptyLowBush
   m_EditorClassIdentifier: 
-  name: Lingonberry
-  resourceSprite: {fileID: 5485401785531719403, guid: f6dd51c41ac45ed4d9f30a20953fb7d9, type: 3}
-  type: 5
+  name: Empty Low Bush
+  resourceSprite: {fileID: 1204151520117669104, guid: 68162a64a8c5ad148a6f7b5175b77a94, type: 3}
+  type: 6
   health: 1
   damage: 1
-  resourceAmount: 1
+  resourceAmount: 0

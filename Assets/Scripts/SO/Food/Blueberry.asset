@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Blueberry
   m_EditorClassIdentifier: 
   name: Blueberry
-  resourceSprite: {fileID: 0}
+  resourceSprite: {fileID: 3934925829066726863, guid: fc421f446e7ea904db31a58cca9c38ba, type: 3}
   type: 4
   health: 1
   damage: 1

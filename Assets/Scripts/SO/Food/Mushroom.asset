@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Mushroom
   resourceSprite: {fileID: 4315506946141470425, guid: ba226cac692245b47b4769639f385fe5, type: 3}
-  type: 6
+  type: 7
   health: 1
   damage: 1
   resourceAmount: 2

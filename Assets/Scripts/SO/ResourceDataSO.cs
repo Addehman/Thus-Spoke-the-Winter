@@ -15,5 +15,5 @@ public class ResourceDataSO : ScriptableObject
 }
 
 public enum ResourceType {
-	leafTree, fruitTree, pineTree, bush, blueberry, lingonberry, mushroom, apple,
+	leafTree, fruitTree, pineTree, bush, blueberry, lingonberry, emptyLowBush, mushroom, apple, venison,
 }

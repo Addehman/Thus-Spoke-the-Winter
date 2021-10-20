@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: e8c593c09a19c0d4ca79ce400eeffbac, type: 2}
-  type: 7
+  type: 8
   resourceAmount: 0
 --- !u!135 &2708624473221389932
 SphereCollider:
