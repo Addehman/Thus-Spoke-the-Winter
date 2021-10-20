@@ -29,13 +29,15 @@ public class ForestController : MonoBehaviour
 
 	private void Start()
 	{
+		//Change so that SeedGenerator listens to screenWrap and ForestController listens to SeedGenerator.
+		//We need to send a seed from SeedGenerator to ForestController and the SpawnNewForest function.
 		screenWrap.SpawnNewForest += SpawnNewForest;
 
 		if (forestParent.gameObject.activeSelf)
 			SpawnNewForest();
 	}
 
-	public void SpawnNewForest()
+	public void SpawnNewForest(/*int seed*/)
 	{
 		ClearForest();
 
