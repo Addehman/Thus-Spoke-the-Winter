@@ -22,7 +22,7 @@ public class SeedGenerator : MonoBehaviour
 
     void Update()
     {
-        if (playerWentEast)
+        /*if (playerWentEast)
         {
             position.x++;
         }
@@ -48,7 +48,7 @@ public class SeedGenerator : MonoBehaviour
         else if (grid[position.x, position.y] != 0)
         {
             SpawnNewForest(grid[position.x, position.y]);
-        }
+        }*/
     }
 
     public int NewSeed()
