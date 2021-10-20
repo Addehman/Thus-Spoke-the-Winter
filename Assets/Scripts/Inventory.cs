@@ -29,9 +29,6 @@ public class Inventory : MonoBehaviour
     private void OnEnable()
     {
         player.ResourceGathered += GatherResource;
-        /*Subscribe to an event in classes that inherit from IInteractable.
-        The event should send a string and an int to the inventory.
-        The inventory then sees if it's something that should be added to the inventory, what that is, and how much that should be added.*/
     }
 
     void Start()

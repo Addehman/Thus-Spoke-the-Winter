@@ -8,7 +8,7 @@ public class ForestController : MonoBehaviour
 
 
 	[SerializeField] private ScreenWrap screenWrap = null;
-	[SerializeField] private Transform environmentParent = null;
+	[SerializeField] private Transform forestParent = null;
 	[SerializeField] private LayerMask ground;
 
 	public GameObject[] forestObjects = new GameObject[6];
@@ -31,7 +31,7 @@ public class ForestController : MonoBehaviour
 	{
 		screenWrap.SpawnNewForest += SpawnNewForest;
 
-		if (environmentParent.gameObject.activeSelf)
+		if (forestParent.gameObject.activeSelf)
 			SpawnNewForest();
 	}
 
@@ -64,13 +64,13 @@ public class ForestController : MonoBehaviour
 			randomWorldPos.z += randomOffset;
 
 			GameObject newTree = forestObjects[randomTree];
-			Instantiate(newTree, randomWorldPos, newTree.transform.rotation, environmentParent);
+			Instantiate(newTree, randomWorldPos, newTree.transform.rotation, forestParent);
 		}
 	}
 
 	private void ClearForest()
 	{
-		foreach (Transform tree in environmentParent) {
+		foreach (Transform tree in forestParent) {
 			OnClearForest?.Invoke();
 			Destroy(tree.gameObject);
 		}
