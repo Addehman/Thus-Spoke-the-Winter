@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Tree
   - WorldGroup
+  - DontDestroy
   layers:
   - Default
   - TransparentFX

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1003278497046935819}
   - component: {fileID: 1003278497046935818}
   - component: {fileID: 5648477622683835973}
+  - component: {fileID: 1686277668661848730}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -45,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   screenWrap: {fileID: 0}
-  environmentParent: {fileID: 0}
+  forestParent: {fileID: 0}
   ground:
     serializedVersion: 2
     m_Bits: 64
@@ -78,3 +79,15 @@ MonoBehaviour:
   apple: 0
   mushroom: 0
   venison: 0
+--- !u!114 &1686277668661848730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1003278497046935821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8813bdb9707f6804c903af3c843c66ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
