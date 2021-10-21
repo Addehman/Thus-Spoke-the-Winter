@@ -24,9 +24,9 @@ public class SeedGenerator : MonoBehaviour
 
     private void Start()
     {
+        //Temporary fix because Forest Controller doesn't spawn a forest in the beginning.
+        //99% chance this is because of execution order, might not have to fix this because we should spawn with the cabin in the beginning.
         Invoke(nameof(Init), 0.01f);
-        /*Init();*/
-
     }
 
     void Init()
