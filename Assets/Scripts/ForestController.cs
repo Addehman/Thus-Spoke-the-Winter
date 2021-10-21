@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class ForestController : MonoBehaviour
 {
@@ -10,16 +11,19 @@ public class ForestController : MonoBehaviour
 	[SerializeField] private ScreenWrap screenWrap = null;
 	[SerializeField] private Transform forestParent = null;
 	[SerializeField] private LayerMask ground;
+	[SerializeField] private PlayerController _player;
 
 	public GameObject[] forestObjects = new GameObject[6];
 	public event Action OnClearForest;
 
 	private Camera _camera;
+	private List<string> blacklist;
 
 
 	private void Awake()
 	{
 		_camera = Camera.main;
+		_player = FindObjectOfType<PlayerController>();
 
 		if (_instance != null && _instance != this)
 			Destroy(this);
@@ -32,6 +36,7 @@ public class ForestController : MonoBehaviour
 		//Change so that SeedGenerator listens to screenWrap and ForestController listens to SeedGenerator.
 		//We need to send a seed from SeedGenerator to ForestController and the SpawnNewForest function.
 		screenWrap.SpawnNewForest += SpawnNewForest;
+		/*_player.ResourceGathered += SaveIDToBlacklist;*/
 
 		if (forestParent.gameObject.activeSelf)
 			SpawnNewForest();
@@ -41,7 +46,7 @@ public class ForestController : MonoBehaviour
 	{
 		ClearForest();
 
-		//UnityEngine.Random.InitState(seed); // To be used to control the seed of the random forest, whether it should be random or not.
+		//UnityEngine.Random.InitState(1); // To be used to control the seed of the random forest, whether it should be random or not.
 
 		int spawnCount = (int)UnityEngine.Random.Range(5, 50);
 		print("Amount of new Trees: " + spawnCount);
@@ -69,7 +74,15 @@ public class ForestController : MonoBehaviour
 
 			GameObject newTree = forestObjects[randomTree];
 			GameObject spawn = Instantiate(newTree, randomWorldPos, newTree.transform.rotation, forestParent);
-			//spawn.name = UnityEngine.Random.Range(0, 100000).ToString(); // This is one possible way to create an ID for the spawned objects
+
+			//A way to make the seed control what the random name is going to be.
+			int randomID1 = UnityEngine.Random.Range(0, 1000000);
+			int randomID2 = UnityEngine.Random.Range(0, 1000000);
+
+			spawn.name += $" - ID: {randomID1}{randomID2}"; // This is one possible way to create an ID for the spawned objects
+
+			//Another way to give the spawned object a unique ID as name.
+			//spawn.name = Guid.NewGuid().ToString();
 
 			// Here we make sure that the spawned object is not in the air.
 			Vector3 positionCorrection = spawn.transform.position;
@@ -77,6 +90,11 @@ public class ForestController : MonoBehaviour
 			spawn.transform.position = positionCorrection;
 		}
 	}
+
+	/*private void SaveIDToBlacklist(GameObject obj)
+    {
+		blacklist.Add(obj.name);
+    }*/
 
 	private void ClearForest()
 	{
