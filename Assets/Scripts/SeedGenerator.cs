@@ -1,40 +1,64 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SeedGenerator : MonoBehaviour
 {
-    int[,] grid = new int[100, 100];
-    int seed;
+    public event Action<int> SendSeed;
+    ScreenWrap screenWrap;
+
+    [SerializeField]Vector2Int position;
+    [SerializeField]int seed;
     int seedOffset;
 
-    Vector2Int position;
+    int[,] grid = new int[100, 100];
 
-    void Start()
+    private void Awake()
+    {
+        screenWrap = FindObjectOfType<ScreenWrap>();
+        screenWrap.PlayerTraveling += GenerateSeed;
+
+        
+    }
+
+    private void Start()
+    {
+        Invoke(nameof(Init), 0.01f);
+        /*Init();*/
+
+    }
+
+    void Init()
     {
         position = new Vector2Int(50, 50);
 
-        seedOffset = Random.Range(0, 10000);
+        seedOffset = UnityEngine.Random.Range(0, 10000);
         seed = seedOffset;
         
         grid[position.x, position.y] = seed;
+
+/*        print($"Seed: {seed}");
+        print($"Seed in grid: {grid[position.x, position.y]}. This is the seed we send in Start()");*/
+
+        SendSeed?.Invoke(grid[position.x, position.y]);
     }
 
-    void Update()
+    void GenerateSeed(string latitude)
     {
-        /*if (playerWentEast)
+        if (latitude == "east")
         {
             position.x++;
         }
-        else if (playerWentWest)
+        else if (latitude == "west")
         {
             position.x--;
         }
-        else if (playerWentNorth)
+        else if (latitude == "north")
         {
             position.y++;
         }
-        else if (playerWentSouth)
+        else if (latitude == "south")
         {
             position.y--;
         }
@@ -43,12 +67,12 @@ public class SeedGenerator : MonoBehaviour
         {
             grid[position.x, position.y] = NewSeed();
 
-            SpawnNewForest(grid[position.x, position.y]);
+            SendSeed?.Invoke(grid[position.x, position.y]);
         }
         else if (grid[position.x, position.y] != 0)
         {
-            SpawnNewForest(grid[position.x, position.y]);
-        }*/
+            SendSeed?.Invoke(grid[position.x, position.y]);
+        }
     }
 
     public int NewSeed()

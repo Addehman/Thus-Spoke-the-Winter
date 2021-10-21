@@ -36,8 +36,8 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 
 	public void OnDestruction()
 	{
-		print($"{gameObject} is falling!");
-		OnDestroy?.Invoke(gameObject);
-		Destroy(gameObject);
+		print($"{_gameObject} is falling!");
+		OnDestroy?.Invoke(_gameObject);
+		_gameObject.SetActive(false);
 	}
 }

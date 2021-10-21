@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ScreenWrap : MonoBehaviour
 {
-	public event Action SpawnNewForest;
+	public event Action<string> PlayerTraveling;
 
 	private Transform _transform;
 	private Camera _cam;
@@ -35,7 +35,7 @@ public class ScreenWrap : MonoBehaviour
 			newPos.y = _transform.position.y;
 			_transform.position = newPos;
 
-			SpawnNewForest?.Invoke();
+			PlayerTraveling?.Invoke("east");
 		}
 		else if (playerViewPortPos.x < 0f) {
 			playerViewPortPos.x = 1f;
@@ -44,7 +44,7 @@ public class ScreenWrap : MonoBehaviour
 			newPos.y = _transform.position.y;
 			_transform.position = newPos;
 
-			SpawnNewForest?.Invoke();
+			PlayerTraveling?.Invoke("west");
 		}
 		else if (playerViewPortPos.y > 1f) {
 			playerViewPortPos.y = -1f;
@@ -53,7 +53,7 @@ public class ScreenWrap : MonoBehaviour
 			newPos.y = _transform.position.y;
 			_transform.position = newPos;
 
-			SpawnNewForest?.Invoke();
+			PlayerTraveling?.Invoke("north");
 		}
 		else if (playerViewPortPos.y < 0f) {
 			playerViewPortPos.y = 2f;
@@ -62,7 +62,7 @@ public class ScreenWrap : MonoBehaviour
 			newPos.y = _transform.position.y;
 			_transform.position = newPos;
 
-			SpawnNewForest?.Invoke();
+			PlayerTraveling?.Invoke("south");
 		}
 	}
 }

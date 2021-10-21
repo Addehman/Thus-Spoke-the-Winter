@@ -37,6 +37,6 @@ public class FoodBehaviour : MonoBehaviour, IInteractable
 	{
 		print($"Gathered {_gameObject}");
 		OnDestroy?.Invoke(_gameObject);
-		Destroy(_gameObject);
+		_gameObject.SetActive(false);
 	}
 }
