@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 
 	public event Action SpawnNewForest;
 	public event Action<GameObject> ResourceGathered;
+	public event Action<ResourceSize> EnergyDrain;
 
 	private InputMaster controls;
 	private Transform _transform;
@@ -43,15 +44,6 @@ public class PlayerController : MonoBehaviour
 		ForestController.Instance.OnClearForest += ClearInteractablesInRangeList;
 	}
 
-	private void OnDisable()
-	{
-		controls.Disable();
-		controls.Player.Sprint.started -= ctx => doSprint = true;
-		controls.Player.Sprint.canceled -= ctx => doSprint = false;
-		controls.Player.Interact.started -= ctx => Interact();
-
-		ForestController.Instance.OnClearForest -= ClearInteractablesInRangeList;
-	}
 
 	private void Update()
 	{
@@ -249,6 +241,7 @@ public class PlayerController : MonoBehaviour
 		if (tree != null) {
 			tree.OnDestroy -= OnResourceDestroy;
 			ResourceGathered?.Invoke(obj);
+			EnergyDrain?.Invoke(tree.size);
 			return;
 		}
 
@@ -257,6 +250,7 @@ public class PlayerController : MonoBehaviour
 		if (food != null) {
 			food.OnDestroy -= OnResourceDestroy;
 			ResourceGathered?.Invoke(obj);
+			EnergyDrain?.Invoke(food.size);
 		}
 	}
 
@@ -297,5 +291,15 @@ public class PlayerController : MonoBehaviour
 				index = i;
 		}
 		return index;
+	}
+	
+	private void OnDisable()
+	{
+		controls.Disable();
+		controls.Player.Sprint.started -= ctx => doSprint = true;
+		controls.Player.Sprint.canceled -= ctx => doSprint = false;
+		controls.Player.Interact.started -= ctx => Interact();
+
+		ForestController.Instance.OnClearForest -= ClearInteractablesInRangeList;
 	}
 }

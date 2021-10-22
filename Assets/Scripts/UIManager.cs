@@ -4,18 +4,38 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-	public TextMeshProUGUI inventoryText;
+	[SerializeField] private TextMeshProUGUI inventoryText;
+	[SerializeField] private Image energyBar;
 
 	private PlayerController _player;
+	private Inventory _inventory;
+
+
+	private void Awake() 
+	{
+		_player = FindObjectOfType<PlayerController>();
+		_inventory = FindObjectOfType<Inventory>();
+	}
 
 	private void Start() 
 	{
-		_player = FindObjectOfType<PlayerController>();
-		_player.ResourceGathered += UpdateUI;	//			<-----// Optimal?
+		_inventory.UpdateUI += UpdateInventoryUI;
+		EnergyController.Instance.UpdateEnergyUI += UpdateEnergyUI;
 	}
 
-	private void UpdateUI(GameObject obj)
+	private void UpdateInventoryUI()
 	{
-		inventoryText.text = $"{Inventory.Instance.currentInventory} / {Inventory.Instance.inventoryMaxCapacity}";
+		inventoryText.text = $"{_inventory.currentInventory} / {_inventory.inventoryMaxCapacity}";
+	}
+
+	private void UpdateEnergyUI()
+	{
+		energyBar.fillAmount = EnergyController.Instance.totalEnergy;
+	}
+
+	private void OnDestroy() 
+	{
+		_inventory.UpdateUI -= UpdateInventoryUI;
+		EnergyController.Instance.UpdateEnergyUI -= UpdateEnergyUI;
 	}
 }

@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
@@ -7,13 +6,15 @@ public class Inventory : MonoBehaviour
 	private static Inventory _instance;
 	public static Inventory Instance { get { return _instance; } }
 
-	private PlayerController player;
-	
 	[SerializeField]
 	public int currentInventory, inventoryMaxCapacity = 100;
-
 	[SerializeField]
 	private int wood, food, blueberry, lingonberry, apple, mushroom, venison;
+
+	public event Action UpdateUI;
+	
+
+	private PlayerController player;
 
 
 	private void Awake()
@@ -139,6 +140,8 @@ public class Inventory : MonoBehaviour
 		currentInventory = (wood + food);
 
 		print($"Food: {food}. Wood: {wood}");
+
+		UpdateUI?.Invoke();
 	}
 
 	/*void WhatResourceToAdd(GameObject obj)

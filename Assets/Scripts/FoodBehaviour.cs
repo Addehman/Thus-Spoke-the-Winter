@@ -7,6 +7,7 @@ public class FoodBehaviour : MonoBehaviour, IInteractable
 
 	public event Action<GameObject> OnDestroy;
 	public ResourceType type;
+	public ResourceSize size;
 	public int resourceAmount;
 
 	private GameObject _gameObject;
@@ -20,6 +21,7 @@ public class FoodBehaviour : MonoBehaviour, IInteractable
 		_sr = GetComponent<SpriteRenderer>();
 
 		type = _data.type;
+		size = _data.size;
 		resourceAmount = _data.resourceAmount;
 		_health = _data.health;
 		_damage = _data.damage;
