@@ -49,6 +49,8 @@ public class PlayerController : MonoBehaviour
 		controls.Player.Sprint.started -= ctx => doSprint = true;
 		controls.Player.Sprint.canceled -= ctx => doSprint = false;
 		controls.Player.Interact.started -= ctx => Interact();
+
+		ForestController.Instance.OnClearForest -= ClearInteractablesInRangeList;
 	}
 
 	private void Update()

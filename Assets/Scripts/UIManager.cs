@@ -4,10 +4,18 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    public TextMeshProUGUI inventoryText;
+	public TextMeshProUGUI inventoryText;
 
-    void Update()
-    {
-        inventoryText.text = $"{Inventory.Instance.currentInventory} / {Inventory.Instance.inventoryMaxCapacity}";
-    }
+	private PlayerController _player;
+
+	private void Start() 
+	{
+		_player = FindObjectOfType<PlayerController>();
+		_player.ResourceGathered += UpdateUI;	//			<-----// Optimal?
+	}
+
+	private void UpdateUI(GameObject obj)
+	{
+		inventoryText.text = $"{Inventory.Instance.currentInventory} / {Inventory.Instance.inventoryMaxCapacity}";
+	}
 }
