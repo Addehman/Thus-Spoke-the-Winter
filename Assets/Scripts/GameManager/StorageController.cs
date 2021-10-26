@@ -49,14 +49,14 @@ public class StorageController : MonoBehaviour
 	private void StoreWoodResource()
 	{
 		woodStorage += _inventory.wood;
-		_inventory.wood = 0;
+		_inventory.ClearWood();
 		UpdateUI?.Invoke();
 	}
 	
 	private void StoreFoodResource()
 	{
 		foodStorage += _inventory.food;
-		_inventory.food = 0;
+		_inventory.ClearFood();
 		UpdateUI?.Invoke();
 	}
 }

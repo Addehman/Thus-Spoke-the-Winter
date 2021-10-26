@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
 		_inventory.UpdateUI += UpdateInventoryUI;
 		EnergyController.Instance.UpdateEnergyUI += UpdateEnergyUI;
 		_storageController.UpdateUI += UpdateInventoryUI;
+		UpdateInventoryUI();
 	}
 
 	private void UpdateInventoryUI()

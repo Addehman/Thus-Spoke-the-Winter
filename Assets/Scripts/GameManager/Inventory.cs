@@ -11,6 +11,7 @@ public class Inventory : MonoBehaviour
 	public int currentInventory, inventoryMaxCapacity = 100;
 	public int wood, food, blueberry, lingonberry, apple, mushroom, venison;
 
+	[SerializeField] int[] intArray;
 	[SerializeField] private PlayerController _player;
 	[SerializeField] private StorageController _storageController;
 
@@ -32,6 +33,7 @@ public class Inventory : MonoBehaviour
 	void Start()
 	{
 		currentInventory = 0;
+		intArray = new int[] { blueberry, lingonberry, apple, mushroom, venison };
 	}
 
 	void GatherResource(GameObject obj)
@@ -145,6 +147,16 @@ public class Inventory : MonoBehaviour
 	{
 		currentInventory = (wood + food);
 	}
+
+	public void ClearFood()
+    {
+		food = blueberry = lingonberry = apple = mushroom = venison = 0;
+	}
+
+	public void ClearWood()
+    {
+		wood = 0;
+    }
 
 	/*void WhatResourceToAdd(GameObject obj)
 	{
