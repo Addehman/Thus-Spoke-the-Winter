@@ -11,7 +11,7 @@ public class ResourceDataSO : ScriptableObject
 	public int health;
 	public int damage;
 	public int resourceAmount;
-	public ResourceSize size;
+	public ResourceSize energyCostSize;
 }
 
 public enum ResourceType {

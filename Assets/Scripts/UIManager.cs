@@ -7,20 +7,15 @@ public class UIManager : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI inventoryText;
 	[SerializeField] private Image energyBar;
 
-	private PlayerController _player;
-	private Inventory _inventory;
+	[SerializeField] private Inventory _inventory;
+	[SerializeField] private StorageController _storageController;
 
-
-	private void Awake() 
-	{
-		_player = FindObjectOfType<PlayerController>();
-		_inventory = FindObjectOfType<Inventory>();
-	}
 
 	private void Start() 
 	{
 		_inventory.UpdateUI += UpdateInventoryUI;
 		EnergyController.Instance.UpdateEnergyUI += UpdateEnergyUI;
+		_storageController.UpdateUI += UpdateInventoryUI;
 	}
 
 	private void UpdateInventoryUI()
@@ -30,7 +25,10 @@ public class UIManager : MonoBehaviour
 
 	private void UpdateEnergyUI()
 	{
-		energyBar.fillAmount = EnergyController.Instance.totalEnergy;
+		float currentEnergy = EnergyController.Instance.currentEnergy / (float)EnergyController.Instance.startEnergy; 
+		energyBar.fillAmount = currentEnergy;
+		print($"Current Energy UI: {currentEnergy}");
+		print($"Current Energy: {EnergyController.Instance.currentEnergy}");
 	}
 
 	private void OnDestroy() 

@@ -18,3 +18,4 @@ MonoBehaviour:
   health: 50
   damage: 10
   resourceAmount: 5
+  energyCostSize: 1

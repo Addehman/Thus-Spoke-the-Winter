@@ -21,7 +21,7 @@ public class FoodBehaviour : MonoBehaviour, IInteractable
 		_sr = GetComponent<SpriteRenderer>();
 
 		type = _data.type;
-		size = _data.size;
+		size = _data.energyCostSize;
 		resourceAmount = _data.resourceAmount;
 		_health = _data.health;
 		_damage = _data.damage;

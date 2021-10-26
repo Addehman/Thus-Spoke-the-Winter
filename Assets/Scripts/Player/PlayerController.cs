@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float walkSpeed = 20f, sprintSpeed = 40f;
 	[SerializeField] private List<GameObject> interactablesInRange;
 
-	public event Action SpawnNewForest;
 	public event Action<GameObject> ResourceGathered;
 	public event Action<ResourceSize> EnergyDrain;
 
@@ -157,7 +156,7 @@ public class PlayerController : MonoBehaviour
 		Vector3 direction = FindDirectionFromTwoPoints(_transform.position, faceThisObject.transform.position);
 		Vector2 direction2D = new Vector2(direction.x, direction.z) * -1; // it's reversed to be more be more like a conventional grid ( Up / Right = positive )
 		
-		print($"direction2D before: {direction2D}");
+		//print($"direction2D before: {direction2D}");
 
 		// Round the Vector2 values to be comparable to Vector2.left/right/up/down/zero
 		// Middle X
@@ -214,7 +213,7 @@ public class PlayerController : MonoBehaviour
 			_animator.SetTrigger("IdleUp");
 		}
 
-		print($"direction2D after: {direction2D}");
+		//print($"direction2D after: {direction2D}");
 	}
 
 	/// <summary>

@@ -12,9 +12,9 @@ public class ForestController : MonoBehaviour
 	[SerializeField] private Transform forestParent;
 	[SerializeField] private LayerMask ground;
 	[SerializeField] private PlayerController _player;
+	[SerializeField] private SeedGenerator _seedGenerator;
 
 	/*public GameObject[] forestObjects = new GameObject[6];*/
-	private SeedGenerator _seedGenerator;
 	private Camera _camera;
 	private List<string> blacklist = new List<string>();
 
@@ -27,36 +27,37 @@ public class ForestController : MonoBehaviour
 
 
 		_camera = Camera.main;
-		_player = FindObjectOfType<PlayerController>();
-		_seedGenerator = FindObjectOfType<SeedGenerator>();
-	}
-
-	private void Start()
-	{
 		_seedGenerator.SendSeed += SpawnForest;
 		_player.ResourceGathered += SaveIDToBlacklist;
 	}
 
 	public void SpawnForest(int seed)
 	{
+		print($"Seed: {seed}");
+		ClearForest();
+		// Check if the incoming seed number here is "-1", this means it's the Home block and no forest should spawn.
+		if (seed == -1) {
+			print("Spawning Cabin");
+			SceneController.Instance.LoadScene("CabinScene");
+			return;
+		}
+		else if (SceneController.Instance.IsCurrentSceneName("CabinScene")) {
+			SceneController.Instance.LoadScene("ForestScene");
+		}
+
 		List<int> randomNumbers = new List<int>();
 
-		print($"Seed: {seed}");
-
-		ClearForest();
 
 		UnityEngine.Random.InitState(seed); // To be used to control the seed of the random forest, whether it should be random or not.
 
 		int spawnCount = (int)UnityEngine.Random.Range(5, 50);
 		print("Amount of new Objects: " + spawnCount);
 
-		for (int i = 0; i < spawnCount; i++)
-		{
+		for (int i = 0; i < spawnCount; i++) {
 			//This needs to check so that we don't random the same number twice in a row or something like that.
 			int randomObject = (int)UnityEngine.Random.Range(0, ForestObjectPool.Instance.forestObjectPool.Length);
 
-			while (randomNumbers.Contains(randomObject))
-			{
+			while (randomNumbers.Contains(randomObject)) {
 				randomObject = (randomObject + 1) % ForestObjectPool.Instance.forestObjectPool.Length;
 			}
 
@@ -74,8 +75,7 @@ public class ForestController : MonoBehaviour
 			int randomID2 = UnityEngine.Random.Range(0, 1000000);
 
 
-			if (blacklist.Count > 0 && blacklist.Contains(newObject.name))
-			{
+			if (blacklist.Count > 0 && blacklist.Contains(newObject.name)) {
 				print($"{newObject.name} is blacklisted!");
 				continue;
 			}
@@ -84,13 +84,11 @@ public class ForestController : MonoBehaviour
 			Ray ray = _camera.ScreenPointToRay(new Vector3(Screen.width * randomViewPortPosX, Screen.height * randomViewPortPosY));
 			RaycastHit hit;
 
-			if (Physics.Raycast(ray, out hit, ground))
-			{
+			if (Physics.Raycast(ray, out hit, ground)) {
 				randomWorldPos = hit.point;
 			}
 
-			if (hit.collider is null)
-			{
+			if (hit.collider is null) {
 				throw new System.Exception($"{ray} did not hit");
 			}
 
@@ -120,16 +118,15 @@ public class ForestController : MonoBehaviour
 
 	private void ClearForest()
 	{
-		foreach (Transform forestObject in forestParent)
-		{
+		foreach (Transform forestObject in forestParent) {
 			OnClearForest?.Invoke();
 			forestObject.gameObject.SetActive(false);
 		}
 	}
 
-	private void OnDestroy() 
+	private void OnDestroy()
 	{
 		_seedGenerator.SendSeed -= SpawnForest;
-        _player.ResourceGathered -= SaveIDToBlacklist;
+		_player.ResourceGathered -= SaveIDToBlacklist;
 	}
 }

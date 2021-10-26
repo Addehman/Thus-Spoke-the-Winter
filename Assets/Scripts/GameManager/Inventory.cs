@@ -6,15 +6,13 @@ public class Inventory : MonoBehaviour
 	private static Inventory _instance;
 	public static Inventory Instance { get { return _instance; } }
 
-	[SerializeField]
-	public int currentInventory, inventoryMaxCapacity = 100;
-	[SerializeField]
-	private int wood, food, blueberry, lingonberry, apple, mushroom, venison;
-
 	public event Action UpdateUI;
-	
 
-	private PlayerController player;
+	public int currentInventory, inventoryMaxCapacity = 100;
+	public int wood, food, blueberry, lingonberry, apple, mushroom, venison;
+
+	[SerializeField] private PlayerController _player;
+	[SerializeField] private StorageController _storageController;
 
 
 	private void Awake()
@@ -23,13 +21,12 @@ public class Inventory : MonoBehaviour
 			Destroy(this);
 		else
 			_instance = this;
-
-		player = FindObjectOfType<PlayerController>();
 	}
 
 	private void OnEnable()
 	{
-		player.ResourceGathered += GatherResource;
+		_player.ResourceGathered += GatherResource;
+		_storageController.UpdateUI += UpdateCurrentInventory;
 	}
 
 	void Start()
@@ -137,11 +134,16 @@ public class Inventory : MonoBehaviour
 			gatheredApple, gatheredMushroom, gatheredVenison);
 
 
-		currentInventory = (wood + food);
+		UpdateCurrentInventory();
 
 		print($"Food: {food}. Wood: {wood}");
 
 		UpdateUI?.Invoke();
+	}
+
+	private void UpdateCurrentInventory()
+	{
+		currentInventory = (wood + food);
 	}
 
 	/*void WhatResourceToAdd(GameObject obj)
@@ -189,6 +191,6 @@ public class Inventory : MonoBehaviour
 
 	private void OnDestroy() 
 	{
-		player.ResourceGathered -= GatherResource;
+		_player.ResourceGathered -= GatherResource;
 	}
 }
