@@ -6,12 +6,12 @@ public class EnergyController : MonoBehaviour
 	private static EnergyController _instance;
 	public static EnergyController Instance {get{ return _instance;}}
 
+	[SerializeField] private PlayerController _player;
+	[SerializeField] private SeedGenerator _seedGenerator;
 	[SerializeField] private int smallEnergyCost = 1, mediumEnergyCost = 5, largeEnergyCost = 10;
 	public int currentEnergy = 0, startEnergy = 1000;
 
 	public event Action UpdateEnergyUI;
-
-	private PlayerController _player;
 
 
 	private void Awake() 
@@ -20,33 +20,32 @@ public class EnergyController : MonoBehaviour
 			Destroy(this);
 		else
 			_instance = this;
-		
-		_player = FindObjectOfType<PlayerController>();
 	}
 
 	private void Start() 
 	{
 		// Subscribe to events here
 		_player.EnergyDrain += LoseEnergy;
+		_seedGenerator.DrainEnergy += LoseEnergy;
 	}
 
 	private void OnEnable() 
 	{
-		currentEnergy = startEnergy;	
+		currentEnergy = startEnergy;
 	}
 
-	public void LoseEnergy(ResourceSize size)
+	public void LoseEnergy(EnergyCost size)
 	{
 		int cost = 0;
 		switch (size) {
 		// here we should drain a certain amount of energy according to the size of the object/task
-			case ResourceSize.Small:
+			case EnergyCost.Small:
 				cost = smallEnergyCost;
 				break;
-			case ResourceSize.Medium:
+			case EnergyCost.Medium:
 				cost = mediumEnergyCost;
 				break;
-			case ResourceSize.Large:
+			case EnergyCost.Large:
 				cost = largeEnergyCost;
 				break;
 		}

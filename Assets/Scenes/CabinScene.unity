@@ -10087,6 +10087,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
+--- !u!114 &332712203595213403 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1858088665, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
+  m_PrefabInstance: {fileID: 332712203595213402}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb99d2b47c30ca84faf8736c20c06e95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1003278497028924638
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10094,6 +10105,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1486582151}
     m_Modifications:
+    - target: {fileID: 1934947906, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: screenWrap
+      value: 
+      objectReference: {fileID: 332712203595213403}
     - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
       propertyPath: _player
       value: 
@@ -10151,6 +10166,10 @@ PrefabInstance:
       value: GameManager
       objectReference: {fileID: 0}
     - target: {fileID: 5648477622683835973, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: _player
+      value: 
+      objectReference: {fileID: 1581711721}
+    - target: {fileID: 7794504142698881068, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
       propertyPath: _player
       value: 
       objectReference: {fileID: 1581711721}

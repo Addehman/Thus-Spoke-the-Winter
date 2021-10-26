@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private List<GameObject> interactablesInRange;
 
 	public event Action<GameObject> ResourceGathered;
-	public event Action<ResourceSize> EnergyDrain;
+	public event Action<EnergyCost> EnergyDrain;
 
 	private InputMaster controls;
 	private Transform _transform;

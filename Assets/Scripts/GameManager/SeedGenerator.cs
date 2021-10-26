@@ -6,8 +6,9 @@ using UnityEngine;
 public class SeedGenerator : MonoBehaviour
 {
 	public event Action<int> SendSeed;
-	ScreenWrap screenWrap;
+	public event Action<EnergyCost> DrainEnergy;
 
+	[SerializeField] private ScreenWrap screenWrap;
 	[SerializeField] Vector2Int position;
 	[SerializeField] int seed = 0, worldGridSize = 100;
 	int seedOffset;
@@ -65,7 +66,7 @@ public class SeedGenerator : MonoBehaviour
 	{ 
 		if (worldGrid[x, y] == 0) {
 			worldGrid[x, y] = NewSeed();
-
+			DrainEnergy?.Invoke(EnergyCost.Small);
 			SendSeed?.Invoke(worldGrid[x, y]);
 		}
 		else if (worldGrid[x, y] != 0) {

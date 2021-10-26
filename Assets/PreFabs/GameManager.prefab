@@ -101,6 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2be0a2054ce455c458282f2b3101e32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  screenWrap: {fileID: 0}
   position: {x: 0, y: 0}
   seed: 0
   worldGridSize: 100
@@ -116,6 +117,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e43561153f13435489f6aa96dd760f98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 0}
+  _seedGenerator: {fileID: 1934947906}
   smallEnergyCost: 1
   mediumEnergyCost: 5
   largeEnergyCost: 10

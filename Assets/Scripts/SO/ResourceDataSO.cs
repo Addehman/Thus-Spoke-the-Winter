@@ -11,13 +11,13 @@ public class ResourceDataSO : ScriptableObject
 	public int health;
 	public int damage;
 	public int resourceAmount;
-	public ResourceSize energyCostSize;
+	public EnergyCost energyCostSize;
 }
 
 public enum ResourceType {
 	leafTree, fruitTree, pineTree, bush, blueberry, lingonberry, emptyLowBush, mushroom, apple, venison, 
 }
 
-public enum ResourceSize {
+public enum EnergyCost {
 	Small, Medium, Large,
 }

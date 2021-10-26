@@ -7,7 +7,7 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 
 	public event Action<GameObject> OnDestroy;
 	public ResourceType type;
-	public ResourceSize size;
+	public EnergyCost size;
 	public int resourceAmount;
 
 	private GameObject _gameObject;
