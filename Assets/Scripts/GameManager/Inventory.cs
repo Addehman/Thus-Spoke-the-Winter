@@ -58,7 +58,7 @@ public class Inventory : MonoBehaviour
 
 		if (treeBehav != null)
 		{
-			//These switch cases can be removed if we always att to "gatheredWood" as it is right now.
+			//These switch cases can be removed if we always add to "gatheredWood" as it is right now.
 			//Keeping it for now if we want to add specific kinds of wood later on, for example; "gatheredPineWood" or "gatheredLeafTreeWood".
 			switch (treeBehav.type)
 			{
