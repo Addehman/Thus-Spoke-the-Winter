@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class EnergyController : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class EnergyController : MonoBehaviour
 	[SerializeField] private int smallEnergyCost = 10, mediumEnergyCost = 50, largeEnergyCost = 100;
 	public int currentEnergy = 0, startEnergy = 1000;
 
-	public event Action UpdateEnergyUI, OutOfEnergy;
+	public event Action UpdateEnergyUI, EnergyDepleted;
 
 
 	private void Awake() 
@@ -54,7 +55,7 @@ public class EnergyController : MonoBehaviour
 		UpdateEnergyUI?.Invoke();
 
 		if (currentEnergy <= 0) {
-			OutOfEnergy?.Invoke();
+			EnergyDepleted?.Invoke();
 		}
 	}
 
@@ -63,4 +64,12 @@ public class EnergyController : MonoBehaviour
 		// Unsubscribe to events here
 		_player.EnergyDrain -= LoseEnergy;
 	}
+
+#if UNITY_EDITOR
+	private void Update()
+	{
+		Keyboard kb = InputSystem.GetDevice<Keyboard>();
+		if (kb.kKey.wasPressedThisFrame) LoseEnergy(EnergyCost.Large);
+	}
+#endif
 }

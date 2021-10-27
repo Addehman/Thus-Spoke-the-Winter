@@ -5,21 +5,21 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-	[SerializeField] private float walkSpeed = 20f, sprintSpeed = 40f;
-	[SerializeField] private List<GameObject> interactablesInRange;
-	[SerializeField] private bool hasEnergy = true;
+	[SerializeField] private float _walkSpeed = 20f, _sprintSpeed = 40f;
+	[SerializeField] private List<GameObject> _interactablesInRange;
+	[SerializeField] private bool _hasEnergy;
 
 	public event Action<GameObject> ResourceGathered;
 	public event Action<EnergyCost> EnergyDrain;
 
-	private InputMaster controls;
+	private InputMaster _controls;
 	private Transform _transform;
 	private Animator _animator;
 	//private SpriteRenderer _spriteRenderer;
 	private Rigidbody _rb;
-	private Vector2 movement;
-	private float horizontal, vertical;
-	private bool doSprint;
+	private Vector2 _movement;
+	private float _horizontal, _vertical;
+	private bool _doSprint;
 
 
 	private void Awake()
@@ -29,23 +29,23 @@ public class PlayerController : MonoBehaviour
 		//_spriteRenderer = GetComponent<SpriteRenderer>();
 		_animator = GetComponent<Animator>();
 
-		controls = new InputMaster();
-		controls.Player.Movement.ReadValue<Vector2>();
+		_controls = new InputMaster();
+		_controls.Player.Movement.ReadValue<Vector2>();
 	}
 
 	private void OnEnable()
 	{
-		controls.Enable();
-		doSprint = false;
-		controls.Player.Sprint.started += ctx => doSprint = true;
-		controls.Player.Sprint.canceled += ctx => doSprint = false;
-		controls.Player.Interact.started += ctx => Interact();
-
+		_controls.Enable();
+		_doSprint = false;
+		_controls.Player.Sprint.started += ctx => _doSprint = true;
+		_controls.Player.Sprint.canceled += ctx => _doSprint = false;
+		_controls.Player.Interact.started += ctx => Interact();
+		_hasEnergy = true;
 		ForestController.Instance.OnClearForest += ClearInteractablesInRangeList;
-		EnergyController.Instance.OutOfEnergy += SetEnergyToFalse;
+		EnergyController.Instance.EnergyDepleted += SetHasEnergyToFalse;
 	}
 
-    private void Update()
+	private void Update()
 	{
 		GetPlayerInput();
 		PlayerAnimation();
@@ -60,18 +60,20 @@ public class PlayerController : MonoBehaviour
 	{
 		var interactable = other.transform.GetComponent<IInteractable>();
 		if (interactable == null) return;
-		interactablesInRange.Add(other.gameObject);
+		_interactablesInRange.Add(other.gameObject);
 
 		var tree = other.transform.GetComponent<TreeBehaviour>();
 
-		if (tree != null) {
+		if (tree != null)
+		{
 			tree.OnDestroy += OnResourceDestroy;
 			return;
 		}
 
 		var food = other.transform.GetComponent<FoodBehaviour>();
 
-		if (food != null) {
+		if (food != null)
+		{
 			food.OnDestroy += OnResourceDestroy;
 			return;
 		}
@@ -82,18 +84,20 @@ public class PlayerController : MonoBehaviour
 		var interactable = other.transform.GetComponent<IInteractable>();
 		if (interactable == null) return;
 		/*print($"{other.transform} has left trigger");*/
-		interactablesInRange.Remove(other.gameObject);
+		_interactablesInRange.Remove(other.gameObject);
 
 		var tree = other.transform.GetComponent<TreeBehaviour>();
 
-		if (tree != null) {
+		if (tree != null)
+		{
 			tree.OnDestroy -= OnResourceDestroy;
 			return;
 		}
 
 		var food = other.transform.GetComponent<FoodBehaviour>();
 
-		if (food != null) {
+		if (food != null)
+		{
 			food.OnDestroy -= OnResourceDestroy;
 			return;
 		}
@@ -101,10 +105,10 @@ public class PlayerController : MonoBehaviour
 
 	private void GetPlayerInput()
 	{
-		movement = controls.Player.Movement.ReadValue<Vector2>();
+		_movement = _controls.Player.Movement.ReadValue<Vector2>();
 
-		horizontal = movement.x;
-		vertical = movement.y;
+		_horizontal = _movement.x;
+		_vertical = _movement.y;
 		//print($"horizontal: {horizontal}\nvertical: {vertical}");
 	}
 
@@ -117,31 +121,30 @@ public class PlayerController : MonoBehaviour
 		//print(movement);
 
 		// Here we make sure that we still can slowly increase or build up from 0 to 1 when starting to move, but then if the input becomes higher than it should it will be normalized.
-		if (movement.sqrMagnitude > 1f)
-			movement = movement.normalized;
+		if (_movement.sqrMagnitude > 1f)
+			_movement = _movement.normalized;
 
-		_rb.velocity = new Vector3(movement.x, 0f, movement.y) * MovementSpeed(doSprint) * Time.deltaTime;
+		_rb.velocity = new Vector3(_movement.x, 0f, _movement.y) * MovementSpeed(_doSprint) * Time.deltaTime;
 	}
 
 	private float MovementSpeed(bool sprint)
 	{
-		float speed = sprint ? sprintSpeed : walkSpeed;
+		float speed = sprint ? _sprintSpeed : _walkSpeed;
 
 		return speed;
 	}
 
-    private void SetEnergyToFalse()
-    {
-        hasEnergy = false;
-    }
 	private void Interact()
 	{
-		if (interactablesInRange.Count == 0 || interactablesInRange[0] == null || !hasEnergy) return;
+		if (_interactablesInRange.Count == 0 || _interactablesInRange[0] == null) return;
 
 		GameObject nearestObject = NearestObject();
-		int index = GetIndexFromList(interactablesInRange, nearestObject);
+		int index = GetIndexFromList(_interactablesInRange, nearestObject);
 
-		var interactable = interactablesInRange[index].GetComponent<IInteractable>();
+	// Here we make sure that if the energy is depleted, then we shouldn't be able to gather anymore resource, thus no interaction with either food or tree objects.
+		if (!_hasEnergy && (_interactablesInRange[index].TryGetComponent(out TreeBehaviour tree) || _interactablesInRange[index].TryGetComponent(out FoodBehaviour food))) return;
+
+		var interactable = _interactablesInRange[index].GetComponent<IInteractable>();
 		if (interactable == null) return;
 		interactable.OnInteract();
 
@@ -149,10 +152,12 @@ public class PlayerController : MonoBehaviour
 		SetPlayerAnimationDirection(nearestObject);
 	}
 
+	private void SetHasEnergyToFalse()	=>	_hasEnergy = false;
+
 	private void PlayerAnimation() // needs love!
 	{
-		_animator.SetFloat("SpeedX", horizontal);
-		_animator.SetFloat("SpeedY", vertical);
+		_animator.SetFloat("SpeedX", _horizontal);
+		_animator.SetFloat("SpeedY", _vertical);
 	}
 
 	private void SetPlayerAnimationDirection(GameObject faceThisObject)
@@ -160,7 +165,7 @@ public class PlayerController : MonoBehaviour
 		if (faceThisObject == null) return;
 		Vector3 direction = FindDirectionFromTwoPoints(_transform.position, faceThisObject.transform.position);
 		Vector2 direction2D = new Vector2(direction.x, direction.z) * -1; // it's reversed to be more be more like a conventional grid ( Up / Right = positive )
-		
+
 		//print($"direction2D before: {direction2D}");
 
 		// Round the Vector2 values to be comparable to Vector2.left/right/up/down/zero
@@ -184,37 +189,47 @@ public class PlayerController : MonoBehaviour
 		else if (direction2D.y < -0.5f)
 			direction2D.y = -1f;
 
-	// If we get doubles/borders(0,0/1,1/-1,1/etc.) - check which of the axises that are dominant.
+		// If we get doubles/borders(0,0/1,1/-1,1/etc.) - check which of the axises that are dominant.
 		// If we get 0,0: we set the dominant to +/- 1.
-		if (direction2D == Vector2.zero) {
-			if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y)) {
+		if (direction2D == Vector2.zero)
+		{
+			if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+			{
 				direction2D.x = direction.x > 0f ? 1f : -1f;
 			}
-			else if (Mathf.Abs(direction.x )< Mathf.Abs(direction.y)) {
+			else if (Mathf.Abs(direction.x) < Mathf.Abs(direction.y))
+			{
 				direction2D.y = direction.y > 0f ? 1f : -1f;
 			}
 		}
 		// if  we get 1,1: we set the submissive to 0.
-		else if (new Vector2(Mathf.Abs(direction2D.x), Mathf.Abs(direction2D.y)) == Vector2.one) {
-			if (Mathf.Abs(direction.x )> Mathf.Abs(direction.y)) {
+		else if (new Vector2(Mathf.Abs(direction2D.x), Mathf.Abs(direction2D.y)) == Vector2.one)
+		{
+			if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+			{
 				direction2D.y = 0f;
 			}
-			else if (Mathf.Abs(direction.x )< Mathf.Abs(direction.y)) {
+			else if (Mathf.Abs(direction.x) < Mathf.Abs(direction.y))
+			{
 				direction2D.x = 0f;
 			}
 		}
-		
-	// Find what direction it correlates to, to assign the animation accordingly.
-		if (direction2D == Vector2.left) {
+
+		// Find what direction it correlates to, to assign the animation accordingly.
+		if (direction2D == Vector2.left)
+		{
 			_animator.SetTrigger("IdleRight");
 		}
-		else if (direction2D == Vector2.right) {
+		else if (direction2D == Vector2.right)
+		{
 			_animator.SetTrigger("IdleLeft");
 		}
-		else if (direction2D == Vector2.up) {
+		else if (direction2D == Vector2.up)
+		{
 			_animator.SetTrigger("IdleDown");
 		}
-		else if (direction2D == Vector2.down) {
+		else if (direction2D == Vector2.down)
+		{
 			_animator.SetTrigger("IdleUp");
 		}
 
@@ -236,13 +251,14 @@ public class PlayerController : MonoBehaviour
 
 	private void OnResourceDestroy(GameObject obj)
 	{
-		if (!interactablesInRange.Contains(obj)) return;
+		if (!_interactablesInRange.Contains(obj)) return;
 
-		int index = GetIndexFromList(interactablesInRange, obj);
-		interactablesInRange.RemoveAt(index);
+		int index = GetIndexFromList(_interactablesInRange, obj);
+		_interactablesInRange.RemoveAt(index);
 
 		var tree = obj.transform.GetComponent<TreeBehaviour>();
-		if (tree != null) {
+		if (tree != null)
+		{
 			tree.OnDestroy -= OnResourceDestroy;
 			ResourceGathered?.Invoke(obj);
 			EnergyDrain?.Invoke(tree.size);
@@ -251,7 +267,8 @@ public class PlayerController : MonoBehaviour
 
 		var food = obj.transform.GetComponent<FoodBehaviour>();
 
-		if (food != null) {
+		if (food != null)
+		{
 			food.OnDestroy -= OnResourceDestroy;
 			ResourceGathered?.Invoke(obj);
 			EnergyDrain?.Invoke(food.size);
@@ -260,7 +277,7 @@ public class PlayerController : MonoBehaviour
 
 	private void ClearInteractablesInRangeList()
 	{
-		interactablesInRange.Clear();
+		_interactablesInRange.Clear();
 	}
 
 	private GameObject NearestObject()
@@ -268,14 +285,16 @@ public class PlayerController : MonoBehaviour
 		GameObject nearestObject = null;
 		//int index = 0;
 		//if (interactablesInRange.Count > 1) {
-			float nearestDistance = 100f;
-			for (int i = 0; i < interactablesInRange.Count; i++) {
-				float distance = Vector3.Distance(_transform.position, interactablesInRange[i].transform.position);
-				if (distance < nearestDistance) {
-					nearestDistance = distance;
-					nearestObject = interactablesInRange[i];
-					//index = i;
-				}
+		float nearestDistance = 100f;
+		for (int i = 0; i < _interactablesInRange.Count; i++)
+		{
+			float distance = Vector3.Distance(_transform.position, _interactablesInRange[i].transform.position);
+			if (distance < nearestDistance)
+			{
+				nearestDistance = distance;
+				nearestObject = _interactablesInRange[i];
+				//index = i;
+			}
 			//}
 		}
 		return nearestObject;
@@ -290,21 +309,22 @@ public class PlayerController : MonoBehaviour
 	private int GetIndexFromList(List<GameObject> list, GameObject objToLocate)
 	{
 		int index = 0;
-		for (int i = 0; i < list.Count; i++) {
+		for (int i = 0; i < list.Count; i++)
+		{
 			if (list[i] == objToLocate)
 				index = i;
 		}
 		return index;
 	}
-	
+
 	private void OnDisable()
 	{
-		controls.Disable();
-		controls.Player.Sprint.started -= ctx => doSprint = true;
-		controls.Player.Sprint.canceled -= ctx => doSprint = false;
-		controls.Player.Interact.started -= ctx => Interact();
+		_controls.Disable();
+		_controls.Player.Sprint.started -= ctx => _doSprint = true;
+		_controls.Player.Sprint.canceled -= ctx => _doSprint = false;
+		_controls.Player.Interact.started -= ctx => Interact();
 
 		ForestController.Instance.OnClearForest -= ClearInteractablesInRangeList;
-		EnergyController.Instance.OutOfEnergy -= SetEnergyToFalse;
+		EnergyController.Instance.EnergyDepleted -= SetHasEnergyToFalse;
 	}
 }
