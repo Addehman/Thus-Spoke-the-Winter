@@ -10096,6 +10096,10 @@ PrefabInstance:
       propertyPath: sprintSpeed
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 332712203833756743, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
+      propertyPath: _sprintSpeed
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 332712203833756749, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
       propertyPath: m_Name
       value: Player
