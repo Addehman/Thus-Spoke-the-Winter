@@ -6051,6 +6051,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4189062443654764363, guid: 9b1979df8078d1e498fe0fe6dc969b09, type: 3}
   m_PrefabInstance: {fileID: 745737594}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1348060812 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1934947906, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+  m_PrefabInstance: {fileID: 1003278497028924638}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2be0a2054ce455c458282f2b3101e32d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1349591126 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 445641083322341014, guid: 206e25c56df7dd7478c1794235bea8f5, type: 3}
@@ -10033,6 +10044,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1000050728}
     m_Modifications:
+    - target: {fileID: 1858088665, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
+      propertyPath: _seedGenerator
+      value: 
+      objectReference: {fileID: 1348060812}
     - target: {fileID: 332712203833756736, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
       propertyPath: m_RootOrder
       value: 0

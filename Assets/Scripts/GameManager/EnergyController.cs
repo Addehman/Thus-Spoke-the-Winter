@@ -11,7 +11,7 @@ public class EnergyController : MonoBehaviour
 	[SerializeField] private int smallEnergyCost = 10, mediumEnergyCost = 50, largeEnergyCost = 100;
 	public int currentEnergy = 0, startEnergy = 1000;
 
-	public event Action UpdateEnergyUI;
+	public event Action UpdateEnergyUI, OutOfEnergy;
 
 
 	private void Awake() 
@@ -52,6 +52,10 @@ public class EnergyController : MonoBehaviour
 		print($"EnergyCost: {cost}");
 		currentEnergy -= cost;
 		UpdateEnergyUI?.Invoke();
+
+		if (currentEnergy <= 0) {
+			OutOfEnergy?.Invoke();
+		}
 	}
 
 	private void OnDestroy() 

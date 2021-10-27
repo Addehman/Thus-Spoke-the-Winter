@@ -10,11 +10,16 @@ public class ScreenWrap : MonoBehaviour
 
 	[SerializeField]
 	private Vector3 playerViewPortPos;
+	[SerializeField] private bool hasEnergy = true;
+	[SerializeField] private SeedGenerator _seedGenerator;
+
 
 	void Start()
 	{
 		_transform = transform;
 		_cam = Camera.main;
+
+		EnergyController.Instance.OutOfEnergy += ToggleHasEnergyBool;
 	}
 
 	void Update()
@@ -29,6 +34,13 @@ public class ScreenWrap : MonoBehaviour
 		/*print(playerViewPortPos);*/
 
 		if (playerViewPortPos.x > 1f) {
+			if (!hasEnergy && _seedGenerator.worldGrid[_seedGenerator.position.x + 1, _seedGenerator.position.y] == 0) {
+				playerViewPortPos.x = 1f;
+				Vector3 notNewPos = _cam.ViewportToWorldPoint(playerViewPortPos);
+				notNewPos.y = _transform.position.y;
+				_transform.position = notNewPos;
+				return;
+			}
 			playerViewPortPos.x = 0f;
 
 			Vector3 newPos = _cam.ViewportToWorldPoint(playerViewPortPos);
@@ -38,6 +50,13 @@ public class ScreenWrap : MonoBehaviour
 			PlayerTraveling?.Invoke("east");
 		}
 		else if (playerViewPortPos.x < 0f) {
+			if (!hasEnergy && _seedGenerator.worldGrid[_seedGenerator.position.x - 1, _seedGenerator.position.y] == 0) {
+				playerViewPortPos.x = 0f;
+				Vector3 notNewPos = _cam.ViewportToWorldPoint(playerViewPortPos);
+				notNewPos.y = _transform.position.y;
+				_transform.position = notNewPos;
+				return;
+			}
 			playerViewPortPos.x = 1f;
 
 			Vector3 newPos = _cam.ViewportToWorldPoint(playerViewPortPos);
@@ -47,6 +66,13 @@ public class ScreenWrap : MonoBehaviour
 			PlayerTraveling?.Invoke("west");
 		}
 		else if (playerViewPortPos.y > 1f) {
+			if (!hasEnergy && _seedGenerator.worldGrid[_seedGenerator.position.x, _seedGenerator.position.y + 1] == 0) {
+				playerViewPortPos.y = 1f;
+				Vector3 notNewPos = _cam.ViewportToWorldPoint(playerViewPortPos);
+				notNewPos.y = _transform.position.y;
+				_transform.position = notNewPos;
+				return;
+			}
 			playerViewPortPos.y = -1f;
 
 			Vector3 newPos = _cam.ViewportToWorldPoint(playerViewPortPos);
@@ -56,6 +82,13 @@ public class ScreenWrap : MonoBehaviour
 			PlayerTraveling?.Invoke("north");
 		}
 		else if (playerViewPortPos.y < 0f) {
+			if (!hasEnergy && _seedGenerator.worldGrid[_seedGenerator.position.x, _seedGenerator.position.y - 1] == 0) {
+				playerViewPortPos.y = 0f;
+				Vector3 notNewPos = _cam.ViewportToWorldPoint(playerViewPortPos);
+				notNewPos.y = _transform.position.y;
+				_transform.position = notNewPos;
+				return;
+			}
 			playerViewPortPos.y = 2f;
 
 			Vector3 newPos = _cam.ViewportToWorldPoint(playerViewPortPos);
@@ -64,5 +97,10 @@ public class ScreenWrap : MonoBehaviour
 
 			PlayerTraveling?.Invoke("south");
 		}
+	}
+
+	private void ToggleHasEnergyBool()
+	{
+		hasEnergy = !hasEnergy;
 	}
 }

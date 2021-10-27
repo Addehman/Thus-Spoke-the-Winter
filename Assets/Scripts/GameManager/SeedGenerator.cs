@@ -9,11 +9,12 @@ public class SeedGenerator : MonoBehaviour
 	public event Action<EnergyCost> DrainEnergy;
 
 	[SerializeField] private ScreenWrap screenWrap;
-	[SerializeField] Vector2Int position;
 	[SerializeField] int seed = 0, worldGridSize = 100;
+	public Vector2Int position;
+	public int[,] worldGrid;
+
 	int seedOffset;
 
-	int[,] worldGrid;
 
 	private void Awake()
 	{
