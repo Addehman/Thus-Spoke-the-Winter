@@ -8,7 +8,7 @@ public class EnergyController : MonoBehaviour
 
 	[SerializeField] private PlayerController _player;
 	[SerializeField] private SeedGenerator _seedGenerator;
-	[SerializeField] private int smallEnergyCost = 1, mediumEnergyCost = 5, largeEnergyCost = 10;
+	[SerializeField] private int smallEnergyCost = 10, mediumEnergyCost = 50, largeEnergyCost = 100;
 	public int currentEnergy = 0, startEnergy = 1000;
 
 	public event Action UpdateEnergyUI;

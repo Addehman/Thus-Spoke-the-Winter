@@ -9,14 +9,16 @@ public class ForestController : MonoBehaviour
 
 	public event Action OnClearForest;
 
-	[SerializeField] private Transform forestParent;
-	[SerializeField] private LayerMask ground;
+	[SerializeField] private Transform _forestParent;
+	[SerializeField] private LayerMask _ground;
 	[SerializeField] private PlayerController _player;
 	[SerializeField] private SeedGenerator _seedGenerator;
+	[SerializeField] private int _currentSeed;
 
-	/*public GameObject[] forestObjects = new GameObject[6];*/
 	private Camera _camera;
-	private List<string> blacklist = new List<string>();
+	private Dictionary<int, List<string>> _blackListDictionary = new Dictionary<int, List<string>>();
+	private	List<string> _tempBlacklist;
+	
 
 	private void Awake()
 	{
@@ -33,6 +35,16 @@ public class ForestController : MonoBehaviour
 
 	public void SpawnForest(int seed)
 	{
+		_currentSeed = seed;
+
+		_tempBlacklist = new List<string>();
+
+        if (_blackListDictionary.ContainsKey(_currentSeed))
+        {
+			_blackListDictionary.TryGetValue(_currentSeed, out List<string> result);
+			_tempBlacklist = result;
+        }
+
 		print($"Seed: {seed}");
 		ClearForest();
 		// Check if the incoming seed number here is "-1", this means it's the Home block and no forest should spawn.
@@ -74,17 +86,11 @@ public class ForestController : MonoBehaviour
 			int randomID1 = UnityEngine.Random.Range(0, 1000000);
 			int randomID2 = UnityEngine.Random.Range(0, 1000000);
 
-
-			if (blacklist.Count > 0 && blacklist.Contains(newObject.name)) {
-				print($"{newObject.name} is blacklisted!");
-				continue;
-			}
-
 			Vector3 randomWorldPos = Vector3.zero;
 			Ray ray = _camera.ScreenPointToRay(new Vector3(Screen.width * randomViewPortPosX, Screen.height * randomViewPortPosY));
 			RaycastHit hit;
 
-			if (Physics.Raycast(ray, out hit, ground)) {
+			if (Physics.Raycast(ray, out hit, _ground)) {
 				randomWorldPos = hit.point;
 			}
 
@@ -96,9 +102,26 @@ public class ForestController : MonoBehaviour
 
 
 			newObject.position = randomWorldPos;
-			newObject.gameObject.SetActive(true);
+			
+			//Om vi får seed = 1. Blir namnet nedan 2000.
+			//Vi plockar upp item med ID 2000.
+			//Vår lista lägger till ett item med ID 2000 på blacklisten.
+			//Vi går vidare. I nästa ruta får vi seed = 2. Random lyckas välja samma objekt i hierkin och ger den den här gången ID 5000.
+			//Vi lägger till ID 5000 på listan.
+			//När vi tillslut går tillbaka till platsen med seed = 1 randomas ID 2000 fram igen.
+			//Vi checkar blacklisten. Blacklisten innehåller 2000. Sätt inte objektet aktivt.
 
+			//Vi kan eventuellt strunta i att ge alla objekt ett random namn varje gång utan bara ge alla ett random namn första gången.
+			//För att spara prestanda. I och med att vi ändå alltid har koll på vilken seed vi är på med Dictionariet.
 			newObject.gameObject.name = $"{randomID1}{randomID2}";
+
+			if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(newObject.gameObject.name))
+			{
+				print($"{newObject.name} is blacklisted!");
+				continue;
+			}
+
+			newObject.gameObject.SetActive(true);
 
 			//Another way to give the spawned object a unique ID as name. Does not utilize seed though, so not for us right now.
 			//newObject.name = Guid.NewGuid().ToString();
@@ -113,12 +136,20 @@ public class ForestController : MonoBehaviour
 	private void SaveIDToBlacklist(GameObject obj)
 	{
 		print($"{obj.name} is now blacklisted!");
-		blacklist.Add(obj.name);
+
+		_tempBlacklist.Add(obj.name);
+
+        if (_blackListDictionary.ContainsKey(_currentSeed))
+        {
+			_blackListDictionary.Remove(_currentSeed);
+        }
+
+		_blackListDictionary.Add(_currentSeed, _tempBlacklist);
 	}
 
 	private void ClearForest()
 	{
-		foreach (Transform forestObject in forestParent) {
+		foreach (Transform forestObject in _forestParent) {
 			OnClearForest?.Invoke();
 			forestObject.gameObject.SetActive(false);
 		}
