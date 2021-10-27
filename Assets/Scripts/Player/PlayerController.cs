@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
 	{
 		var interactable = other.transform.GetComponent<IInteractable>();
 		if (interactable == null) return;
-		print($"{other.transform} has left trigger");
+		/*print($"{other.transform} has left trigger");*/
 		interactablesInRange.Remove(other.gameObject);
 
 		var tree = other.transform.GetComponent<TreeBehaviour>();
