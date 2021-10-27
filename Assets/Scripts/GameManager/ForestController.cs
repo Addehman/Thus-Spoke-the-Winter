@@ -77,8 +77,13 @@ public class ForestController : MonoBehaviour
 
 			Transform newObject = ForestObjectPool.Instance.forestObjectPool[randomObject];
 
-			float randomViewPortPosX = UnityEngine.Random.Range(0f, 1f);
-			float randomViewPortPosY = UnityEngine.Random.Range(0f, 1f);
+			// The X and Y positions ranging from min to max of what the camera displays,
+			// with a padding to make sure that an object doesn't block the player entering a block of forest.
+			float randomViewPortPosX = UnityEngine.Random.Range(0.1f, 0.9f);
+			float randomViewPortPosY = UnityEngine.Random.Range(0.1f, 0.9f);
+
+			//float randomViewPortPosX = UnityEngine.Random.Range(0f, 1f);
+			//float randomViewPortPosY = UnityEngine.Random.Range(0f, 1f);
 
 			float randomOffset = UnityEngine.Random.Range(-1f, 1f);
 

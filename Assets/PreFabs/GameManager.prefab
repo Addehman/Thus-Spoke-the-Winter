@@ -48,12 +48,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b5ff76f9b152504a908e353ba68948b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forestParent: {fileID: 0}
-  ground:
+  _forestParent: {fileID: 0}
+  _ground:
     serializedVersion: 2
     m_Bits: 64
   _player: {fileID: 0}
   _seedGenerator: {fileID: 1934947906}
+  _currentSeed: 0
 --- !u!114 &5648477622683835973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,9 +120,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 0}
   _seedGenerator: {fileID: 1934947906}
-  smallEnergyCost: 1
-  mediumEnergyCost: 5
-  largeEnergyCost: 10
+  smallEnergyCost: 10
+  mediumEnergyCost: 50
+  largeEnergyCost: 100
   currentEnergy: 0
   startEnergy: 1000
 --- !u!114 &6923101660689745274
