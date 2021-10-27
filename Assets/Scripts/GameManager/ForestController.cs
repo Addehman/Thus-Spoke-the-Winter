@@ -102,12 +102,12 @@ public class ForestController : MonoBehaviour
 
 
 			newObject.position = randomWorldPos;
-			
-			//Om vi får seed = 1. Blir namnet nedan 2000.
+
+			//Om vi får seed = 1. Blir namnet sedan 2000.
 			//Vi plockar upp item med ID 2000.
 			//Vår lista lägger till ett item med ID 2000 på blacklisten.
-			//Vi går vidare. I nästa ruta får vi seed = 2. Random lyckas välja samma objekt i hierkin och ger den den här gången ID 5000.
-			//Vi lägger till ID 5000 på listan.
+			//Vi går vidare. I nästa ruta får vi seed = 2. Random lyckas välja samma objekt i hierarkin och ger den den här gången ID 5000.
+			//Vi plockar upp objektet med ID 5000. Vi lägger till ID 5000 på blacklisten.
 			//När vi tillslut går tillbaka till platsen med seed = 1 randomas ID 2000 fram igen.
 			//Vi checkar blacklisten. Blacklisten innehåller 2000. Sätt inte objektet aktivt.
 
