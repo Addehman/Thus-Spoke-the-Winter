@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
 	[SerializeField] private float walkSpeed = 20f, sprintSpeed = 40f;
 	[SerializeField] private List<GameObject> interactablesInRange;
+	[SerializeField] private bool hasEnergy = true;
 
 	public event Action<GameObject> ResourceGathered;
 	public event Action<EnergyCost> EnergyDrain;
@@ -41,10 +42,10 @@ public class PlayerController : MonoBehaviour
 		controls.Player.Interact.started += ctx => Interact();
 
 		ForestController.Instance.OnClearForest += ClearInteractablesInRangeList;
+		EnergyController.Instance.OutOfEnergy += SetEnergyToFalse;
 	}
 
-
-	private void Update()
+    private void Update()
 	{
 		GetPlayerInput();
 		PlayerAnimation();
@@ -129,9 +130,13 @@ public class PlayerController : MonoBehaviour
 		return speed;
 	}
 
+    private void SetEnergyToFalse()
+    {
+        hasEnergy = false;
+    }
 	private void Interact()
 	{
-		if (interactablesInRange.Count == 0 || interactablesInRange[0] == null) return;
+		if (interactablesInRange.Count == 0 || interactablesInRange[0] == null || !hasEnergy) return;
 
 		GameObject nearestObject = NearestObject();
 		int index = GetIndexFromList(interactablesInRange, nearestObject);
@@ -300,5 +305,6 @@ public class PlayerController : MonoBehaviour
 		controls.Player.Interact.started -= ctx => Interact();
 
 		ForestController.Instance.OnClearForest -= ClearInteractablesInRangeList;
+		EnergyController.Instance.OutOfEnergy -= SetEnergyToFalse;
 	}
 }

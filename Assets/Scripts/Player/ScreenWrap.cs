@@ -19,7 +19,7 @@ public class ScreenWrap : MonoBehaviour
         _transform = transform;
         _cam = Camera.main;
 
-        EnergyController.Instance.OutOfEnergy += ToggleHasEnergyBool;
+        EnergyController.Instance.OutOfEnergy += SetEnergyToFalse;
     }
 
     void Update()
@@ -91,8 +91,13 @@ public class ScreenWrap : MonoBehaviour
         PlayerTraveling?.Invoke(latitude);
     }
 
-    private void ToggleHasEnergyBool()
+    private void SetEnergyToFalse()
     {
-        hasEnergy = !hasEnergy;
+        hasEnergy = false;
+    }
+
+    private void OnDestroy()
+    {
+        EnergyController.Instance.OutOfEnergy -= SetEnergyToFalse;
     }
 }
