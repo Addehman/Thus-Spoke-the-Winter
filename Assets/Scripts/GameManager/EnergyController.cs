@@ -32,7 +32,7 @@ public class EnergyController : MonoBehaviour
 
 	private void OnEnable() 
 	{
-		currentEnergy = startEnergy;
+		Rest();
 	}
 
 	public void LoseEnergy(EnergyCost size)
@@ -57,6 +57,15 @@ public class EnergyController : MonoBehaviour
 		if (currentEnergy <= 0) {
 			EnergyDepleted?.Invoke();
 		}
+	}
+
+	/// <summary>
+	/// Set currentEnergy to max again.
+	/// </summary>
+	public void Rest()
+	{
+		currentEnergy = startEnergy;
+		UpdateEnergyUI?.Invoke();
 	}
 
 	private void OnDestroy() 
