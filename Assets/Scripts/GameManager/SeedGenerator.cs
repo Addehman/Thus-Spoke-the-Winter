@@ -86,8 +86,7 @@ public class SeedGenerator : MonoBehaviour
 
     void WhatHasBeenExplored()
     {
-        //We check if positions around us != 0. If they have been explored that is.
-        //We then let listeners know about it by sending bools for all latitudes.
+        //We check if positions around us != 0 (if they have been explored that is).
         //North check
         if (worldGrid[position.x, position.y + 1] != 0)
         {
@@ -124,6 +123,7 @@ public class SeedGenerator : MonoBehaviour
         {
             _west = true;
         }
+        //We then let listeners know about it by sending bools for all latitudes.
         UpdateExploration?.Invoke(_north, _east, _south, _west);
     }
 

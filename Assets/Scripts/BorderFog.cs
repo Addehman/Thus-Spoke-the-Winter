@@ -31,4 +31,10 @@ public class BorderFog : MonoBehaviour
             _westFog.SetActive(west);
         }
     }
+
+    private void OnDestroy()
+    {
+        _seedGenerator.UpdateExploration -= UpdateFog;
+        EnergyController.Instance.EnergyDepleted -= ActivateFog;
+    }
 }
