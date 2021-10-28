@@ -9,7 +9,7 @@ public class CabinThresholdBehaviour : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject == _player)
+		if (other.CompareTag("Player"))
 		{
 			_outsideCabin.SetActive(false);
 			_insideCabin.SetActive(true);
@@ -18,7 +18,7 @@ public class CabinThresholdBehaviour : MonoBehaviour
 
 	private void OnTriggerExit(Collider other)
 	{
-		if (other.gameObject == _player)
+		if (other.CompareTag("Player"))
 		{
 			_outsideCabin.SetActive(true);
 			_insideCabin.SetActive(false);
