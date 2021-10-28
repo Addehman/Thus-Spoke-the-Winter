@@ -15,6 +15,8 @@ public class ForestController : MonoBehaviour
 	[SerializeField] private SeedGenerator _seedGenerator;
 	[SerializeField] private int _currentSeed;
 
+	public GameObject cabinParent = null;
+
 	private Camera _camera;
 	private Dictionary<int, List<string>> _blackListDictionary = new Dictionary<int, List<string>>();
 	private	List<string> _tempBlacklist;
@@ -31,6 +33,11 @@ public class ForestController : MonoBehaviour
 		_camera = Camera.main;
 		_seedGenerator.SendSeed += SpawnForest;
 		_player.ResourceGathered += SaveIDToBlacklist;
+	}
+
+	public void SetCabinParent(GameObject obj)
+	{
+		cabinParent = obj;
 	}
 
 	public void SpawnForest(int seed)
@@ -54,6 +61,7 @@ public class ForestController : MonoBehaviour
 			return;
 		}
 		else if (SceneController.Instance.IsCurrentSceneName("CabinScene")) {
+			cabinParent.SetActive(false);
 			SceneController.Instance.LoadScene("ForestScene");
 		}
 
