@@ -12,7 +12,7 @@ public class ScreenWrap : MonoBehaviour
     private Vector3 playerViewPortPos;
     [SerializeField] private bool hasEnergy = true;
     [SerializeField] private SeedGenerator _seedGenerator;
-    private bool _north, _east, _south, _west;
+    private bool _northIsNotExplored, _eastIsNotExplored, _southIsNotExplored, _westIsNotExplored;
 
 
     void Start()
@@ -31,10 +31,10 @@ public class ScreenWrap : MonoBehaviour
 
     void UpdateExploration(bool north, bool east, bool south, bool west)
     {
-        _north = north;
-        _east = east;
-        _south = south;
-        _west = west;
+        _northIsNotExplored = north;
+        _eastIsNotExplored = east;
+        _southIsNotExplored = south;
+        _westIsNotExplored = west;
     }
 
     private void Wrap()
@@ -43,7 +43,7 @@ public class ScreenWrap : MonoBehaviour
 
         if (playerViewPortPos.x > 1f)
         {
-            if (!hasEnergy && _seedGenerator.worldGrid[_seedGenerator.position.x + 1, _seedGenerator.position.y] == 0)
+            if (!hasEnergy && _eastIsNotExplored)
             {
                 ConvertPosFromViewPortToWorldPoint(false, true, 1f, "east");
                 return;
@@ -52,7 +52,7 @@ public class ScreenWrap : MonoBehaviour
         }
         else if (playerViewPortPos.x < 0f)
         {
-            if (!hasEnergy && _seedGenerator.worldGrid[_seedGenerator.position.x - 1, _seedGenerator.position.y] == 0)
+            if (!hasEnergy && _westIsNotExplored)
             {
                 ConvertPosFromViewPortToWorldPoint(false, true, 0f, "west");
                 return;
@@ -62,7 +62,7 @@ public class ScreenWrap : MonoBehaviour
         }
         else if (playerViewPortPos.y > 1f)
         {
-            if (!hasEnergy && _seedGenerator.worldGrid[_seedGenerator.position.x, _seedGenerator.position.y + 1] == 0)
+            if (!hasEnergy && _northIsNotExplored)
             {
                 ConvertPosFromViewPortToWorldPoint(false, false, 1f, "north");
                 return;
@@ -71,7 +71,7 @@ public class ScreenWrap : MonoBehaviour
         }
         else if (playerViewPortPos.y < 0f)
         {
-            if (!hasEnergy && _seedGenerator.worldGrid[_seedGenerator.position.x, _seedGenerator.position.y - 1] == 0)
+            if (!hasEnergy && _southIsNotExplored)
             {
                 ConvertPosFromViewPortToWorldPoint(false, false, 0f, "south");
                 return;
