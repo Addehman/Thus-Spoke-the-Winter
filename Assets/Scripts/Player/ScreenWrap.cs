@@ -12,6 +12,7 @@ public class ScreenWrap : MonoBehaviour
     private Vector3 playerViewPortPos;
     [SerializeField] private bool hasEnergy = true;
     [SerializeField] private SeedGenerator _seedGenerator;
+    private bool _north, _east, _south, _west;
 
 
     void Start()
@@ -19,12 +20,21 @@ public class ScreenWrap : MonoBehaviour
         _transform = transform;
         _cam = Camera.main;
 
+        _seedGenerator.UpdateExploration += UpdateExploration;
         EnergyController.Instance.EnergyDepleted += SetEnergyToFalse;
     }
 
     void Update()
     {
         Wrap();
+    }
+
+    void UpdateExploration(bool north, bool east, bool south, bool west)
+    {
+        _north = north;
+        _east = east;
+        _south = south;
+        _west = west;
     }
 
     private void Wrap()
@@ -98,6 +108,7 @@ public class ScreenWrap : MonoBehaviour
 
     private void OnDestroy()
     {
+        _seedGenerator.UpdateExploration -= UpdateExploration;
         EnergyController.Instance.EnergyDepleted -= SetEnergyToFalse;
     }
 }
