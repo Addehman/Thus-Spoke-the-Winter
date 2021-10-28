@@ -8,21 +8,22 @@ public class BorderFog : MonoBehaviour
     [SerializeField] private SeedGenerator _seedGenerator;
     [SerializeField] private GameObject _northFog, _eastFog, _southFog, _westFog;
     private bool _fogActive = false;
-    private bool _northActive, _eastActive, _southActive, _westActive;
+    private bool _northActive = true, _eastActive = true, _southActive = true, _westActive = true;
 
 
     void Start()
     {
         _seedGenerator.UpdateExploration += UpdateFog;
-        EnergyController.Instance.EnergyDepleted += ActivateFog;
+        SpawnFog();
+        /*EnergyController.Instance.EnergyDepleted += ActivateFog;*/
     }
 
-    void ActivateFog()
+    /*void ActivateFog()
     {
         _fogActive = true;
 
         SpawnFog();
-    }
+    }*/
 
     void UpdateFog(bool north, bool east, bool south, bool west)
     {
@@ -31,10 +32,11 @@ public class BorderFog : MonoBehaviour
         _southActive = south;
         _westActive = west;
 
-        if (_fogActive)
+        /*if (_fogActive)
         {
             SpawnFog();
-        }
+        }*/
+        SpawnFog();
     }
 
     void SpawnFog()
@@ -48,6 +50,6 @@ public class BorderFog : MonoBehaviour
     private void OnDestroy()
     {
         _seedGenerator.UpdateExploration -= UpdateFog;
-        EnergyController.Instance.EnergyDepleted -= ActivateFog;
+        /*EnergyController.Instance.EnergyDepleted -= ActivateFog;*/
     }
 }
