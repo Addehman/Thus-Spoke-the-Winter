@@ -12,8 +12,5 @@ public class BedBehaviour : MonoBehaviour, IInteractable
 		EnergyController.Instance.Rest();
 	}
 
-	public void OnDestruction()
-	{
-
-	}
+	public void OnDestruction() {}
 }
