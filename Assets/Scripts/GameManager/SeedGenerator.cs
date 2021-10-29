@@ -20,7 +20,6 @@ public class SeedGenerator : MonoBehaviour
 
     private void Awake()
     {
-        _screenWrap = FindObjectOfType<ScreenWrap>();
         worldGrid = new int[_worldGridSize, _worldGridSize];
         _screenWrap.PlayerTraveling += UpdatePosition;
     }
