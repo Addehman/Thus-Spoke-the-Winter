@@ -16,11 +16,20 @@ public class SeedGenerator : MonoBehaviour
 
     public Vector2Int position;
     public int[,] worldGrid;
-
+    public List<List<int>> worldList;
 
     private void Awake()
     {
         worldGrid = new int[_worldGridSize, _worldGridSize];
+        worldList = new List<List<int>>();
+
+        int[] tempArray = new int[_worldGridSize];
+
+        for (int i = 0; i < _worldGridSize; i++)
+        {
+            worldList.Add(new List<int>(tempArray));
+        }
+
         _screenWrap.PlayerTraveling += UpdatePosition;
     }
 
@@ -34,8 +43,8 @@ public class SeedGenerator : MonoBehaviour
 
     void Init()
     {
-        position = new Vector2Int(_worldGridSize / 2, _worldGridSize / 2);
-        worldGrid[position.x, position.y] = -1; // Setting the Home position to a value definitively different to the one of the Seed.
+        position = new Vector2Int();
+        worldList[0][0] = -1; // Setting the Home position to a value definitively different to the one of the Seed.
 
         _seedOffset = UnityEngine.Random.Range(1, 10000);
         _seed = _seedOffset;
@@ -64,22 +73,40 @@ public class SeedGenerator : MonoBehaviour
         {
             position.y--;
         }
-        
+
         WhatHasBeenExplored();
         GenerateSeed(position.x, position.y);
     }
 
+    private Vector2Int ConvertCoordinates(int x, int y)
+    {
+        return new Vector2Int(x < 0 ? -x * 2 - 1 : x * 2, y < 0 ? -y * 2 - 1 : y * 2);
+    }
+
+    private int GetGridPos(int x, int y)
+    {
+        return worldList[x < 0 ? -x - x - 1 : x + x][y < 0 ? -y - y - 1 : y + y];
+    }
+
+    private void SetGridPos(int x, int y, int value)
+    {
+        worldList[x < 0 ? -x - x - 1 : x + x][y < 0 ? -y - y - 1 : y + y] = value;
+    }
+
     private void GenerateSeed(int x, int y)
     {
-        if (worldGrid[x, y] == 0)
+        int gridPosValue = GetGridPos(x, y);
+
+        if (gridPosValue == 0)
         {
-            worldGrid[x, y] = NewSeed();
+            int newSeedValue = NewSeed();
+            SetGridPos(x, y, newSeedValue);
             DrainEnergy?.Invoke(EnergyCost.Small);
-            SendSeed?.Invoke(worldGrid[x, y]);
+            SendSeed?.Invoke(newSeedValue);
         }
-        else if (worldGrid[x, y] != 0)
+        else if (gridPosValue != 0)
         {
-            SendSeed?.Invoke(worldGrid[x, y]);
+            SendSeed?.Invoke(gridPosValue);
         }
     }
 
@@ -87,7 +114,7 @@ public class SeedGenerator : MonoBehaviour
     {
         //We check if positions around us != 0 (if they have been explored that is).
         //North check
-        if (worldGrid[position.x, position.y + 1] != 0)
+        if (GetGridPos(position.x, position.y + 1) != 0)
         {
             _north = false;
         }
@@ -96,7 +123,7 @@ public class SeedGenerator : MonoBehaviour
             _north = true;
         }
         //East check
-        if (worldGrid[position.x + 1, position.y] != 0)
+        if (GetGridPos(position.x + 1, position.y) != 0)
         {
             _east = false;
         }
@@ -105,7 +132,7 @@ public class SeedGenerator : MonoBehaviour
             _east = true;
         }
         //South check
-        if (worldGrid[position.x, position.y - 1] != 0)
+        if (GetGridPos(position.x, position.y - 1) != 0)
         {
             _south = false;
         }
@@ -114,7 +141,7 @@ public class SeedGenerator : MonoBehaviour
             _south = true;
         }
         //West check
-        if (worldGrid[position.x - 1, position.y] != 0)
+        if (GetGridPos(position.x - 1, position.y) != 0)
         {
             _west = false;
         }

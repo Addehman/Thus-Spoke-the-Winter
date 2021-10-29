@@ -10108,6 +10108,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 332712203833756743, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
+      propertyPath: _hasEnergy
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 332712203833756743, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
       propertyPath: sprintSpeed
       value: 100
       objectReference: {fileID: 0}
@@ -10141,6 +10145,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1934947906, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
       propertyPath: screenWrap
+      value: 
+      objectReference: {fileID: 332712203595213403}
+    - target: {fileID: 1934947906, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: _screenWrap
       value: 
       objectReference: {fileID: 332712203595213403}
     - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
