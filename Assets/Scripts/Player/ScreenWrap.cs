@@ -10,7 +10,7 @@ public class ScreenWrap : MonoBehaviour
 
 	[SerializeField]
 	private Vector3 playerViewPortPos;
-	[SerializeField] private bool hasEnergy = true;
+	[SerializeField] private bool _hasEnergy = true;
 	[SerializeField] private SeedGenerator _seedGenerator;
 	private bool _northIsNotExplored, _eastIsNotExplored, _southIsNotExplored, _westIsNotExplored;
 
@@ -21,7 +21,8 @@ public class ScreenWrap : MonoBehaviour
 		_cam = Camera.main;
 
 		_seedGenerator.UpdateExploration += UpdateExploration;
-		EnergyController.Instance.EnergyDepleted += SetEnergyToFalse;
+		EnergyController.Instance.EnergyDepleted += SetHasEnergyFalse;
+		EnergyController.Instance.EnergyRestored += SetHasEnergyTrue;
 	}
 
 	void Update()
@@ -43,7 +44,7 @@ public class ScreenWrap : MonoBehaviour
 
 		if (playerViewPortPos.x > 1f)
 		{
-			if (!hasEnergy && _eastIsNotExplored)
+			if (!_hasEnergy && _eastIsNotExplored)
 			{
 				ConvertPosFromViewPortToWorldPoint(false, true, 1f, "east");
 				return;
@@ -52,7 +53,7 @@ public class ScreenWrap : MonoBehaviour
 		}
 		else if (playerViewPortPos.x < 0f)
 		{
-			if (!hasEnergy && _westIsNotExplored)
+			if (!_hasEnergy && _westIsNotExplored)
 			{
 				ConvertPosFromViewPortToWorldPoint(false, true, 0f, "west");
 				return;
@@ -62,7 +63,7 @@ public class ScreenWrap : MonoBehaviour
 		}
 		else if (playerViewPortPos.y > 1f)
 		{
-			if (!hasEnergy && _northIsNotExplored)
+			if (!_hasEnergy && _northIsNotExplored)
 			{
 				ConvertPosFromViewPortToWorldPoint(false, false, 1f, "north");
 				return;
@@ -71,7 +72,7 @@ public class ScreenWrap : MonoBehaviour
 		}
 		else if (playerViewPortPos.y < 0f)
 		{
-			if (!hasEnergy && _southIsNotExplored)
+			if (!_hasEnergy && _southIsNotExplored)
 			{
 				ConvertPosFromViewPortToWorldPoint(false, false, 0f, "south");
 				return;
@@ -101,14 +102,14 @@ public class ScreenWrap : MonoBehaviour
 		PlayerTraveling?.Invoke(latitude);
 	}
 
-	private void SetEnergyToFalse()
-	{
-		hasEnergy = false;
-	}
+	private void SetHasEnergyFalse() => _hasEnergy = false;
+	private void SetHasEnergyTrue() => _hasEnergy = true;
 
 	private void OnDestroy()
 	{
 		_seedGenerator.UpdateExploration -= UpdateExploration;
-		EnergyController.Instance.EnergyDepleted -= SetEnergyToFalse;
+		EnergyController.Instance.EnergyDepleted -= SetHasEnergyFalse;
+		EnergyController.Instance.EnergyRestored -= SetHasEnergyTrue;
 	}
+
 }

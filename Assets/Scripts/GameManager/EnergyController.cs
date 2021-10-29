@@ -12,7 +12,7 @@ public class EnergyController : MonoBehaviour
 	[SerializeField] private int smallEnergyCost = 10, mediumEnergyCost = 50, largeEnergyCost = 100;
 	public int currentEnergy = 0, startEnergy = 1000;
 
-	public event Action UpdateEnergyUI, EnergyDepleted;
+	public event Action UpdateEnergyUI, EnergyDepleted, EnergyRestored;
 
 
 	private void Awake() 
@@ -32,7 +32,7 @@ public class EnergyController : MonoBehaviour
 
 	private void OnEnable() 
 	{
-		Rest();
+		currentEnergy = startEnergy;
 	}
 
 	public void LoseEnergy(EnergyCost size)
@@ -64,8 +64,14 @@ public class EnergyController : MonoBehaviour
 	/// </summary>
 	public void Rest()
 	{
+        if (currentEnergy > 0)
+        {
+			return;
+        }
+		print($"{this}Resting");
 		currentEnergy = startEnergy;
 		UpdateEnergyUI?.Invoke();
+		EnergyRestored?.Invoke();
 	}
 
 	private void OnDestroy() 
