@@ -44,13 +44,14 @@ public class ForestController : MonoBehaviour
 	{
 		_currentSeed = seed;
 
-		_tempBlacklist = new List<string>();
-
-        if (_blackListDictionary.ContainsKey(_currentSeed))
+        if (_blackListDictionary.TryGetValue(_currentSeed, out List<string> result))
         {
-			_blackListDictionary.TryGetValue(_currentSeed, out List<string> result);
 			_tempBlacklist = result;
         }
+        else
+        {
+			_tempBlacklist = new List<string>();
+		}
 
 		print($"Seed: {seed}");
 		ClearForest();
@@ -70,12 +71,12 @@ public class ForestController : MonoBehaviour
 
 		UnityEngine.Random.InitState(seed); // To be used to control the seed of the random forest, whether it should be random or not.
 
-		int spawnCount = (int)UnityEngine.Random.Range(5, 50);
+		int spawnCount = UnityEngine.Random.Range(5, 50);
 		print("Amount of new Objects: " + spawnCount);
 
 		for (int i = 0; i < spawnCount; i++) {
 			//This needs to check so that we don't random the same number twice in a row or something like that.
-			int randomObject = (int)UnityEngine.Random.Range(0, ForestObjectPool.Instance.forestObjectPool.Length);
+			int randomObject = UnityEngine.Random.Range(0, ForestObjectPool.Instance.forestObjectPool.Length);
 
 			while (randomNumbers.Contains(randomObject)) {
 				randomObject = (randomObject + 1) % ForestObjectPool.Instance.forestObjectPool.Length;
@@ -152,13 +153,15 @@ public class ForestController : MonoBehaviour
 
 		_tempBlacklist.Add(obj.name);
 
-        if (_blackListDictionary.ContainsKey(_currentSeed))
+		if (_tempBlacklist.Count != 1)
+		{
+			_blackListDictionary[_currentSeed] = _tempBlacklist;
+		}
+        else
         {
-			_blackListDictionary.Remove(_currentSeed);
+			_blackListDictionary.Add(_currentSeed, _tempBlacklist);
         }
-
-		_blackListDictionary.Add(_currentSeed, _tempBlacklist);
-	}
+    }
 
 	private void ClearForest()
 	{
