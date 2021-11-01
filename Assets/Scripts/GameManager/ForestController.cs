@@ -2,6 +2,20 @@
 using System;
 using System.Collections.Generic;
 
+[Serializable]
+public class ObjectPoolQuantitySetup
+{
+	[HideInInspector] public int[] quantities;
+	public int blueberryAmount, lingonberryAmount, mushroomAmount, leafTree_1Amount, leafTree_2Amount,
+		leafTree_3Amount, leafTree_4Amount, leafTree_5Amount, pineTreeAmount, tallPineTreeAmount, fruitTree_1Amount, fruitTree_2Amount, fruitTree_3Amount;
+}
+
+[Serializable]
+public class ObjectPoolPrefabLibrary
+{
+	public GameObject[] prefabs = new GameObject[13];
+}
+
 public class ForestController : MonoBehaviour
 {
 	private static ForestController _instance;
@@ -13,20 +27,18 @@ public class ForestController : MonoBehaviour
 	[SerializeField] private LayerMask _ground;
 	[SerializeField] private PlayerController _player;
 	[SerializeField] private SeedGenerator _seedGenerator;
-	[Header("ObjectPool Content Settings")]
-	[SerializeField] private int appleAmount;
-	[SerializeField] private int blueberryAmount, lingonberryAmount, mushroomAmount, leafTree_1Amount, leafTree_2Amount,
-		leafTree_3Amount, leafTree_4Amount, leafTree_5Amount, pineTreeAmount, tallPineTreeAmount;
-	[SerializeField] private GameObject apple, blueberryBush, lingonberryBush, mushroom, leafTree_1,
-		leafTree_2, leafTree_3, leafTree_4, leafTree_5, pineTree, tallPineTree;
-	[Space (10)]
 	[SerializeField] private int _currentSeed;
+	[SerializeField] private ObjectPoolQuantitySetup _objectPoolQuantitySetup;
+	[SerializeField] private ObjectPoolPrefabLibrary _objectPoolPrefabLibrary;
 
-	public GameObject cabinParent = null;
+	[Space(10)]
+
+	private GameObject _cabinParent;
 
 	private Camera _camera;
 	private Dictionary<int, List<string>> _blackListDictionary = new Dictionary<int, List<string>>();
 	private List<string> _tempBlacklist;
+	private List<Transform> tempSpawns;
 
 
 	private void Awake()
@@ -48,7 +60,7 @@ public class ForestController : MonoBehaviour
 
 	public void SetCabinParent(GameObject obj)
 	{
-		cabinParent = obj;
+		_cabinParent = obj;
 	}
 
 	public void SpawnForest(int seed)
@@ -75,11 +87,11 @@ public class ForestController : MonoBehaviour
 		}
 		else if (SceneController.Instance.IsCurrentSceneName("CabinScene"))
 		{
-			cabinParent.SetActive(false);
+			_cabinParent.SetActive(false);
 			SceneController.Instance.LoadScene("ForestScene");
 		}
 
-		List<int> randomNumbers = new List<int>();
+		List<int> usedRandomNumbers = new List<int>();
 
 
 		UnityEngine.Random.InitState(seed); // To be used to control the seed of the random forest, whether it should be random or not.
@@ -92,12 +104,12 @@ public class ForestController : MonoBehaviour
 			//This needs to check so that we don't random the same number twice in a row or something like that.
 			int randomObject = UnityEngine.Random.Range(0, ForestObjectPool.Instance.forestObjectPool.Length);
 
-			while (randomNumbers.Contains(randomObject))
+			while (usedRandomNumbers.Contains(randomObject))
 			{
 				randomObject = (randomObject + 1) % ForestObjectPool.Instance.forestObjectPool.Length;
 			}
 
-			randomNumbers.Add(randomObject);
+			usedRandomNumbers.Add(randomObject);
 
 			Transform newObject = ForestObjectPool.Instance.forestObjectPool[randomObject];
 
@@ -193,27 +205,31 @@ public class ForestController : MonoBehaviour
 	/// </summary>
 	private void InitialSpawn()
 	{
-		SpawnThisTypeThisMany(apple, appleAmount);
-		SpawnThisTypeThisMany(blueberryBush, blueberryAmount);
-		SpawnThisTypeThisMany(lingonberryBush, lingonberryAmount);
-		SpawnThisTypeThisMany(mushroom, mushroomAmount);
-		SpawnThisTypeThisMany(leafTree_1, leafTree_1Amount);
-		SpawnThisTypeThisMany(leafTree_2, leafTree_2Amount);
-		SpawnThisTypeThisMany(leafTree_3, leafTree_3Amount);
-		SpawnThisTypeThisMany(leafTree_4, leafTree_4Amount);
-		SpawnThisTypeThisMany(leafTree_5, leafTree_5Amount);
-		SpawnThisTypeThisMany(pineTree, pineTreeAmount);
-		SpawnThisTypeThisMany(tallPineTree, tallPineTreeAmount);
+		_objectPoolQuantitySetup.quantities = new int[13] { _objectPoolQuantitySetup.blueberryAmount, _objectPoolQuantitySetup.lingonberryAmount, 
+				_objectPoolQuantitySetup.mushroomAmount, _objectPoolQuantitySetup.leafTree_1Amount, _objectPoolQuantitySetup.leafTree_2Amount, _objectPoolQuantitySetup.leafTree_3Amount,
+				_objectPoolQuantitySetup.leafTree_4Amount, _objectPoolQuantitySetup.leafTree_5Amount, _objectPoolQuantitySetup.pineTreeAmount, _objectPoolQuantitySetup.tallPineTreeAmount,
+			_objectPoolQuantitySetup.fruitTree_1Amount, _objectPoolQuantitySetup.fruitTree_2Amount, _objectPoolQuantitySetup.fruitTree_3Amount};
 
-		ForestObjectPool.Instance.AddForestObjectsToList();
+		tempSpawns = new List<Transform>();
+
+		for (int i = 0; i < _objectPoolQuantitySetup.quantities.Length; i++)
+		{
+			if (_objectPoolQuantitySetup.quantities[i] <= 0) continue;
+
+			SpawnThisTypeThisMany(_objectPoolPrefabLibrary.prefabs[i], _objectPoolQuantitySetup.quantities[i]);
+		}
+
+		ForestObjectPool.Instance.AddForestObjectsToList(tempSpawns);
 	}
 
 	private void SpawnThisTypeThisMany(GameObject type, int typeAmount)
 	{
+		GameObject spawn = null;
 		for (int i = 0; i < typeAmount; i++)
 		{
-			GameObject spawn = Instantiate(type, _forestParent);
+			spawn = Instantiate(type, _forestParent);
 			spawn.SetActive(false);
+			tempSpawns.Add(spawn.transform);
 		}
 	}
 

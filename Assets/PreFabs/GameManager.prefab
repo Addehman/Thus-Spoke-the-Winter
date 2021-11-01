@@ -55,30 +55,37 @@ MonoBehaviour:
     m_Bits: 64
   _player: {fileID: 0}
   _seedGenerator: {fileID: 1934947906}
-  appleAmount: 10
-  blueberryAmount: 10
-  lingonberryAmount: 10
-  mushroomAmount: 10
-  leafTree_1Amount: 10
-  leafTree_2Amount: 10
-  leafTree_3Amount: 10
-  leafTree_4Amount: 10
-  leafTree_5Amount: 10
-  pineTreeAmount: 10
-  tallPineTreeAmount: 20
-  apple: {fileID: 5051238808586815635, guid: 1272b867aa2cf8b40af53af3fd4f20bd, type: 3}
-  blueberryBush: {fileID: 2016277109531003504, guid: 51f58fe355ed86d49b966f57edcae1f2, type: 3}
-  lingonberryBush: {fileID: 6406776583582198696, guid: f012c07641b22064ca19fd095f9a3d0a, type: 3}
-  mushroom: {fileID: 8968824666414133326, guid: 00cdd219a6049904ba354759f8e626cd, type: 3}
-  leafTree_1: {fileID: 1471747095630593964, guid: 206e25c56df7dd7478c1794235bea8f5, type: 3}
-  leafTree_2: {fileID: 7807923653859911093, guid: 78e0b7973a69ef040b3771d6d9dc9ad4, type: 3}
-  leafTree_3: {fileID: 4189062443654764373, guid: 9b1979df8078d1e498fe0fe6dc969b09, type: 3}
-  leafTree_4: {fileID: 8438590541516308705, guid: 860667e169506d54f96bcb8019ca8a79, type: 3}
-  leafTree_5: {fileID: 864744610175704100, guid: 8c76da172184fe045ba9bbd1d29851b1, type: 3}
-  pineTree: {fileID: 3906755439078533542, guid: 8cb842b97f8d35a4e8df8d8f5b89fdb7, type: 3}
-  tallPineTree: {fileID: 3906755439078533542, guid: 134bb0d95732e3a44a904ed098f64ea3, type: 3}
   _currentSeed: 0
-  cabinParent: {fileID: 0}
+  _objectPoolQuantitySetup:
+    quantities: 
+    blueberryAmount: 10
+    lingonberryAmount: 10
+    mushroomAmount: 10
+    leafTree_1Amount: 10
+    leafTree_2Amount: 10
+    leafTree_3Amount: 10
+    leafTree_4Amount: 10
+    leafTree_5Amount: 10
+    pineTreeAmount: 10
+    tallPineTreeAmount: 20
+    fruitTree_1Amount: 0
+    fruitTree_2Amount: 0
+    fruitTree_3Amount: 0
+  _objectPoolPrefabLibrary:
+    prefabs:
+    - {fileID: 2016277109531003504, guid: 51f58fe355ed86d49b966f57edcae1f2, type: 3}
+    - {fileID: 6406776583582198696, guid: f012c07641b22064ca19fd095f9a3d0a, type: 3}
+    - {fileID: 8968824666414133326, guid: 00cdd219a6049904ba354759f8e626cd, type: 3}
+    - {fileID: 1471747095630593964, guid: 206e25c56df7dd7478c1794235bea8f5, type: 3}
+    - {fileID: 7807923653859911093, guid: 78e0b7973a69ef040b3771d6d9dc9ad4, type: 3}
+    - {fileID: 4189062443654764373, guid: 9b1979df8078d1e498fe0fe6dc969b09, type: 3}
+    - {fileID: 8438590541516308705, guid: 860667e169506d54f96bcb8019ca8a79, type: 3}
+    - {fileID: 864744610175704100, guid: 8c76da172184fe045ba9bbd1d29851b1, type: 3}
+    - {fileID: 3906755439078533542, guid: 8cb842b97f8d35a4e8df8d8f5b89fdb7, type: 3}
+    - {fileID: 3906755439078533542, guid: 134bb0d95732e3a44a904ed098f64ea3, type: 3}
+    - {fileID: 1471747095630593964, guid: df423bd95c5a7c049a6885f6643a0360, type: 3}
+    - {fileID: 7807923653859911093, guid: 7ef23cdc3402c6441824985161429242, type: 3}
+    - {fileID: 4189062443654764373, guid: 4b8b3209f9b34bb4b9acce051da813e6, type: 3}
 --- !u!114 &5648477622683835973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,8 +169,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inventory: {fileID: 5648477622683835973}
-  woodStorageHandler: {fileID: 0}
-  foodStorageHandler: {fileID: 0}
   woodStorage: 0
   foodStorage: 0
 --- !u!114 &1077116360792274108

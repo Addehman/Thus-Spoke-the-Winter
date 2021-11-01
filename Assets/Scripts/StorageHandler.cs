@@ -15,7 +15,7 @@ public class StorageHandler : MonoBehaviour, IInteractable
 
 	public void OnInteract()
 	{
-		if (type == StorageType.Wood)
+		if (type == StorageType.Wood) 
 			IncomingWood?.Invoke();
 		else if (type == StorageType.Food)
 			IncomingFood?.Invoke();

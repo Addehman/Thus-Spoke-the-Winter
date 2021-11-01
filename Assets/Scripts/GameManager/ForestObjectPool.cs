@@ -22,13 +22,15 @@ public class ForestObjectPool : MonoBehaviour
 		_myTransform = transform;
 	}
 
-	public void AddForestObjectsToList()
+	public void AddForestObjectsToList(List<Transform> spawns)
 	{
-		int index = 0;
-		foreach (Transform forestObject in _myTransform)
-		{
-			forestObjectPool[index] = forestObject;
-			index++;
-		}
+		forestObjectPool = spawns.ToArray();
+
+		//int index = 0;
+		//foreach (Transform forestObject in _myTransform)
+		//{
+		//	forestObjectPool[index] = forestObject;
+		//	index++;
+		//}
 	}
 }

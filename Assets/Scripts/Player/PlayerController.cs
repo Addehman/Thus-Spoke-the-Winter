@@ -67,6 +67,13 @@ public class PlayerController : MonoBehaviour
 		if (tree != null)
 		{
 			tree.OnDestroy += OnResourceDestroy;
+			if (tree.fruits.Count > 0)
+			{
+				for (int i = 0; i < tree.fruits.Count; i++)
+				{
+					tree.fruits[i].OnDestroy += OnResourceDestroy;
+				}
+			}
 			return;
 		}
 
@@ -91,6 +98,13 @@ public class PlayerController : MonoBehaviour
 		if (tree != null)
 		{
 			tree.OnDestroy -= OnResourceDestroy;
+			if (tree.fruits.Count > 0)
+			{
+				for (int i = 0; i < tree.fruits.Count; i++)
+				{
+					tree.fruits[i].OnDestroy -= OnResourceDestroy;
+				}
+			}
 			return;
 		}
 
@@ -252,10 +266,19 @@ public class PlayerController : MonoBehaviour
 
 	private void OnResourceDestroy(GameObject obj)
 	{
-		if (!_interactablesInRange.Contains(obj)) return;
+		print($"OnResourceDestroy: {obj}");
+		obj.TryGetComponent(out FoodBehaviour food);
 
-		int index = GetIndexFromList(_interactablesInRange, obj);
-		_interactablesInRange.RemoveAt(index);
+		if (!_interactablesInRange.Contains(obj) && food.type != ResourceType.apple)
+		{
+			return;
+		}
+		else if (food == null || (food != null && food.type != ResourceType.apple))
+		{
+			print("Not Apple");
+			int index = GetIndexFromList(_interactablesInRange, obj);
+			_interactablesInRange.RemoveAt(index);
+		}
 
 		var tree = obj.transform.GetComponent<TreeBehaviour>();
 		if (tree != null)
@@ -266,7 +289,7 @@ public class PlayerController : MonoBehaviour
 			return;
 		}
 
-		var food = obj.transform.GetComponent<FoodBehaviour>();
+		//var food = obj.transform.GetComponent<FoodBehaviour>();
 
 		if (food != null)
 		{

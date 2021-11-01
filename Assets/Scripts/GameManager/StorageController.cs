@@ -9,9 +9,9 @@ public class StorageController : MonoBehaviour
 	public event Action UpdateUI;
 
 	[SerializeField] private Inventory _inventory;
-	public StorageHandler woodStorageHandler, foodStorageHandler;
 	public int woodStorage, foodStorage;
 
+	private StorageHandler woodStorageHandler, foodStorageHandler;
 
 
 	private void Awake()
