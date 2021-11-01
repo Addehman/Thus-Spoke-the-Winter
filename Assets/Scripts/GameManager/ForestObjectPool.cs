@@ -11,6 +11,7 @@ public class ForestObjectPool : MonoBehaviour
 
 	private Transform _myTransform;
 
+
 	private void Awake()
 	{
 		if (_instance != null && _instance != this)
@@ -19,9 +20,13 @@ public class ForestObjectPool : MonoBehaviour
 			_instance = this;
 
 		_myTransform = transform;
-		
+	}
+
+	public void AddForestObjectsToList()
+	{
 		int index = 0;
-		foreach (Transform forestObject in _myTransform) {
+		foreach (Transform forestObject in _myTransform)
+		{
 			forestObjectPool[index] = forestObject;
 			index++;
 		}

@@ -13,14 +13,21 @@ public class ForestController : MonoBehaviour
 	[SerializeField] private LayerMask _ground;
 	[SerializeField] private PlayerController _player;
 	[SerializeField] private SeedGenerator _seedGenerator;
+	[Header("ObjectPool Content Settings")]
+	[SerializeField] private int appleAmount;
+	[SerializeField] private int blueberryAmount, lingonberryAmount, mushroomAmount, leafTree_1Amount, leafTree_2Amount,
+		leafTree_3Amount, leafTree_4Amount, leafTree_5Amount, pineTreeAmount, tallPineTreeAmount;
+	[SerializeField] private GameObject apple, blueberryBush, lingonberryBush, mushroom, leafTree_1,
+		leafTree_2, leafTree_3, leafTree_4, leafTree_5, pineTree, tallPineTree;
+	[Space (10)]
 	[SerializeField] private int _currentSeed;
 
 	public GameObject cabinParent = null;
 
 	private Camera _camera;
 	private Dictionary<int, List<string>> _blackListDictionary = new Dictionary<int, List<string>>();
-	private	List<string> _tempBlacklist;
-	
+	private List<string> _tempBlacklist;
+
 
 	private void Awake()
 	{
@@ -29,10 +36,14 @@ public class ForestController : MonoBehaviour
 		else
 			_instance = this;
 
-
 		_camera = Camera.main;
 		_seedGenerator.SendSeed += SpawnForest;
 		_player.ResourceGathered += SaveIDToBlacklist;
+	}
+
+	private void Start()
+	{
+		InitialSpawn();
 	}
 
 	public void SetCabinParent(GameObject obj)
@@ -44,24 +55,26 @@ public class ForestController : MonoBehaviour
 	{
 		_currentSeed = seed;
 
-        if (_blackListDictionary.TryGetValue(_currentSeed, out List<string> result))
-        {
+		if (_blackListDictionary.TryGetValue(_currentSeed, out List<string> result))
+		{
 			_tempBlacklist = result;
-        }
-        else
-        {
+		}
+		else
+		{
 			_tempBlacklist = new List<string>();
 		}
 
 		print($"Seed: {seed}");
 		ClearForest();
 		// Check if the incoming seed number here is "-1", this means it's the Home block and no forest should spawn.
-		if (seed == -1) {
+		if (seed == -1)
+		{
 			print("Spawning Cabin");
 			SceneController.Instance.LoadScene("CabinScene");
 			return;
 		}
-		else if (SceneController.Instance.IsCurrentSceneName("CabinScene")) {
+		else if (SceneController.Instance.IsCurrentSceneName("CabinScene"))
+		{
 			cabinParent.SetActive(false);
 			SceneController.Instance.LoadScene("ForestScene");
 		}
@@ -74,11 +87,13 @@ public class ForestController : MonoBehaviour
 		int spawnCount = UnityEngine.Random.Range(5, 50);
 		print("Amount of new Objects: " + spawnCount);
 
-		for (int i = 0; i < spawnCount; i++) {
+		for (int i = 0; i < spawnCount; i++)
+		{
 			//This needs to check so that we don't random the same number twice in a row or something like that.
 			int randomObject = UnityEngine.Random.Range(0, ForestObjectPool.Instance.forestObjectPool.Length);
 
-			while (randomNumbers.Contains(randomObject)) {
+			while (randomNumbers.Contains(randomObject))
+			{
 				randomObject = (randomObject + 1) % ForestObjectPool.Instance.forestObjectPool.Length;
 			}
 
@@ -104,11 +119,13 @@ public class ForestController : MonoBehaviour
 			Ray ray = _camera.ScreenPointToRay(new Vector3(Screen.width * randomViewPortPosX, Screen.height * randomViewPortPosY));
 			RaycastHit hit;
 
-			if (Physics.Raycast(ray, out hit, _ground)) {
+			if (Physics.Raycast(ray, out hit, _ground))
+			{
 				randomWorldPos = hit.point;
 			}
 
-			if (hit.collider is null) {
+			if (hit.collider is null)
+			{
 				throw new System.Exception($"{ray} did not hit");
 			}
 
@@ -157,17 +174,46 @@ public class ForestController : MonoBehaviour
 		{
 			_blackListDictionary[_currentSeed] = _tempBlacklist;
 		}
-        else
-        {
+		else
+		{
 			_blackListDictionary.Add(_currentSeed, _tempBlacklist);
-        }
-    }
+		}
+	}
 
 	private void ClearForest()
 	{
-		foreach (Transform forestObject in _forestParent) {
+		foreach (Transform forestObject in _forestParent)
+		{
 			OnClearForest?.Invoke();
 			forestObject.gameObject.SetActive(false);
+		}
+	}
+	/// <summary>
+	/// Here we fill the ObjectPool up with managable accuracy concerning the amounts for each type - Spawns all the objects that will be possible to spawn on each block of forest.
+	/// </summary>
+	private void InitialSpawn()
+	{
+		SpawnThisTypeThisMany(apple, appleAmount);
+		SpawnThisTypeThisMany(blueberryBush, blueberryAmount);
+		SpawnThisTypeThisMany(lingonberryBush, lingonberryAmount);
+		SpawnThisTypeThisMany(mushroom, mushroomAmount);
+		SpawnThisTypeThisMany(leafTree_1, leafTree_1Amount);
+		SpawnThisTypeThisMany(leafTree_2, leafTree_2Amount);
+		SpawnThisTypeThisMany(leafTree_3, leafTree_3Amount);
+		SpawnThisTypeThisMany(leafTree_4, leafTree_4Amount);
+		SpawnThisTypeThisMany(leafTree_5, leafTree_5Amount);
+		SpawnThisTypeThisMany(pineTree, pineTreeAmount);
+		SpawnThisTypeThisMany(tallPineTree, tallPineTreeAmount);
+
+		ForestObjectPool.Instance.AddForestObjectsToList();
+	}
+
+	private void SpawnThisTypeThisMany(GameObject type, int typeAmount)
+	{
+		for (int i = 0; i < typeAmount; i++)
+		{
+			GameObject spawn = Instantiate(type, _forestParent);
+			spawn.SetActive(false);
 		}
 	}
 

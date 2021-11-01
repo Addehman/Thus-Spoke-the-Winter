@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ScreenWrap : MonoBehaviour
 {
-	public event Action<string> PlayerTraveling;
+	public event Action<Latitude> PlayerTraveling;
 
 	private Transform _transform;
 	private Camera _cam;
@@ -46,43 +46,43 @@ public class ScreenWrap : MonoBehaviour
 		{
 			if (!_hasEnergy && _eastIsNotExplored)
 			{
-				ConvertPosFromViewPortToWorldPoint(false, true, 1f, "east");
+				ConvertPosFromViewPortToWorldPoint(false, true, 1f, Latitude.East);
 				return;
 			}
-			ConvertPosFromViewPortToWorldPoint(true, true, 0f, "east");
+			ConvertPosFromViewPortToWorldPoint(true, true, 0f, Latitude.East);
 		}
 		else if (playerViewPortPos.x < 0f)
 		{
 			if (!_hasEnergy && _westIsNotExplored)
 			{
-				ConvertPosFromViewPortToWorldPoint(false, true, 0f, "west");
+				ConvertPosFromViewPortToWorldPoint(false, true, 0f, Latitude.West);
 				return;
 			}
 
-			ConvertPosFromViewPortToWorldPoint(true, true, 1f, "west");
+			ConvertPosFromViewPortToWorldPoint(true, true, 1f, Latitude.West);
 		}
 		else if (playerViewPortPos.y > 1f)
 		{
 			if (!_hasEnergy && _northIsNotExplored)
 			{
-				ConvertPosFromViewPortToWorldPoint(false, false, 1f, "north");
+				ConvertPosFromViewPortToWorldPoint(false, false, 1f, Latitude.North);
 				return;
 			}
-			ConvertPosFromViewPortToWorldPoint(true, false, -1f, "north");
+			ConvertPosFromViewPortToWorldPoint(true, false, -1f, Latitude.North);
 		}
 		else if (playerViewPortPos.y < 0f)
 		{
 			if (!_hasEnergy && _southIsNotExplored)
 			{
-				ConvertPosFromViewPortToWorldPoint(false, false, 0f, "south");
+				ConvertPosFromViewPortToWorldPoint(false, false, 0f, Latitude.South);
 				return;
 			}
 
-			ConvertPosFromViewPortToWorldPoint(true, false, 2f, "south");
+			ConvertPosFromViewPortToWorldPoint(true, false, 2f, Latitude.South);
 		}
 	}
 
-	private void ConvertPosFromViewPortToWorldPoint(bool shouldMove, bool changeX, float value, string latitude)
+	private void ConvertPosFromViewPortToWorldPoint(bool shouldMove, bool changeX, float value, Latitude latitude)
 	{
 		if (changeX)
 		{
