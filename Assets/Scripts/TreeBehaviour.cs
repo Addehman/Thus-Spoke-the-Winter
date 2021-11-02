@@ -30,14 +30,22 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 		_health = _data.health;
 		_damage = _data.damage;
 		_sr.sprite = _data.resourceSprite;
+	}
 
-		if (type == ResourceType.fruitTree)
+	public void AddFruitsToList()
+	{
+		if (fruits.Count > 0) return;
+
+		foreach (FoodBehaviour fruit in _transform.GetComponentsInChildren<FoodBehaviour>())
 		{
-			foreach (FoodBehaviour fruit in _transform.GetComponentsInChildren<FoodBehaviour>())
-			{
+			if (fruit.gameObject.activeSelf)
 				fruits.Add(fruit);
-			}
 		}
+	}
+
+	private void OnDisable()
+	{
+		fruits.Clear();
 	}
 
 	public void OnInteract()

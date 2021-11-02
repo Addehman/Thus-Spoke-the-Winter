@@ -166,6 +166,26 @@ public class ForestController : MonoBehaviour
 
 			newObject.gameObject.SetActive(true);
 
+			if (newObject.TryGetComponent(out TreeBehaviour tree) && tree.type == ResourceType.fruitTree)
+			{
+				foreach (Transform item in newObject)
+				{
+					item.gameObject.name = item.gameObject.GetInstanceID().ToString();
+					if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(item.gameObject.name))
+					{
+						print($"{item.gameObject.name} is blacklisted!");
+						item.gameObject.SetActive(false);
+						continue;
+					}
+					else
+					{
+						item.gameObject.SetActive(true);
+					}
+				}
+				// Update/Fill list on this newObject with event
+				tree.AddFruitsToList();
+			}
+
 			//Another way to give the spawned object a unique ID as name. Does not utilize seed though, so not for us right now.
 			//newObject.name = Guid.NewGuid().ToString();
 
