@@ -53,6 +53,9 @@ MonoBehaviour:
   _ground:
     serializedVersion: 2
     m_Bits: 64
+  _default:
+    serializedVersion: 2
+    m_Bits: 1
   _player: {fileID: 0}
   _seedGenerator: {fileID: 1934947906}
   _currentSeed: 0
@@ -87,6 +90,8 @@ MonoBehaviour:
     - {fileID: 7807923653859911093, guid: 7ef23cdc3402c6441824985161429242, type: 3}
     - {fileID: 4189062443654764373, guid: 4b8b3209f9b34bb4b9acce051da813e6, type: 3}
   foodRarityWeight: 0
+  minSpawnAmount: 5
+  maxSpawnAmount: 50
 --- !u!114 &5648477622683835973
 MonoBehaviour:
   m_ObjectHideFlags: 0

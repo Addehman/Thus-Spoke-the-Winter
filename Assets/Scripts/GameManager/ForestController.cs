@@ -26,13 +26,15 @@ public class ForestController : MonoBehaviour
 	public event Action OnClearForest;
 
 	[SerializeField] private Transform _forestParent;
-	[SerializeField] private LayerMask _ground;
+	[SerializeField] private LayerMask _ground, _default;
 	[SerializeField] private PlayerController _player;
 	[SerializeField] private SeedGenerator _seedGenerator;
 	[SerializeField] private int _currentSeed;
 	[SerializeField] private ObjectPoolQuantitySetup _objectPoolQuantitySetup;
 	[SerializeField] private ObjectPoolPrefabLibrary _objectPoolPrefabLibrary;
 	[SerializeField] private int foodRarityWeight;
+	[Space(10)]
+	[SerializeField] private int minSpawnAmount = 5, maxSpawnAmount = 50;
 
 	private GameObject _cabinParent;
 
@@ -40,6 +42,7 @@ public class ForestController : MonoBehaviour
 	private Dictionary<int, List<string>> _blackListDictionary = new Dictionary<int, List<string>>();
 	private List<string> _tempBlacklist;
 	private List<Transform> tempSpawns;
+	private List<Vector2> randomPositions;
 
 
 	private void Awake()
@@ -93,12 +96,14 @@ public class ForestController : MonoBehaviour
 		}
 
 		List<int> usedRandomNumbers = new List<int>();
-
+		randomPositions = new List<Vector2>();
 
 		UnityEngine.Random.InitState(seed); // To be used to control the seed of the random forest, whether it should be random or not.
 
-		int spawnCount = UnityEngine.Random.Range(5, 50);
+		int spawnCount = UnityEngine.Random.Range(minSpawnAmount, maxSpawnAmount);
 		print("Amount of new Objects: " + spawnCount);
+
+		CheckRarityTier();
 
 		for (int i = 0; i < spawnCount; i++)
 		{
@@ -109,41 +114,19 @@ public class ForestController : MonoBehaviour
 			{
 				randomObject = (randomObject + 1) % ForestObjectPool.Instance.forestObjectPool.Length;
 			}
-
 			usedRandomNumbers.Add(randomObject);
 
 			Transform newObject = ForestObjectPool.Instance.forestObjectPool[randomObject];
-
-			// The X and Y positions ranging from min to max of what the camera displays,
-			// with a padding to make sure that an object doesn't block the player entering a block of forest.
-			float randomViewPortPosX = UnityEngine.Random.Range(0.1f, 0.9f);
-			float randomViewPortPosY = UnityEngine.Random.Range(0.1f, 0.9f);
-
-			//float randomViewPortPosX = UnityEngine.Random.Range(0f, 1f);
-			//float randomViewPortPosY = UnityEngine.Random.Range(0f, 1f);
-
-			float randomOffset = UnityEngine.Random.Range(-1f, 1f);
 
 			//A way to make the seed control what the random name is going to be.
 			int randomID1 = UnityEngine.Random.Range(0, 1000000);
 			int randomID2 = UnityEngine.Random.Range(0, 1000000);
 
-			Vector3 randomWorldPos = Vector3.zero;
-			Ray ray = _camera.ScreenPointToRay(new Vector3(Screen.width * randomViewPortPosX, Screen.height * randomViewPortPosY));
-			RaycastHit hit;
+		// Here we use a Raycast to find a random position for the newObject to be positioned to.
+			Vector3 randomWorldPos = GenerateRandomPosition();
 
-			if (Physics.Raycast(ray, out hit, _ground))
-			{
-				randomWorldPos = hit.point;
-			}
-
-			if (hit.collider is null)
-			{
-				throw new System.Exception($"{ray} did not hit");
-			}
-
-			randomWorldPos.z += randomOffset;
-
+			//float randomOffset = UnityEngine.Random.Range(-1f, 1f);
+			//randomWorldPos.z += randomOffset;
 
 			newObject.position = randomWorldPos;
 
@@ -231,6 +214,7 @@ public class ForestController : MonoBehaviour
 			_objectPoolQuantitySetup.blueberryAmount, _objectPoolQuantitySetup.lingonberryAmount, _objectPoolQuantitySetup.mushroomAmount, 
 			_objectPoolQuantitySetup.fruitTree_1Amount, _objectPoolQuantitySetup.fruitTree_2Amount, _objectPoolQuantitySetup.fruitTree_3Amount};
 
+		foodRarityWeight = 0;
 		for (int i = _objectPoolQuantitySetup.quantities.Length - 6; i < _objectPoolQuantitySetup.quantities.Length; i++)
 		{
 			foodRarityWeight += _objectPoolQuantitySetup.quantities[i];
@@ -266,17 +250,66 @@ public class ForestController : MonoBehaviour
 		{
 			foodRarityWeight = 30;
 		}
-		else if (dominant > 6 && dominant <= 10)
+		else if (dominant > 5 && dominant <= 10)
 		{
 			foodRarityWeight = 25;
 		}
+		else if (dominant > 10 && dominant <= 20)
+		{
+			foodRarityWeight = 15;
+		}
+		else if (dominant > 20)
+		{
+			foodRarityWeight = 0;
+		}
 		else
 		{
+			foodRarityWeight = 0;
 			for (int i = _objectPoolQuantitySetup.quantities.Length - 6; i < _objectPoolQuantitySetup.quantities.Length; i++)
 			{
 				foodRarityWeight += _objectPoolQuantitySetup.quantities[i];
 			}
 		}
+	}
+
+	/// <summary>
+	/// Use this to Generate a new Random Position on the Screen using the Camera.
+	/// </summary>
+	/// <returns>A random Vector3-position within the screen.</returns>
+	private Vector3 GenerateRandomPosition()
+	{
+		Vector3 randomPosition = Vector3.zero;
+
+		// The X and Y positions ranging from min to max of what the camera displays,
+		// with a padding to make sure that an object doesn't block the player entering a block of forest.
+		float randomViewPortPosX = UnityEngine.Random.Range(0.1f, 0.9f);
+		float randomViewPortPosY = UnityEngine.Random.Range(0.1f, 0.9f);
+
+		// Change the randomWorldPos if it's placed too close to another object.
+		Ray ray = _camera.ScreenPointToRay(new Vector3(Screen.width * randomViewPortPosX, Screen.height * randomViewPortPosY));
+		RaycastHit hit;
+
+		int tries = 0;
+		while (Physics.Raycast(ray, out hit, _default))
+		{
+			randomViewPortPosX = UnityEngine.Random.Range(0.1f, 0.9f);
+			randomViewPortPosY = UnityEngine.Random.Range(0.1f, 0.9f);
+			ray = _camera.ScreenPointToRay(new Vector3(Screen.width * randomViewPortPosX, Screen.height * randomViewPortPosY));
+
+			tries++;
+			if (tries > 9) break;
+		}
+		
+		if (Physics.Raycast(ray, out hit, _ground))
+		{
+			randomPosition = hit.point;
+		}
+
+		if (hit.collider is null)
+		{
+			throw new System.Exception($"{ray} did not hit");
+		}
+		return randomPosition;
 	}
 
 	private void OnDestroy()

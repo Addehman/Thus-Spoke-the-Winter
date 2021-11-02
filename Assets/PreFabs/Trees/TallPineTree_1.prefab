@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3586138282318264388}
   - component: {fileID: -3411812676585414658}
   - component: {fileID: -9034402099663642927}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: TallPineTree_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,6 +97,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 1dc0a74b16f8c564caa26757c6210b37, type: 2}
+  type: 0
+  size: 0
+  resourceAmount: 0
+  fruits: []
 --- !u!135 &-9034402099663642927
 SphereCollider:
   m_ObjectHideFlags: 0

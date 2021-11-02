@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7807923653859911094}
   - component: {fileID: -5545902183321323298}
   - component: {fileID: 4380800712682202362}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: LeafTree_2_Fruit
   m_TagString: Untagged
   m_Icon: {fileID: 0}

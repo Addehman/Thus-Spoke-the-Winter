@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8438590541516308704}
   - component: {fileID: -5967341018704860670}
   - component: {fileID: -3135820866741150052}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: LeafTree_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,6 +97,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 1e6cf2394c28c344e823fdd8934131a7, type: 2}
+  type: 0
+  size: 0
+  resourceAmount: 0
+  fruits: []
 --- !u!135 &-3135820866741150052
 SphereCollider:
   m_ObjectHideFlags: 0
