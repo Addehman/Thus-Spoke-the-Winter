@@ -9,8 +9,6 @@ public class ForestObjectPool : MonoBehaviour
 
 	public Transform[] forestObjectPool;
 
-	private Transform _myTransform;
-
 
 	private void Awake()
 	{
@@ -18,19 +16,10 @@ public class ForestObjectPool : MonoBehaviour
 			Destroy(this);
 		else
 			_instance = this;
-
-		_myTransform = transform;
 	}
 
 	public void AddForestObjectsToList(List<Transform> spawns)
 	{
 		forestObjectPool = spawns.ToArray();
-
-		//int index = 0;
-		//foreach (Transform forestObject in _myTransform)
-		//{
-		//	forestObjectPool[index] = forestObject;
-		//	index++;
-		//}
 	}
 }

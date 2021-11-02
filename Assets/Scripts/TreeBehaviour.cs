@@ -32,7 +32,12 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 		_sr.sprite = _data.resourceSprite;
 	}
 
-	public void AddFruitsToList()
+    private void OnEnable()
+    {
+		_health = _data.health;
+	}
+
+    public void AddFruitsToList()
 	{
 		if (fruits.Count > 0) return;
 

@@ -7,7 +7,7 @@ public class BorderFog : MonoBehaviour
 {
 	[SerializeField] private SeedGenerator _seedGenerator;
 	[SerializeField] private GameObject _northFog, _eastFog, _southFog, _westFog;
-	private bool _fogActive = false;
+	/*private bool _fogActive = false;*/
 	private bool _northActive = true, _eastActive = true, _southActive = true, _westActive = true;
 
 
