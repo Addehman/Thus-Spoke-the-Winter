@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PineTree 1
   m_EditorClassIdentifier: 
   name: Pine Tree 1
-  resourceSprite: {fileID: -6042065707596721711, guid: 5886caa57150865499135c4c1ffa6201, type: 3}
+  resourceSprite: {fileID: -2646631823563385148, guid: 5886caa57150865499135c4c1ffa6201, type: 3}
   type: 2
   health: 150
   damage: 10

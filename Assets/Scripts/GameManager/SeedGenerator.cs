@@ -11,11 +11,12 @@ public class SeedGenerator : MonoBehaviour
 
 	[SerializeField] private ScreenWrap _screenWrap;
 	[SerializeField] private int _seed = 0, _worldGridSize = 100;
-	private int _seedOffset;
+	private int _seedOffset, _startPos;
 	private bool _north, _east, _south, _west;
 
 	public Vector2Int position;
 	public int[,] worldGrid;
+	public Vector2Int distanceFromHome;
 
 
 	private void Awake()
@@ -34,7 +35,8 @@ public class SeedGenerator : MonoBehaviour
 
 	void Init()
 	{
-		position = new Vector2Int(_worldGridSize / 2, _worldGridSize / 2);
+		_startPos = _worldGridSize / 2;
+		position = new Vector2Int(_startPos, _startPos);
 		worldGrid[position.x, position.y] = -1; // Setting the Home position to a value definitively different to the one of the Seed.
 
 		_seedOffset = UnityEngine.Random.Range(1, 10000);
@@ -66,6 +68,7 @@ public class SeedGenerator : MonoBehaviour
 		}
 
 		WhatHasBeenExplored();
+		UpdateDistanceFromHome();
 		GenerateSeed(position.x, position.y);
 	}
 
@@ -131,6 +134,11 @@ public class SeedGenerator : MonoBehaviour
 	{
 		_seed++;
 		return _seed;
+	}
+
+	private void UpdateDistanceFromHome()
+	{
+		distanceFromHome = new Vector2Int(Mathf.Abs(position.x - _startPos), Mathf.Abs(position.y - _startPos));
 	}
 
 	private void OnDestroy()

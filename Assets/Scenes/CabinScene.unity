@@ -1991,18 +1991,6 @@ PrefabInstance:
       propertyPath: _forestParent
       value: 
       objectReference: {fileID: 443019307}
-    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: _objectPoolQuantitySetup.fruitTree_1Amount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: _objectPoolQuantitySetup.fruitTree_2Amount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: _objectPoolQuantitySetup.fruitTree_3Amount
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1003278497046935819, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
       propertyPath: m_RootOrder
       value: 0

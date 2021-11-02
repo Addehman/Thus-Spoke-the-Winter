@@ -6,8 +6,10 @@ using System.Collections.Generic;
 public class ObjectPoolQuantitySetup
 {
 	[HideInInspector] public int[] quantities;
-	public int blueberryAmount, lingonberryAmount, mushroomAmount, leafTree_1Amount, leafTree_2Amount,
-		leafTree_3Amount, leafTree_4Amount, leafTree_5Amount, pineTreeAmount, tallPineTreeAmount, fruitTree_1Amount, fruitTree_2Amount, fruitTree_3Amount;
+	public int leafTree_1Amount, leafTree_2Amount, leafTree_3Amount, leafTree_4Amount, 
+		leafTree_5Amount, pineTreeAmount, tallPineTreeAmount, blueberryAmount, 
+		lingonberryAmount, mushroomAmount, fruitTree_1Amount, fruitTree_2Amount,
+		fruitTree_3Amount;
 }
 
 [Serializable]
@@ -30,8 +32,7 @@ public class ForestController : MonoBehaviour
 	[SerializeField] private int _currentSeed;
 	[SerializeField] private ObjectPoolQuantitySetup _objectPoolQuantitySetup;
 	[SerializeField] private ObjectPoolPrefabLibrary _objectPoolPrefabLibrary;
-
-	[Space(10)]
+	[SerializeField] private int foodRarityWeight;
 
 	private GameObject _cabinParent;
 
@@ -102,7 +103,7 @@ public class ForestController : MonoBehaviour
 		for (int i = 0; i < spawnCount; i++)
 		{
 			//This needs to check so that we don't random the same number twice in a row or something like that.
-			int randomObject = UnityEngine.Random.Range(0, ForestObjectPool.Instance.forestObjectPool.Length);
+			int randomObject = UnityEngine.Random.Range(0, ForestObjectPool.Instance.forestObjectPool.Length - foodRarityWeight); // This number should be a variable
 
 			while (usedRandomNumbers.Contains(randomObject))
 			{
@@ -225,10 +226,15 @@ public class ForestController : MonoBehaviour
 	/// </summary>
 	private void InitialSpawn()
 	{
-		_objectPoolQuantitySetup.quantities = new int[13] { _objectPoolQuantitySetup.blueberryAmount, _objectPoolQuantitySetup.lingonberryAmount, 
-				_objectPoolQuantitySetup.mushroomAmount, _objectPoolQuantitySetup.leafTree_1Amount, _objectPoolQuantitySetup.leafTree_2Amount, _objectPoolQuantitySetup.leafTree_3Amount,
-				_objectPoolQuantitySetup.leafTree_4Amount, _objectPoolQuantitySetup.leafTree_5Amount, _objectPoolQuantitySetup.pineTreeAmount, _objectPoolQuantitySetup.tallPineTreeAmount,
+		_objectPoolQuantitySetup.quantities = new int[13] { _objectPoolQuantitySetup.leafTree_1Amount, _objectPoolQuantitySetup.leafTree_2Amount, _objectPoolQuantitySetup.leafTree_3Amount, 
+			_objectPoolQuantitySetup.leafTree_4Amount, _objectPoolQuantitySetup.leafTree_5Amount, _objectPoolQuantitySetup.pineTreeAmount, _objectPoolQuantitySetup.tallPineTreeAmount,
+			_objectPoolQuantitySetup.blueberryAmount, _objectPoolQuantitySetup.lingonberryAmount, _objectPoolQuantitySetup.mushroomAmount, 
 			_objectPoolQuantitySetup.fruitTree_1Amount, _objectPoolQuantitySetup.fruitTree_2Amount, _objectPoolQuantitySetup.fruitTree_3Amount};
+
+		for (int i = _objectPoolQuantitySetup.quantities.Length - 6; i < _objectPoolQuantitySetup.quantities.Length; i++)
+		{
+			foodRarityWeight += _objectPoolQuantitySetup.quantities[i];
+		}
 
 		tempSpawns = new List<Transform>();
 
@@ -250,6 +256,26 @@ public class ForestController : MonoBehaviour
 			spawn = Instantiate(type, _forestParent);
 			spawn.SetActive(false);
 			tempSpawns.Add(spawn.transform);
+		}
+	}
+
+	private void CheckRarityTier()
+	{
+		int dominant = _seedGenerator.distanceFromHome.x >= _seedGenerator.distanceFromHome.y ? _seedGenerator.distanceFromHome.x : _seedGenerator.distanceFromHome.y;
+		if (dominant > 1 && dominant <= 5)
+		{
+			foodRarityWeight = 30;
+		}
+		else if (dominant > 6 && dominant <= 10)
+		{
+			foodRarityWeight = 25;
+		}
+		else
+		{
+			for (int i = _objectPoolQuantitySetup.quantities.Length - 6; i < _objectPoolQuantitySetup.quantities.Length; i++)
+			{
+				foodRarityWeight += _objectPoolQuantitySetup.quantities[i];
+			}
 		}
 	}
 
