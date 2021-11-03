@@ -34,8 +34,10 @@ public class ForestController : MonoBehaviour
     [SerializeField] private ObjectPoolQuantitySetup _objectPoolQuantitySetup;
     [SerializeField] private ObjectPoolPrefabLibrary _objectPoolPrefabLibrary;
     [SerializeField] private int foodRarityWeight;
+    [SerializeField] private int uniqueFoodObjects = 6;
     [Space(10)]
-    [SerializeField] private int minSpawnAmount = 5, maxSpawnAmount = 50;
+    [SerializeField] private int minSpawnAmount = 5;
+    [SerializeField] private int maxSpawnAmount = 50;
 
     private GameObject _cabinParent;
 
@@ -43,7 +45,6 @@ public class ForestController : MonoBehaviour
     private Dictionary<int, List<string>> _blackListDictionary = new Dictionary<int, List<string>>();
     private List<string> _tempBlacklist;
     private List<Transform> tempSpawns;
-    private List<Vector2> randomPositions;
 
 
     private void Awake()
@@ -97,7 +98,6 @@ public class ForestController : MonoBehaviour
         }
 
         List<int> usedRandomNumbers = new List<int>();
-        randomPositions = new List<Vector2>();
 
         UnityEngine.Random.InitState(seed); // To be used to control the seed of the random forest, whether it should be random or not.
 
@@ -216,7 +216,7 @@ public class ForestController : MonoBehaviour
             _objectPoolQuantitySetup.fruitTree_1Amount, _objectPoolQuantitySetup.fruitTree_2Amount, _objectPoolQuantitySetup.fruitTree_3Amount};
 
         foodRarityWeight = 0;
-        for (int i = _objectPoolQuantitySetup.quantities.Length - 6; i < _objectPoolQuantitySetup.quantities.Length; i++)
+        for (int i = _objectPoolQuantitySetup.quantities.Length - uniqueFoodObjects; i < _objectPoolQuantitySetup.quantities.Length; i++)
         {
             foodRarityWeight += _objectPoolQuantitySetup.quantities[i];
         }
@@ -266,7 +266,7 @@ public class ForestController : MonoBehaviour
         else
         {
             foodRarityWeight = 0;
-            for (int i = _objectPoolQuantitySetup.quantities.Length - 6; i < _objectPoolQuantitySetup.quantities.Length; i++)
+            for (int i = _objectPoolQuantitySetup.quantities.Length - uniqueFoodObjects; i < _objectPoolQuantitySetup.quantities.Length; i++)
             {
                 foodRarityWeight += _objectPoolQuantitySetup.quantities[i];
             }
