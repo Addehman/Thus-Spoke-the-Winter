@@ -350,6 +350,6 @@ public class PlayerController : MonoBehaviour
 
 		ForestController.Instance.OnClearForest -= ClearInteractablesInRangeList;
 		EnergyController.Instance.EnergyDepleted -= SetHasEnergyFalse;
-		EnergyController.Instance.EnergyRestored -= SetHasEnergyFalse;
+		EnergyController.Instance.EnergyRestored -= SetHasEnergyTrue;
 	}
 }
