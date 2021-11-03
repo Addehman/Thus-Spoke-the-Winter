@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 7807923653859911094}
   - component: {fileID: -5545902183321323298}
   - component: {fileID: 4380800712682202362}
-  m_Layer: 0
+  - component: {fileID: 7627831169782813408}
+  m_Layer: 7
   m_Name: LeafTree_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,3 +115,16 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.08
   m_Center: {x: -0.04, y: 0.02, z: 0}
+--- !u!65 &7627831169782813408
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7807923653859911093}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.37, y: 0.30355382, z: 0.022705298}
+  m_Center: {x: -0.05, y: 0.15177469, z: 1}
