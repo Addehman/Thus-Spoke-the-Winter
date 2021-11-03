@@ -8,8 +8,17 @@ public class Inventory : MonoBehaviour
 
 	public event Action UpdateUI;
 
-	public int currentInventory, inventoryMaxCapacity = 100;
-	public int wood, food, blueberry, lingonberry, apple, mushroom, venison;
+	public int inventoryMaxCapacity = 100;
+	public int currentInventory;
+	[Space(10)]
+	public int wood;
+	public int food;
+	[Space(10)]
+	public int blueberry;
+	public int lingonberry;
+	public int apple;
+	public int mushroom;
+	public int venison;
 
 	[SerializeField] private PlayerController _player;
 	[SerializeField] private StorageController _storageController;
@@ -36,7 +45,7 @@ public class Inventory : MonoBehaviour
 
 	void GatherResource(GameObject obj)
 	{
-		print($"Food: {food}. Wood: {wood}");
+		//print($"Food: {food}. Wood: {wood}");
 
 		int gatheredWood = 0;
 		int gatheredBlueberry = 0;
@@ -79,11 +88,11 @@ public class Inventory : MonoBehaviour
 						gatheredWood = treeBehav.resourceAmount;
 						break;
 					}
-				/*case ResourceType.newTree:
-					{
-						wood += newTreeAmount;
-						break;
-					}*/
+					/*case ResourceType.newTree:
+						{
+							wood += newTreeAmount;
+							break;
+						}*/
 			}
 		}
 		else if (foodBehav != null)
@@ -112,11 +121,11 @@ public class Inventory : MonoBehaviour
 						gatheredMushroom += foodBehav.resourceAmount;
 						break;
 					}
-				/*case ResourceType.venison:
-					{
-						gatheredVenison += foodBehav.resourceAmount;
-						break;
-					}*/
+					/*case ResourceType.venison:
+						{
+							gatheredVenison += foodBehav.resourceAmount;
+							break;
+						}*/
 			}
 		}
 
@@ -130,7 +139,7 @@ public class Inventory : MonoBehaviour
 		food = (blueberry + lingonberry + apple + mushroom + venison);
 
 
-		InventoryCapacityFailsafe(gatheredWood, gatheredBlueberry, gatheredLingonberry, 
+		InventoryCapacityFailsafe(gatheredWood, gatheredBlueberry, gatheredLingonberry,
 			gatheredApple, gatheredMushroom, gatheredVenison);
 
 
@@ -147,14 +156,14 @@ public class Inventory : MonoBehaviour
 	}
 
 	public void ClearFood()
-    {
+	{
 		food = blueberry = lingonberry = apple = mushroom = venison = 0;
 	}
 
 	public void ClearWood()
-    {
+	{
 		wood = 0;
-    }
+	}
 
 	/*void WhatResourceToAdd(GameObject obj)
 	{
@@ -162,7 +171,7 @@ public class Inventory : MonoBehaviour
 	}*/
 
 
-	void InventoryCapacityFailsafe(int gatheredWood, int gatheredBlueberry, int gatheredLingonberry, 
+	void InventoryCapacityFailsafe(int gatheredWood, int gatheredBlueberry, int gatheredLingonberry,
 		int gatheredApple, int gatheredMushroom, int gatheredVenison)
 	{
 		if (inventoryMaxCapacity - (wood + food) < 0)
@@ -199,7 +208,7 @@ public class Inventory : MonoBehaviour
 		}
 	}
 
-	private void OnDestroy() 
+	private void OnDestroy()
 	{
 		_player.ResourceGathered -= GatherResource;
 	}

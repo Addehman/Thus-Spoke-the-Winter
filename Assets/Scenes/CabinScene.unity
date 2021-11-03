@@ -1754,42 +1754,6 @@ PrefabInstance:
       propertyPath: _forestParent
       value: 
       objectReference: {fileID: 443019307}
-    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: maxSpawnAmount
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: _default.m_Bits
-      value: 128
-      objectReference: {fileID: 0}
-    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: foodRarityWeight
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: uniqueFoodObjects
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: _objectPoolQuantitySetup.pineTreeAmount
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: _objectPoolQuantitySetup.leafTree_1Amount
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: _objectPoolQuantitySetup.leafTree_2Amount
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: _objectPoolQuantitySetup.leafTree_3Amount
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1003278497046935818, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: _objectPoolQuantitySetup.leafTree_4Amount
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 1003278497046935819, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1842,6 +1806,30 @@ PrefabInstance:
       propertyPath: _player
       value: 
       objectReference: {fileID: 1581711721}
+    - target: {fileID: 6923101660689745274, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: _dayGoalValues.woodDayGoal_lateFall
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6923101660689745274, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: _dayGoalValues.woodDayGoal_earlyFall
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 6923101660689745274, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: _dayGoalValues.woodDayGoal_lateSpring
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 6923101660689745274, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: _dayGoalValues.woodDayGoal_lateSummer
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6923101660689745274, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: _dayGoalValues.woodDayGoal_earlySpring
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6923101660689745274, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: _dayGoalValues.woodDayGoal_earlySummer
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 7794504142698881068, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
       propertyPath: _player
       value: 

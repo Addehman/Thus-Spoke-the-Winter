@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
 		_controls.Player.Interact.started += ctx => Interact();
 		ForestController.Instance.OnClearForest += ClearInteractablesInRangeList;
 		EnergyController.Instance.EnergyDepleted += SetHasEnergyFalse;
-		EnergyController.Instance.EnergyRestored += SetHasEnergyTrue;
+		EnergyController.Instance.PlayerRestingEndingRound += SetHasEnergyTrue;
 	}
 
 	private void Update()
@@ -275,7 +275,7 @@ public class PlayerController : MonoBehaviour
 		}
 		else if (food == null || (food != null && food.type != ResourceType.apple))
 		{
-			print("Not Apple");
+			//print("Not Apple");
 			int index = GetIndexFromList(_interactablesInRange, obj);
 			_interactablesInRange.RemoveAt(index);
 		}
@@ -350,6 +350,6 @@ public class PlayerController : MonoBehaviour
 
 		ForestController.Instance.OnClearForest -= ClearInteractablesInRangeList;
 		EnergyController.Instance.EnergyDepleted -= SetHasEnergyFalse;
-		EnergyController.Instance.EnergyRestored -= SetHasEnergyTrue;
+		EnergyController.Instance.PlayerRestingEndingRound -= SetHasEnergyTrue;
 	}
 }

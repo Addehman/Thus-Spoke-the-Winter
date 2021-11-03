@@ -10,7 +10,7 @@ public class SeasonController : MonoBehaviour
 	private static SeasonController _instance;
 	public static SeasonController Instance { get { return _instance; } }
 
-	[SerializeField] private Seasons currentSeason = Seasons.earlySpring;
+	public Seasons currentSeason = Seasons.earlySpring;
 
 	public event Action GameOver;
 	public event Action<Seasons> UpdateSeason;
@@ -26,7 +26,8 @@ public class SeasonController : MonoBehaviour
 
 	private void Start()
 	{
-		EnergyController.Instance.EnergyRestored += IncrementSeason;
+		//EnergyController.Instance.EnergyRestored += IncrementSeason;
+		StorageController.Instance.GoalAccomplished += IncrementSeason;
 		UpdateSeason?.Invoke(currentSeason);
 	}
 
@@ -45,7 +46,7 @@ public class SeasonController : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		EnergyController.Instance.EnergyRestored -= IncrementSeason;
+		EnergyController.Instance.PlayerRestingEndingRound -= IncrementSeason;
 	}
 }
 

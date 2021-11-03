@@ -28,8 +28,8 @@ public class UIManager : MonoBehaviour
 	{
 		float currentEnergy = EnergyController.Instance.currentEnergy / (float)EnergyController.Instance.startEnergy; 
 		energyBar.fillAmount = currentEnergy;
-		print($"Current Energy UI: {currentEnergy}");
-		print($"Current Energy: {EnergyController.Instance.currentEnergy}");
+		//print($"Current Energy UI: {currentEnergy}");
+		//print($"Current Energy: {EnergyController.Instance.currentEnergy}");
 	}
 
 	private void OnDestroy() 

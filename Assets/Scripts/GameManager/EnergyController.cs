@@ -5,17 +5,17 @@ using UnityEngine.InputSystem;
 public class EnergyController : MonoBehaviour
 {
 	private static EnergyController _instance;
-	public static EnergyController Instance {get{ return _instance;}}
+	public static EnergyController Instance { get { return _instance; } }
 
 	[SerializeField] private PlayerController _player;
 	[SerializeField] private SeedGenerator _seedGenerator;
 	[SerializeField] private int smallEnergyCost = 10, mediumEnergyCost = 50, largeEnergyCost = 100;
 	public int currentEnergy = 0, startEnergy = 1000;
 
-	public event Action UpdateEnergyUI, EnergyDepleted, EnergyRestored;
+	public event Action UpdateEnergyUI, EnergyDepleted, PlayerRestingEndingRound;
 
 
-	private void Awake() 
+	private void Awake()
 	{
 		if (_instance != null && _instance != this)
 			Destroy(this);
@@ -23,14 +23,14 @@ public class EnergyController : MonoBehaviour
 			_instance = this;
 	}
 
-	private void Start() 
+	private void Start()
 	{
 		// Subscribe to events here
 		_player.EnergyDrain += LoseEnergy;
 		_seedGenerator.DrainEnergy += LoseEnergy;
 	}
 
-	private void OnEnable() 
+	private void OnEnable()
 	{
 		currentEnergy = startEnergy;
 	}
@@ -38,8 +38,9 @@ public class EnergyController : MonoBehaviour
 	public void LoseEnergy(EnergyCost size)
 	{
 		int cost = 0;
-		switch (size) {
-		// here we should drain a certain amount of energy according to the size of the object/task
+		switch (size)
+		{
+			// here we should drain a certain amount of energy according to the size of the object/task
 			case EnergyCost.Small:
 				cost = smallEnergyCost;
 				break;
@@ -54,7 +55,8 @@ public class EnergyController : MonoBehaviour
 		currentEnergy -= cost;
 		UpdateEnergyUI?.Invoke();
 
-		if (currentEnergy <= 0) {
+		if (currentEnergy <= 0)
+		{
 			EnergyDepleted?.Invoke();
 		}
 	}
@@ -64,17 +66,17 @@ public class EnergyController : MonoBehaviour
 	/// </summary>
 	public void Rest()
 	{
-        if (currentEnergy > 0)
-        {
+		if (currentEnergy > 0)
+		{
 			return;
-        }
+		}
 		print($"{this}Resting");
 		currentEnergy = startEnergy;
 		UpdateEnergyUI?.Invoke();
-		EnergyRestored?.Invoke();
+		PlayerRestingEndingRound?.Invoke();
 	}
 
-	private void OnDestroy() 
+	private void OnDestroy()
 	{
 		// Unsubscribe to events here
 		_player.EnergyDrain -= LoseEnergy;

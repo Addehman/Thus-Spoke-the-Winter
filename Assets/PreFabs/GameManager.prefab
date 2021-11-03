@@ -55,7 +55,7 @@ MonoBehaviour:
     m_Bits: 64
   _default:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 128
   _player: {fileID: 0}
   _seedGenerator: {fileID: 1934947906}
   _currentSeed: 0
@@ -90,8 +90,9 @@ MonoBehaviour:
     - {fileID: 7807923653859911093, guid: 7ef23cdc3402c6441824985161429242, type: 3}
     - {fileID: 4189062443654764373, guid: 4b8b3209f9b34bb4b9acce051da813e6, type: 3}
   foodRarityWeight: 0
+  uniqueFoodObjects: 6
   minSpawnAmount: 5
-  maxSpawnAmount: 50
+  maxSpawnAmount: 30
 --- !u!114 &5648477622683835973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,6 +177,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inventory: {fileID: 5648477622683835973}
+  woodDayGoal: 0
+  foodDayGoal: 0
+  woodWinterGoal: 300
+  foodWinterGoal: 300
+  _dayGoalValues:
+    woodDayGoal_earlySpring: 0
+    woodDayGoal_lateSpring: 0
+    woodDayGoal_earlySummer: 0
+    woodDayGoal_lateSummer: 0
+    woodDayGoal_earlyFall: 0
+    woodDayGoal_lateFall: 0
   woodStorage: 0
   foodStorage: 0
 --- !u!114 &1077116360792274108
@@ -190,3 +202,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 163f4277b232b3649bb7f8b6585648d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentSeason: 0
