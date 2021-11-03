@@ -9,7 +9,7 @@ public class EnergyController : MonoBehaviour
 
 	[SerializeField] private PlayerController _player;
 	[SerializeField] private SeedGenerator _seedGenerator;
-	[SerializeField] private int smallEnergyCost = 10, mediumEnergyCost = 50, largeEnergyCost = 100;
+	[SerializeField] private int smallEnergyCost = 10, mediumEnergyCost = 50, largeEnergyCost = 100, miniEnergyCost = 5;
 	public int currentEnergy = 0, startEnergy = 1000;
 
 	public event Action UpdateEnergyUI, EnergyDepleted, PlayerRestingEndingRound;
@@ -41,6 +41,9 @@ public class EnergyController : MonoBehaviour
 		switch (size)
 		{
 			// here we should drain a certain amount of energy according to the size of the object/task
+			case EnergyCost.Mini:
+				cost = miniEnergyCost;
+				break;
 			case EnergyCost.Small:
 				cost = smallEnergyCost;
 				break;

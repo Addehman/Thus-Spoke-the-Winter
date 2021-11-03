@@ -19,5 +19,5 @@ public enum ResourceType {
 }
 
 public enum EnergyCost {
-	Small, Medium, Large,
+	Small, Medium, Large, Mini, 
 }
