@@ -143,65 +143,12 @@ public class ForestController : MonoBehaviour
 			//För att spara prestanda. I och med att vi ändå alltid har koll på vilken seed vi är på med Dictionariet.
 			newObject.gameObject.name = $"{randomID1}{randomID2}";
 
-			if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(newObject.gameObject.name))
-			{
-				print($"{newObject.name} is blacklisted!");
-				// here we should check if it's mushroom or apple, then do like we have done
-				if (newObject.TryGetComponent(out FoodBehaviour food))
-				{
-					if ((food.type == ResourceType.apple || food.type == ResourceType.mushroom))
-					{
-						continue;
-					}
-					else
-					{
-						newObject.gameObject.SetActive(true);
-						newObject.position = PositionCorrection(newObject.position);
-						food.IsDepleted(true);
-						continue;
-					}
-				}
-				else if (newObject.TryGetComponent(out TreeBehaviour tree))
-				{
-					newObject.gameObject.SetActive(true);
-					newObject.position = PositionCorrection(newObject.position);
-					tree.SetSpriteToDepleted();
-					continue;
-				}
-			}
-			else // Not on Blacklist - simply update the sprites to not look depleted/cut down
-			{
-				if (newObject.TryGetComponent(out FoodBehaviour food))
-				{
-					food.IsDepleted(false);
-				}
-				else if (newObject.TryGetComponent(out TreeBehaviour tree))
-				{
-					tree.UpdateState(SeasonController.Instance.currentSeason);
-				}
-			}
+			if (CheckBlacklist(newObject))
+				continue;
 
 			newObject.gameObject.SetActive(true);
 
-			if (newObject.TryGetComponent(out TreeBehaviour fruitTree) && fruitTree.type == ResourceType.fruitTree)
-			{
-				foreach (Transform item in newObject)
-				{
-					item.gameObject.name = item.gameObject.GetInstanceID().ToString();
-					if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(item.gameObject.name))
-					{
-						print($"{item.gameObject.name} is blacklisted!");
-						item.gameObject.SetActive(false);
-						continue;
-					}
-					else
-					{
-						item.gameObject.SetActive(true);
-					}
-				}
-				// Update/Fill list on this newObject with event
-				fruitTree.AddFruitsToList();
-			}
+			CheckIfFruitTree(newObject);
 
 			//Another way to give the spawned object a unique ID as name. Does not utilize seed though, so not for us right now.
 			//newObject.name = Guid.NewGuid().ToString();
@@ -212,6 +159,71 @@ public class ForestController : MonoBehaviour
 			newObject.position = positionCorrection;*/
 
 			newObject.position = PositionCorrection(newObject.position);
+		}
+	}
+
+	private bool CheckBlacklist(Transform obj)
+	{
+		if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(obj.gameObject.name))
+		{
+			print($"{obj.name} is blacklisted!");
+			// here we should check if it's mushroom or apple, then do like we have done
+			if (obj.TryGetComponent(out FoodBehaviour food))
+			{
+				if ((food.type == ResourceType.apple || food.type == ResourceType.mushroom))
+				{
+					return true;
+				}
+				else
+				{
+					obj.gameObject.SetActive(true);
+					obj.position = PositionCorrection(obj.position);
+					food.IsDepleted(true);
+					return true;
+				}
+			}
+			else if (obj.TryGetComponent(out TreeBehaviour tree))
+			{
+				obj.gameObject.SetActive(true);
+				obj.position = PositionCorrection(obj.position);
+				tree.SetSpriteToDepleted();
+				return true;
+			}
+		}
+		else // Not on Blacklist - simply update the sprites to not look depleted/cut down
+		{
+			if (obj.TryGetComponent(out FoodBehaviour food))
+			{
+				food.IsDepleted(false);
+			}
+			else if (obj.TryGetComponent(out TreeBehaviour tree))
+			{
+				tree.UpdateState(SeasonController.Instance.currentSeason);
+			}
+		}
+		return false;
+	}
+
+	private void CheckIfFruitTree(Transform obj)
+	{
+		if (obj.TryGetComponent(out TreeBehaviour fruitTree) && fruitTree.type == ResourceType.fruitTree)
+		{
+			foreach (Transform item in obj)
+			{
+				item.gameObject.name = item.gameObject.GetInstanceID().ToString();
+				if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(item.gameObject.name))
+				{
+					print($"{item.gameObject.name} is blacklisted!");
+					item.gameObject.SetActive(false);
+					continue;
+				}
+				else
+				{
+					item.gameObject.SetActive(true);
+				}
+			}
+			// Update/Fill list on this newObject with event
+			fruitTree.AddFruitsToList();
 		}
 	}
 
