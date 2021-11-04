@@ -1877,6 +1877,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3172187887016184695, guid: 8a91dff73e3bc854bae2f1c8860fc612, type: 3}
+      propertyPath: m_Size.z
+      value: 1.0763772
+      objectReference: {fileID: 0}
+    - target: {fileID: 3172187887016184695, guid: 8a91dff73e3bc854bae2f1c8860fc612, type: 3}
+      propertyPath: m_Center.z
+      value: 0.82709503
+      objectReference: {fileID: 0}
+    - target: {fileID: 3172187887118461310, guid: 8a91dff73e3bc854bae2f1c8860fc612, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3172187887596613986, guid: 8a91dff73e3bc854bae2f1c8860fc612, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1925,6 +1937,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Home
       objectReference: {fileID: 0}
+    - target: {fileID: 5152125425741289529, guid: 8a91dff73e3bc854bae2f1c8860fc612, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5506076277099032968, guid: 8a91dff73e3bc854bae2f1c8860fc612, type: 3}
       propertyPath: m_Size.z
       value: 1.333135
@@ -1952,6 +1968,22 @@ PrefabInstance:
     - target: {fileID: 5710350631844902269, guid: 8a91dff73e3bc854bae2f1c8860fc612, type: 3}
       propertyPath: m_Center.z
       value: 0.80352044
+      objectReference: {fileID: 0}
+    - target: {fileID: 8025130176964918421, guid: 8a91dff73e3bc854bae2f1c8860fc612, type: 3}
+      propertyPath: m_Size.x
+      value: 0.5685345
+      objectReference: {fileID: 0}
+    - target: {fileID: 8025130176964918421, guid: 8a91dff73e3bc854bae2f1c8860fc612, type: 3}
+      propertyPath: m_Center.x
+      value: -1.244041
+      objectReference: {fileID: 0}
+    - target: {fileID: 8025130178200724735, guid: 8a91dff73e3bc854bae2f1c8860fc612, type: 3}
+      propertyPath: m_Size.z
+      value: 0.24481428
+      objectReference: {fileID: 0}
+    - target: {fileID: 8025130178200724735, guid: 8a91dff73e3bc854bae2f1c8860fc612, type: 3}
+      propertyPath: m_Center.z
+      value: 0.1638627
       objectReference: {fileID: 0}
     - target: {fileID: 9095923189209752257, guid: 8a91dff73e3bc854bae2f1c8860fc612, type: 3}
       propertyPath: _player
