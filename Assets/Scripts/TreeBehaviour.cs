@@ -32,14 +32,15 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 		_sr.sprite = _data.earlySpring_Sprite;
 	}
 
-	private void Start()
-	{
-		SeasonController.Instance.UpdateSeason += UpdateState;
-	}
+	//private void Start()
+	//{
+	//	SeasonController.Instance.UpdateSeason += UpdateState;
+	//}
 
 	private void OnEnable()
 	{
 		_health = _data.health;
+		UpdateState(SeasonController.Instance.currentSeason);
 	}
 
 	public void AddFruitsToList()
@@ -84,10 +85,11 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 	{
 		print($"{_gameObject} is falling!");
 		OnDestruct?.Invoke(_gameObject);
-		_gameObject.SetActive(false);
+		//_gameObject.SetActive(false);
+		_sr.sprite = _data.depleted_Sprite;
 	}
 
-	private void UpdateState(Seasons season)
+	public void UpdateState(Seasons season)
 	{
 		switch (season)
 		{
@@ -118,8 +120,13 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 		}
 	}
 
-	private void OnDestroy()
+	public void SetSpriteToDepleted()
 	{
-		SeasonController.Instance.UpdateSeason -= UpdateState;
+		_sr.sprite = _data.depleted_Sprite;
 	}
+
+	//private void OnDestroy()
+	//{
+	//	SeasonController.Instance.UpdateSeason -= UpdateState;
+	//}
 }

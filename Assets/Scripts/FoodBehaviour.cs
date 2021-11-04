@@ -19,11 +19,11 @@ public class FoodBehaviour : MonoBehaviour, IInteractable
 	//private IFoodState _currentState;'
 
 
-	private void OnEnable()
-	{
-		if (type == ResourceType.blueberry || type == ResourceType.lingonberry)
-			sr.sprite = data.earlySpring_Sprite;
-	}
+	//private void OnEnable()
+	//{
+	//	if (type == ResourceType.blueberry || type == ResourceType.lingonberry)
+	//		sr.sprite = data.earlySpring_Sprite;
+	//}
 
 	private void Start()
 	{
@@ -60,41 +60,11 @@ public class FoodBehaviour : MonoBehaviour, IInteractable
 			sr.sprite = data.depleted_Sprite;
 	}
 
-	//private void UpdateState(Seasons season)
-	//{
-	//	if (type == ResourceType.apple || type == ResourceType.blueberry || type == ResourceType.lingonberry || type == ResourceType.mushroom) return;
-
-	//	switch (season)
-	//	{
-	//		case Seasons.earlySpring:
-	//			_sr.sprite = _data.earlySpring_Sprite;
-	//			break;
-	//		case Seasons.lateSpring:
-	//			_sr.sprite = _data.lateSpring_Sprite;
-	//			break;
-	//		case Seasons.earlySummer:
-	//			_sr.sprite = _data.earlySummer_Sprite;
-	//			break;
-	//		case Seasons.lateSummer:
-	//			_sr.sprite = _data.lateSummer_Sprite;
-	//			break;
-	//		case Seasons.earlyFall:
-	//			_sr.sprite = _data.earlyFall_Sprite;
-	//			break;
-	//		case Seasons.lateFall:
-	//			_sr.sprite = _data.lateFall_Sprite;
-	//			break;
-	//		case Seasons.winter:
-	//			_sr.sprite = _data.winter_Sprite;
-	//			break;
-	//		default:
-	//			Debug.LogWarning($"The Season: {season} can't be found!");
-	//			break;
-	//	}
-	//}
-
-	//private void OnDestroy()
-	//{
-	//	SeasonController.Instance.UpdateSeason -= UpdateState;
-	//}
+	public void IsDepleted(bool isDepleted)
+	{
+		if (isDepleted)
+			sr.sprite = data.depleted_Sprite;
+		else
+			sr.sprite = data.earlySpring_Sprite;
+	}
 }

@@ -146,29 +146,44 @@ public class ForestController : MonoBehaviour
 			if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(newObject.gameObject.name))
 			{
 				print($"{newObject.name} is blacklisted!");
-				continue;
+				// here we should check if it's mushroom or apple, then do like we have done
+				if (newObject.TryGetComponent(out FoodBehaviour food))
+				{
+					if ((food.type == ResourceType.apple || food.type == ResourceType.mushroom))
+					{
+						continue;
+					}
+					else
+					{
+						newObject.gameObject.SetActive(true);
+						newObject.position = PositionCorrection(newObject.position);
+						food.IsDepleted(true);
+						continue;
+					}
+				}
+				else if (newObject.TryGetComponent(out TreeBehaviour tree))
+				{
+					newObject.gameObject.SetActive(true);
+					newObject.position = PositionCorrection(newObject.position);
+					tree.SetSpriteToDepleted();
+					continue;
+				}
 			}
-
-			//if (newObject.TryGetComponent(out FoodBehaviour food))
-			//{
-			//	if (food.type == ResourceType.apple || food.type == ResourceType.mushroom)
-			//	{
-			//		newObject.gameObject.SetActive(true);
-			//	}
-			//	else
-			//	{
-			//		food.sr.sprite = food.data.earlySpring_Sprite;
-			//		newObject.gameObject.SetActive(true);
-			//	}
-			//}
-			//else
-			//{
-			//	newObject.gameObject.SetActive(true);
-			//}
+			else // Not on Blacklist - simply update the sprites to not look depleted/cut down
+			{
+				if (newObject.TryGetComponent(out FoodBehaviour food))
+				{
+					food.IsDepleted(false);
+				}
+				else if (newObject.TryGetComponent(out TreeBehaviour tree))
+				{
+					tree.UpdateState(SeasonController.Instance.currentSeason);
+				}
+			}
 
 			newObject.gameObject.SetActive(true);
 
-			if (newObject.TryGetComponent(out TreeBehaviour tree) && tree.type == ResourceType.fruitTree)
+			if (newObject.TryGetComponent(out TreeBehaviour fruitTree) && fruitTree.type == ResourceType.fruitTree)
 			{
 				foreach (Transform item in newObject)
 				{
@@ -185,17 +200,25 @@ public class ForestController : MonoBehaviour
 					}
 				}
 				// Update/Fill list on this newObject with event
-				tree.AddFruitsToList();
+				fruitTree.AddFruitsToList();
 			}
 
 			//Another way to give the spawned object a unique ID as name. Does not utilize seed though, so not for us right now.
 			//newObject.name = Guid.NewGuid().ToString();
 
 			// Here we make sure that the spawned object is not in the air.
-			Vector3 positionCorrection = newObject.position;
+			/*Vector3 positionCorrection = newObject.position;
 			positionCorrection.y = 0f;
-			newObject.position = positionCorrection;
+			newObject.position = positionCorrection;*/
+
+			newObject.position = PositionCorrection(newObject.position);
 		}
+	}
+
+	private Vector3 PositionCorrection(Vector3 correction)
+	{
+		correction.y = 0f;
+		return correction;
 	}
 
 	private void SaveIDToBlacklist(GameObject obj)
