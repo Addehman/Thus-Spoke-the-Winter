@@ -13,7 +13,14 @@ MonoBehaviour:
   m_Name: PineTree 1
   m_EditorClassIdentifier: 
   name: Pine Tree 1
-  resourceSprite: {fileID: -2646631823563385148, guid: 5886caa57150865499135c4c1ffa6201, type: 3}
+  earlySpring_Sprite: {fileID: -1051028578192109981, guid: acbd7a0d847bbe84d8d6bd156529103f, type: 3}
+  lateSpring_Sprite: {fileID: -1051028578192109981, guid: acbd7a0d847bbe84d8d6bd156529103f, type: 3}
+  earlySummer_Sprite: {fileID: -2646631823563385148, guid: 5886caa57150865499135c4c1ffa6201, type: 3}
+  lateSummer_Sprite: {fileID: -2646631823563385148, guid: 5886caa57150865499135c4c1ffa6201, type: 3}
+  earlyFall_Sprite: {fileID: -456358555860331151, guid: f7370951011087a4fb72ca9bf267c118, type: 3}
+  lateFall_Sprite: {fileID: -456358555860331151, guid: f7370951011087a4fb72ca9bf267c118, type: 3}
+  winter_Sprite: {fileID: 6404111869143658504, guid: eb069ac83f8337f42810ada78aa05c70, type: 3}
+  depleted_Sprite: {fileID: -3797582884924888402, guid: 798749c1e868e3f4e8de0d9daf975d42, type: 3}
   type: 2
   health: 150
   damage: 10

@@ -13,7 +13,14 @@ MonoBehaviour:
   m_Name: LeafTree 3_Fruit
   m_EditorClassIdentifier: 
   name: Leaf Tree 3
-  resourceSprite: {fileID: 4037838828586887727, guid: 5886caa57150865499135c4c1ffa6201, type: 3}
+  earlySpring_Sprite: {fileID: 5161157100561067145, guid: acbd7a0d847bbe84d8d6bd156529103f, type: 3}
+  lateSpring_Sprite: {fileID: 5161157100561067145, guid: acbd7a0d847bbe84d8d6bd156529103f, type: 3}
+  earlySummer_Sprite: {fileID: 4037838828586887727, guid: 5886caa57150865499135c4c1ffa6201, type: 3}
+  lateSummer_Sprite: {fileID: 4037838828586887727, guid: 5886caa57150865499135c4c1ffa6201, type: 3}
+  earlyFall_Sprite: {fileID: -3432394191122955707, guid: f7370951011087a4fb72ca9bf267c118, type: 3}
+  lateFall_Sprite: {fileID: -3432394191122955707, guid: f7370951011087a4fb72ca9bf267c118, type: 3}
+  winter_Sprite: {fileID: -4713375838145624401, guid: eb069ac83f8337f42810ada78aa05c70, type: 3}
+  depleted_Sprite: {fileID: -3797582884924888402, guid: 798749c1e868e3f4e8de0d9daf975d42, type: 3}
   type: 1
   health: 100
   damage: 10
