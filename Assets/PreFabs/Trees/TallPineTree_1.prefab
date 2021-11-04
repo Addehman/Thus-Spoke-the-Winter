@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 1dc0a74b16f8c564caa26757c6210b37, type: 2}
-  type: 0
+  type: 2
   size: 0
   resourceAmount: 0
   fruits: []
