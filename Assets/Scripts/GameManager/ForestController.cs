@@ -149,6 +149,23 @@ public class ForestController : MonoBehaviour
 				continue;
 			}
 
+			//if (newObject.TryGetComponent(out FoodBehaviour food))
+			//{
+			//	if (food.type == ResourceType.apple || food.type == ResourceType.mushroom)
+			//	{
+			//		newObject.gameObject.SetActive(true);
+			//	}
+			//	else
+			//	{
+			//		food.sr.sprite = food.data.earlySpring_Sprite;
+			//		newObject.gameObject.SetActive(true);
+			//	}
+			//}
+			//else
+			//{
+			//	newObject.gameObject.SetActive(true);
+			//}
+
 			newObject.gameObject.SetActive(true);
 
 			if (newObject.TryGetComponent(out TreeBehaviour tree) && tree.type == ResourceType.fruitTree)

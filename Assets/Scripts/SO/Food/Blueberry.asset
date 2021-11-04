@@ -13,7 +13,14 @@ MonoBehaviour:
   m_Name: Blueberry
   m_EditorClassIdentifier: 
   name: Blueberry
-  resourceSprite: {fileID: 3934925829066726863, guid: fc421f446e7ea904db31a58cca9c38ba, type: 3}
+  earlySpring_Sprite: {fileID: 3934925829066726863, guid: fc421f446e7ea904db31a58cca9c38ba, type: 3}
+  lateSpring_Sprite: {fileID: 3934925829066726863, guid: fc421f446e7ea904db31a58cca9c38ba, type: 3}
+  earlySummer_Sprite: {fileID: 3934925829066726863, guid: fc421f446e7ea904db31a58cca9c38ba, type: 3}
+  lateSummer_Sprite: {fileID: 3934925829066726863, guid: fc421f446e7ea904db31a58cca9c38ba, type: 3}
+  earlyFall_Sprite: {fileID: 3934925829066726863, guid: fc421f446e7ea904db31a58cca9c38ba, type: 3}
+  lateFall_Sprite: {fileID: 3934925829066726863, guid: fc421f446e7ea904db31a58cca9c38ba, type: 3}
+  winter_Sprite: {fileID: 3934925829066726863, guid: fc421f446e7ea904db31a58cca9c38ba, type: 3}
+  depleted_Sprite: {fileID: 1204151520117669104, guid: 68162a64a8c5ad148a6f7b5175b77a94, type: 3}
   type: 4
   health: 1
   damage: 1

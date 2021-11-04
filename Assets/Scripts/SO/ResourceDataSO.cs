@@ -6,7 +6,8 @@ using UnityEngine;
 public class ResourceDataSO : ScriptableObject
 {
 	public new string name;
-	public Sprite resourceSprite;
+	public Sprite earlySpring_Sprite, lateSpring_Sprite, earlySummer_Sprite, lateSummer_Sprite,
+		earlyFall_Sprite, lateFall_Sprite, winter_Sprite, depleted_Sprite;
 	public ResourceType type;
 	public int health;
 	public int damage;

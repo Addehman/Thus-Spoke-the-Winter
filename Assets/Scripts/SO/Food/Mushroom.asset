@@ -13,7 +13,14 @@ MonoBehaviour:
   m_Name: Mushroom
   m_EditorClassIdentifier: 
   name: Mushroom
-  resourceSprite: {fileID: 4315506946141470425, guid: ba226cac692245b47b4769639f385fe5, type: 3}
+  earlySpring_Sprite: {fileID: 4315506946141470425, guid: ba226cac692245b47b4769639f385fe5, type: 3}
+  lateSpring_Sprite: {fileID: 4315506946141470425, guid: ba226cac692245b47b4769639f385fe5, type: 3}
+  earlySummer_Sprite: {fileID: 4315506946141470425, guid: ba226cac692245b47b4769639f385fe5, type: 3}
+  lateSummer_Sprite: {fileID: 4315506946141470425, guid: ba226cac692245b47b4769639f385fe5, type: 3}
+  earlyFall_Sprite: {fileID: 4315506946141470425, guid: ba226cac692245b47b4769639f385fe5, type: 3}
+  lateFall_Sprite: {fileID: 4315506946141470425, guid: ba226cac692245b47b4769639f385fe5, type: 3}
+  winter_Sprite: {fileID: 4315506946141470425, guid: ba226cac692245b47b4769639f385fe5, type: 3}
+  depleted_Sprite: {fileID: 4315506946141470425, guid: ba226cac692245b47b4769639f385fe5, type: 3}
   type: 7
   health: 1
   damage: 1

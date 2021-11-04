@@ -66,12 +66,12 @@ public class PlayerController : MonoBehaviour
 
 		if (tree != null)
 		{
-			tree.OnDestroy += OnResourceDestroy;
+			tree.OnDestruct += OnResourceDestroy;
 			if (tree.fruits.Count > 0)
 			{
 				for (int i = 0; i < tree.fruits.Count; i++)
 				{
-					tree.fruits[i].OnDestroy += OnResourceDestroy;
+					tree.fruits[i].OnDestruct += OnResourceDestroy;
 				}
 			}
 			return;
@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour
 
 		if (food != null)
 		{
-			food.OnDestroy += OnResourceDestroy;
+			food.OnDestruct += OnResourceDestroy;
 			return;
 		}
 	}
@@ -97,12 +97,12 @@ public class PlayerController : MonoBehaviour
 
 		if (tree != null)
 		{
-			tree.OnDestroy -= OnResourceDestroy;
+			tree.OnDestruct -= OnResourceDestroy;
 			if (tree.fruits.Count > 0)
 			{
 				for (int i = 0; i < tree.fruits.Count; i++)
 				{
-					tree.fruits[i].OnDestroy -= OnResourceDestroy;
+					tree.fruits[i].OnDestruct -= OnResourceDestroy;
 				}
 			}
 			return;
@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour
 
 		if (food != null)
 		{
-			food.OnDestroy -= OnResourceDestroy;
+			food.OnDestruct -= OnResourceDestroy;
 			return;
 		}
 	}
@@ -283,7 +283,7 @@ public class PlayerController : MonoBehaviour
 		var tree = obj.transform.GetComponent<TreeBehaviour>();
 		if (tree != null)
 		{
-			tree.OnDestroy -= OnResourceDestroy;
+			tree.OnDestruct -= OnResourceDestroy;
 			ResourceGathered?.Invoke(obj);
 			EnergyDrain?.Invoke(tree.size);
 			return;
@@ -293,7 +293,7 @@ public class PlayerController : MonoBehaviour
 
 		if (food != null)
 		{
-			food.OnDestroy -= OnResourceDestroy;
+			food.OnDestruct -= OnResourceDestroy;
 			ResourceGathered?.Invoke(obj);
 			EnergyDrain?.Invoke(food.size);
 		}

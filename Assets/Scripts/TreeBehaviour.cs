@@ -6,7 +6,7 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 {
 	[SerializeField] private ResourceDataSO _data;
 
-	public event Action<GameObject> OnDestroy;
+	public event Action<GameObject> OnDestruct;
 	public ResourceType type;
 	public EnergyCost size;
 	public int resourceAmount;
@@ -29,15 +29,20 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 		resourceAmount = _data.resourceAmount;
 		_health = _data.health;
 		_damage = _data.damage;
-		_sr.sprite = _data.resourceSprite;
+		_sr.sprite = _data.earlySpring_Sprite;
 	}
 
-    private void OnEnable()
-    {
+	private void Start()
+	{
+		SeasonController.Instance.UpdateSeason += UpdateState;
+	}
+
+	private void OnEnable()
+	{
 		_health = _data.health;
 	}
 
-    public void AddFruitsToList()
+	public void AddFruitsToList()
 	{
 		if (fruits.Count > 0) return;
 
@@ -78,7 +83,43 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 	public void OnDestruction()
 	{
 		print($"{_gameObject} is falling!");
-		OnDestroy?.Invoke(_gameObject);
+		OnDestruct?.Invoke(_gameObject);
 		_gameObject.SetActive(false);
+	}
+
+	private void UpdateState(Seasons season)
+	{
+		switch (season)
+		{
+			case Seasons.earlySpring:
+				_sr.sprite = _data.earlySpring_Sprite;
+				break;
+			case Seasons.lateSpring:
+				_sr.sprite = _data.lateSpring_Sprite;
+				break;
+			case Seasons.earlySummer:
+				_sr.sprite = _data.earlySummer_Sprite;
+				break;
+			case Seasons.lateSummer:
+				_sr.sprite = _data.lateSummer_Sprite;
+				break;
+			case Seasons.earlyFall:
+				_sr.sprite = _data.earlyFall_Sprite;
+				break;
+			case Seasons.lateFall:
+				_sr.sprite = _data.lateFall_Sprite;
+				break;
+			case Seasons.winter:
+				_sr.sprite = _data.winter_Sprite;
+				break;
+			default:
+				Debug.LogWarning($"The Season: {season} can't be found!");
+				break;
+		}
+	}
+
+	private void OnDestroy()
+	{
+		SeasonController.Instance.UpdateSeason -= UpdateState;
 	}
 }

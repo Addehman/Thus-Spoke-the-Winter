@@ -13,7 +13,14 @@ MonoBehaviour:
   m_Name: Lingonberry
   m_EditorClassIdentifier: 
   name: Lingonberry
-  resourceSprite: {fileID: 5485401785531719403, guid: f6dd51c41ac45ed4d9f30a20953fb7d9, type: 3}
+  earlySpring_Sprite: {fileID: 5485401785531719403, guid: f6dd51c41ac45ed4d9f30a20953fb7d9, type: 3}
+  lateSpring_Sprite: {fileID: 5485401785531719403, guid: f6dd51c41ac45ed4d9f30a20953fb7d9, type: 3}
+  earlySummer_Sprite: {fileID: 5485401785531719403, guid: f6dd51c41ac45ed4d9f30a20953fb7d9, type: 3}
+  lateSummer_Sprite: {fileID: 5485401785531719403, guid: f6dd51c41ac45ed4d9f30a20953fb7d9, type: 3}
+  earlyFall_Sprite: {fileID: 5485401785531719403, guid: f6dd51c41ac45ed4d9f30a20953fb7d9, type: 3}
+  lateFall_Sprite: {fileID: 5485401785531719403, guid: f6dd51c41ac45ed4d9f30a20953fb7d9, type: 3}
+  winter_Sprite: {fileID: 5485401785531719403, guid: f6dd51c41ac45ed4d9f30a20953fb7d9, type: 3}
+  depleted_Sprite: {fileID: 1204151520117669104, guid: 68162a64a8c5ad148a6f7b5175b77a94, type: 3}
   type: 5
   health: 1
   damage: 1
