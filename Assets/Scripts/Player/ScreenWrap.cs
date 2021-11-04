@@ -22,7 +22,7 @@ public class ScreenWrap : MonoBehaviour
 
 		_seedGenerator.UpdateExploration += UpdateExploration;
 		EnergyController.Instance.EnergyDepleted += SetHasEnergyFalse;
-		EnergyController.Instance.PlayerRestingEndingRound += SetHasEnergyTrue;
+		StorageController.Instance.GoalAccomplished += SetHasEnergyTrue;
 	}
 
 	void Update()
@@ -109,7 +109,7 @@ public class ScreenWrap : MonoBehaviour
 	{
 		_seedGenerator.UpdateExploration -= UpdateExploration;
 		EnergyController.Instance.EnergyDepleted -= SetHasEnergyFalse;
-		EnergyController.Instance.PlayerRestingEndingRound -= SetHasEnergyTrue;
+		StorageController.Instance.GoalAccomplished -= SetHasEnergyTrue;
 	}
 
 }

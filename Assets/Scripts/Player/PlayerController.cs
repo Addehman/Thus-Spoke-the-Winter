@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
 		_controls.Player.Interact.started += ctx => Interact();
 		ForestController.Instance.OnClearForest += ClearInteractablesInRangeList;
 		EnergyController.Instance.EnergyDepleted += SetHasEnergyFalse;
-		EnergyController.Instance.PlayerRestingEndingRound += SetHasEnergyTrue;
+		StorageController.Instance.GoalAccomplished += SetHasEnergyTrue;
 	}
 
 	private void Update()
@@ -350,6 +350,6 @@ public class PlayerController : MonoBehaviour
 
 		ForestController.Instance.OnClearForest -= ClearInteractablesInRangeList;
 		EnergyController.Instance.EnergyDepleted -= SetHasEnergyFalse;
-		EnergyController.Instance.PlayerRestingEndingRound -= SetHasEnergyTrue;
+		StorageController.Instance.GoalAccomplished -= SetHasEnergyTrue;
 	}
 }
