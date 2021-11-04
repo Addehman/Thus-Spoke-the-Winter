@@ -168,7 +168,16 @@ public class StorageController : MonoBehaviour
 			GameOver?.Invoke();
 		}
 	}
+#if UNITY_EDITOR
+	private void Update()
+	{
+		UnityEngine.InputSystem.Keyboard kb = UnityEngine.InputSystem.InputSystem.GetDevice<UnityEngine.InputSystem.Keyboard>();
+		if (kb.lKey.wasPressedThisFrame) woodStorage = foodStorage = woodDayGoal;
+	}
+#endif
 }
+
+
 
 public enum StorageType
 {
