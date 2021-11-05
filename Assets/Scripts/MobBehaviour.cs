@@ -29,6 +29,7 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 		resourceAmount = _data.resourceAmount;
 		_health = _data.health;
 		_damage = _data.damage;
+		_sr.sprite = _data.earlySpring_Sprite;
 	}
 
 	private void OnEnable() 

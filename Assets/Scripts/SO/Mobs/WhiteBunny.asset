@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: WhiteBunny
   m_EditorClassIdentifier: 
   name: Brown Bunny
-  earlySpring_Sprite: {fileID: 0}
+  earlySpring_Sprite: {fileID: -2259908227173389601, guid: ac6da2d89976d20419279b2fd9b03690, type: 3}
   lateSpring_Sprite: {fileID: 0}
   earlySummer_Sprite: {fileID: 0}
   lateSummer_Sprite: {fileID: 0}
   earlyFall_Sprite: {fileID: 0}
   lateFall_Sprite: {fileID: 0}
   winter_Sprite: {fileID: 0}
-  depleted_Sprite: {fileID: 0}
+  depleted_Sprite: {fileID: -9123068923594955516, guid: ac6da2d89976d20419279b2fd9b03690, type: 3}
   type: 9
   health: 10
   damage: 5
