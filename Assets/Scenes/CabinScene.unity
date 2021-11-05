@@ -232,8 +232,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: 949dae2b510264c48802af80f431f8b5, type: 2}
-  spring: {r: 0.29411766, g: 0.4, b: 0.23921569, a: 0}
-  summer: {r: 0.2509804, g: 0.5019608, b: 0.2, a: 0}
+  spring: {r: 0.2509804, g: 0.5019608, b: 0.2, a: 0}
+  summer: {r: 0.29411766, g: 0.4, b: 0.23921569, a: 0}
   fall: {r: 0.5019608, g: 0.3529412, b: 0.2, a: 0}
   winter: {r: 0.72156864, g: 0.8, b: 0.79607844, a: 0}
 --- !u!4 &150434147 stripped
