@@ -4,13 +4,12 @@ using System.Collections.Generic;
 
 public class TreeBehaviour : MonoBehaviour, IInteractable
 {
-	private enum State: Byte {Alive, Depleted,} // max 8 enums i en Byte
-	[SerializeField] private State state = State.Alive;
 	[SerializeField] private ResourceDataSO _data;
+	[SerializeField] private Status status = Status.Alive;
 
 	public event Action<GameObject> OnDestruct;
 	public ResourceType type;
-	public EnergyCost size;
+	public EnergyCost costSize;
 	public int resourceAmount;
 	public List<FoodBehaviour> fruits = new List<FoodBehaviour>();
 
@@ -27,7 +26,7 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 		_sr = GetComponent<SpriteRenderer>();
 
 		type = _data.type;
-		size = _data.energyCostSize;
+		costSize = _data.energyCostSize;
 		resourceAmount = _data.resourceAmount;
 		_health = _data.health;
 		_damage = _data.damage;
@@ -63,7 +62,7 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 
 	public void OnInteract()
 	{
-		if (state == State.Depleted) return;
+		if (status == Status.Dead) return;
 
 		if (fruits.Count > 1)
 		{
@@ -91,7 +90,7 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 		OnDestruct?.Invoke(_gameObject);
 		//_gameObject.SetActive(false);
 		_sr.sprite = _data.depleted_Sprite;
-		state = State.Depleted;
+		status = Status.Dead;
 	}
 
 	public void UpdateState(Seasons season)
@@ -100,31 +99,31 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 		{
 			case Seasons.earlySpring:
 				_sr.sprite = _data.earlySpring_Sprite;
-				state = State.Alive;
+				status = Status.Alive;
 				break;
 			case Seasons.lateSpring:
 				_sr.sprite = _data.lateSpring_Sprite;
-				state = State.Alive;
+				status = Status.Alive;
 				break;
 			case Seasons.earlySummer:
 				_sr.sprite = _data.earlySummer_Sprite;
-				state = State.Alive;
+				status = Status.Alive;
 				break;
 			case Seasons.lateSummer:
 				_sr.sprite = _data.lateSummer_Sprite;
-				state = State.Alive;
+				status = Status.Alive;
 				break;
 			case Seasons.earlyFall:
 				_sr.sprite = _data.earlyFall_Sprite;
-				state = State.Alive;
+				status = Status.Alive;
 				break;
 			case Seasons.lateFall:
 				_sr.sprite = _data.lateFall_Sprite;
-				state = State.Alive;
+				status = Status.Alive;
 				break;
 			case Seasons.winter:
 				_sr.sprite = _data.winter_Sprite;
-				state = State.Alive;
+				status = Status.Alive;
 				break;
 			default:
 				Debug.LogWarning($"The Season: {season} can't be found!");
@@ -135,7 +134,7 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 	public void SetSpriteToDepleted()
 	{
 		_sr.sprite = _data.depleted_Sprite;
-		state = State.Depleted;
+		status = Status.Dead;
 	}
 
 	//private void OnDestroy()

@@ -62,9 +62,7 @@ public class PlayerController : MonoBehaviour
 		if (interactable == null) return;
 		_interactablesInRange.Add(other.gameObject);
 
-		var tree = other.transform.GetComponent<TreeBehaviour>();
-
-		if (tree != null)
+		if (other.TryGetComponent(out TreeBehaviour tree))
 		{
 			tree.OnDestruct += OnResourceDestroy;
 			if (tree.fruits.Count > 0)
@@ -77,11 +75,15 @@ public class PlayerController : MonoBehaviour
 			return;
 		}
 
-		var food = other.transform.GetComponent<FoodBehaviour>();
-
-		if (food != null)
+		if (other.TryGetComponent(out FoodBehaviour food))
 		{
 			food.OnDestruct += OnResourceDestroy;
+			return;
+		}
+		
+		if (other.TryGetComponent(out MobBehaviour mob))
+		{
+			mob.OnButcher += OnResourceDestroy;
 			return;
 		}
 	}
@@ -93,9 +95,7 @@ public class PlayerController : MonoBehaviour
 		/*print($"{other.transform} has left trigger");*/
 		_interactablesInRange.Remove(other.gameObject);
 
-		var tree = other.transform.GetComponent<TreeBehaviour>();
-
-		if (tree != null)
+		if (other.TryGetComponent(out TreeBehaviour tree))
 		{
 			tree.OnDestruct -= OnResourceDestroy;
 			if (tree.fruits.Count > 0)
@@ -108,11 +108,15 @@ public class PlayerController : MonoBehaviour
 			return;
 		}
 
-		var food = other.transform.GetComponent<FoodBehaviour>();
-
-		if (food != null)
+		if (other.TryGetComponent(out FoodBehaviour food))
 		{
 			food.OnDestruct -= OnResourceDestroy;
+			return;
+		}
+
+		if (other.TryGetComponent(out MobBehaviour mob))
+		{
+			mob.OnButcher -= OnResourceDestroy;
 			return;
 		}
 	}
@@ -280,22 +284,26 @@ public class PlayerController : MonoBehaviour
 			_interactablesInRange.RemoveAt(index);
 		}
 
-		var tree = obj.transform.GetComponent<TreeBehaviour>();
-		if (tree != null)
+		if (obj.TryGetComponent(out TreeBehaviour tree))
 		{
 			tree.OnDestruct -= OnResourceDestroy;
 			ResourceGathered?.Invoke(obj);
-			EnergyDrain?.Invoke(tree.size);
+			EnergyDrain?.Invoke(tree.costSize);
 			return;
 		}
-
-		//var food = obj.transform.GetComponent<FoodBehaviour>();
 
 		if (food != null)
 		{
 			food.OnDestruct -= OnResourceDestroy;
 			ResourceGathered?.Invoke(obj);
-			EnergyDrain?.Invoke(food.size);
+			EnergyDrain?.Invoke(food.costSize);
+		}
+
+		if (obj.TryGetComponent(out MobBehaviour mob))
+		{
+			mob.OnButcher -= OnResourceDestroy;
+			ResourceGathered?.Invoke(obj);
+			EnergyDrain?.Invoke(mob.costSize);
 		}
 	}
 

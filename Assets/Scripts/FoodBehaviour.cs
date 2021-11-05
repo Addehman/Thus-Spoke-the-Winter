@@ -7,7 +7,7 @@ public class FoodBehaviour : MonoBehaviour, IInteractable
 
 	public event Action<GameObject> OnDestruct;
 	public ResourceType type;
-	public EnergyCost size;
+	public EnergyCost costSize;
 	public int resourceAmount, health;
 	public EarlySpringFoodState _earlySpringState = new EarlySpringFoodState();
 	public DepletedFoodState _depletedState = new DepletedFoodState();
@@ -31,7 +31,7 @@ public class FoodBehaviour : MonoBehaviour, IInteractable
 		sr = GetComponent<SpriteRenderer>();
 
 		type = data.type;
-		size = data.energyCostSize;
+		costSize = data.energyCostSize;
 		resourceAmount = data.resourceAmount;
 		health = data.health;
 		_damage = data.damage;

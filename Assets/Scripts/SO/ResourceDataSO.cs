@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Resource Data", menuName = "ResourceData")]
@@ -16,9 +15,13 @@ public class ResourceDataSO : ScriptableObject
 }
 
 public enum ResourceType {
-	leafTree, fruitTree, pineTree, bush, blueberry, lingonberry, emptyLowBush, mushroom, apple, venison, 
+	leafTree, fruitTree, pineTree, bush, blueberry, lingonberry, emptyLowBush, mushroom, apple, bunny, 
 }
 
 public enum EnergyCost {
 	Small, Medium, Large, Mini, 
 }
+
+public enum Status: Byte {
+	Alive, Dead,
+} // max 8 enums i en Byte
