@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41f6a218ea9b2c54dbf3e5cbfab7c625, type: 3}
+  m_Name: WhiteBunny
+  m_EditorClassIdentifier: 
+  name: Brown Bunny
+  earlySpring_Sprite: {fileID: 0}
+  lateSpring_Sprite: {fileID: 0}
+  earlySummer_Sprite: {fileID: 0}
+  lateSummer_Sprite: {fileID: 0}
+  earlyFall_Sprite: {fileID: 0}
+  lateFall_Sprite: {fileID: 0}
+  winter_Sprite: {fileID: 0}
+  depleted_Sprite: {fileID: 0}
+  type: 9
+  health: 10
+  damage: 5
+  resourceAmount: 10
+  energyCostSize: 0
