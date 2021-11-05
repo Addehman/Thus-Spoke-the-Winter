@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class TreeBehaviour : MonoBehaviour, IInteractable
 {
+	private enum State: Byte {Alive, Depleted,} // max 8 enums i en Byte
+	[SerializeField] private State state = State.Alive;
 	[SerializeField] private ResourceDataSO _data;
 
 	public event Action<GameObject> OnDestruct;
@@ -61,6 +63,8 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 
 	public void OnInteract()
 	{
+		if (state == State.Depleted) return;
+
 		if (fruits.Count > 1)
 		{
 			int randomFruit = UnityEngine.Random.Range(0, fruits.Count);
@@ -87,6 +91,7 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 		OnDestruct?.Invoke(_gameObject);
 		//_gameObject.SetActive(false);
 		_sr.sprite = _data.depleted_Sprite;
+		state = State.Depleted;
 	}
 
 	public void UpdateState(Seasons season)
@@ -95,24 +100,31 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 		{
 			case Seasons.earlySpring:
 				_sr.sprite = _data.earlySpring_Sprite;
+				state = State.Alive;
 				break;
 			case Seasons.lateSpring:
 				_sr.sprite = _data.lateSpring_Sprite;
+				state = State.Alive;
 				break;
 			case Seasons.earlySummer:
 				_sr.sprite = _data.earlySummer_Sprite;
+				state = State.Alive;
 				break;
 			case Seasons.lateSummer:
 				_sr.sprite = _data.lateSummer_Sprite;
+				state = State.Alive;
 				break;
 			case Seasons.earlyFall:
 				_sr.sprite = _data.earlyFall_Sprite;
+				state = State.Alive;
 				break;
 			case Seasons.lateFall:
 				_sr.sprite = _data.lateFall_Sprite;
+				state = State.Alive;
 				break;
 			case Seasons.winter:
 				_sr.sprite = _data.winter_Sprite;
+				state = State.Alive;
 				break;
 			default:
 				Debug.LogWarning($"The Season: {season} can't be found!");
@@ -123,6 +135,7 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 	public void SetSpriteToDepleted()
 	{
 		_sr.sprite = _data.depleted_Sprite;
+		state = State.Depleted;
 	}
 
 	//private void OnDestroy()
