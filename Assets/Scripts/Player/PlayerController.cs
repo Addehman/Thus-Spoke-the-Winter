@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
 		_controls.Player.Sprint.canceled += ctx => _doSprint = false;
 		_controls.Player.Interact.started += ctx => Interact();
 		ForestController.Instance.OnClearForest += ClearInteractablesInRangeList;
+		MobController.Instance.OnClearMobs += ClearInteractablesInRangeList;
 		EnergyController.Instance.EnergyDepleted += SetHasEnergyFalse;
 		StorageController.Instance.GoalAccomplished += SetHasEnergyTrue;
 	}
@@ -357,6 +358,7 @@ public class PlayerController : MonoBehaviour
 		_controls.Player.Interact.started -= ctx => Interact();
 
 		ForestController.Instance.OnClearForest -= ClearInteractablesInRangeList;
+		MobController.Instance.OnClearMobs -= ClearInteractablesInRangeList;
 		EnergyController.Instance.EnergyDepleted -= SetHasEnergyFalse;
 		StorageController.Instance.GoalAccomplished -= SetHasEnergyTrue;
 	}

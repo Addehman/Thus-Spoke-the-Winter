@@ -76,6 +76,14 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 		OnButcher?.Invoke(_gameObject);
 	}
 
+	public void IsDepleted(bool isDepleted)
+	{
+		if (isDepleted)
+			_sr.sprite = _data.depleted_Sprite;
+		else
+			_sr.sprite = _data.earlySpring_Sprite;
+	}
+
 	// private void Movement()
 	// {
 

@@ -9,7 +9,7 @@ public class ScreenWrap : MonoBehaviour
 	private Camera _cam;
 
 	[SerializeField]
-	private Vector3 playerViewPortPos;
+	private Vector3 _playerViewPortPos;
 	[SerializeField] private bool _hasEnergy = true;
 	[SerializeField] private SeedGenerator _seedGenerator;
 	private bool _northIsNotExplored, _eastIsNotExplored, _southIsNotExplored, _westIsNotExplored;
@@ -40,9 +40,9 @@ public class ScreenWrap : MonoBehaviour
 
 	private void Wrap()
 	{
-		playerViewPortPos = _cam.WorldToViewportPoint(_transform.position);
+		_playerViewPortPos = _cam.WorldToViewportPoint(_transform.position);
 
-		if (playerViewPortPos.x > 1f)
+		if (_playerViewPortPos.x > 1f)
 		{
 			if (!_hasEnergy && _eastIsNotExplored)
 			{
@@ -51,7 +51,7 @@ public class ScreenWrap : MonoBehaviour
 			}
 			ConvertPosFromViewPortToWorldPoint(true, true, 0f, Latitude.East);
 		}
-		else if (playerViewPortPos.x < 0f)
+		else if (_playerViewPortPos.x < 0f)
 		{
 			if (!_hasEnergy && _westIsNotExplored)
 			{
@@ -61,7 +61,7 @@ public class ScreenWrap : MonoBehaviour
 
 			ConvertPosFromViewPortToWorldPoint(true, true, 1f, Latitude.West);
 		}
-		else if (playerViewPortPos.y > 1f)
+		else if (_playerViewPortPos.y > 1f)
 		{
 			if (!_hasEnergy && _northIsNotExplored)
 			{
@@ -70,7 +70,7 @@ public class ScreenWrap : MonoBehaviour
 			}
 			ConvertPosFromViewPortToWorldPoint(true, false, -1f, Latitude.North);
 		}
-		else if (playerViewPortPos.y < 0f)
+		else if (_playerViewPortPos.y < 0f)
 		{
 			if (!_hasEnergy && _southIsNotExplored)
 			{
@@ -86,14 +86,14 @@ public class ScreenWrap : MonoBehaviour
 	{
 		if (changeX)
 		{
-			playerViewPortPos.x = value;
+			_playerViewPortPos.x = value;
 		}
 		else
 		{
-			playerViewPortPos.y = value;
+			_playerViewPortPos.y = value;
 		}
 
-		Vector3 newPos = _cam.ViewportToWorldPoint(playerViewPortPos);
+		Vector3 newPos = _cam.ViewportToWorldPoint(_playerViewPortPos);
 		newPos.y = _transform.position.y;
 		_transform.position = newPos;
 

@@ -123,13 +123,10 @@ public class ForestController : MonoBehaviour
 			int randomID1 = UnityEngine.Random.Range(0, 1000000);
 			int randomID2 = UnityEngine.Random.Range(0, 1000000);
 
-			// Here we use a Raycast to find a random position for the newObject to be positioned to.
-			Vector3 randomWorldPos = GenerateRandomPosition();
-
 			//float randomOffset = UnityEngine.Random.Range(-1f, 1f);
 			//randomWorldPos.z += randomOffset;
 
-			newObject.position = randomWorldPos;
+			newObject.position = GenerateRandomPosition();
 
 			//Om vi får seed = 1. Blir namnet sedan 2000.
 			//Vi plockar upp item med ID 2000.

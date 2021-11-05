@@ -338,6 +338,47 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3566489492332690089, guid: 6556beda93d4dfd438172a4774451065, type: 3}
   m_PrefabInstance: {fileID: 581032884}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &235321978 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1003278497046935821, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+  m_PrefabInstance: {fileID: 1003278497028924638}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &235321982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235321978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 467c69f1441d35a4c900e534bfe9716b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mobParent: {fileID: 526108796}
+  _ground:
+    serializedVersion: 2
+    m_Bits: 64
+  _default:
+    serializedVersion: 2
+    m_Bits: 128
+  _player: {fileID: 1581711721}
+  _playerViewPortPos: {x: 0, y: 0}
+  _mobViewPortPos: {x: 0, y: 0}
+  _mobWorldPos: {x: 0, y: 0, z: 0}
+  _seedGenerator: {fileID: 1348060812}
+  _currentSeed: 0
+  _mobObjectPoolQuantitySetup:
+    quantities: 
+    whiteBunny_Amount: 0
+    brownBunny_Amount: 1
+  _mobObjectPoolPrefabLibrary:
+    prefabs:
+    - {fileID: 3409048646856329292, guid: 3064b9d2e33c63846970b17d46152a8f, type: 3}
+  mobRarityWeight: 0
+  uniqueMobObjects: 1
+  minSpawnAmount: 1
+  maxSpawnAmount: 1
 --- !u!1 &297288504
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,7 +684,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6923101660689745274, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
   m_PrefabInstance: {fileID: 1003278497028924638}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 235321978}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4382df7fb5f0ccb45aaf007b626a1609, type: 3}
@@ -654,7 +695,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5648477622683835973, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
   m_PrefabInstance: {fileID: 1003278497028924638}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 235321978}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d4f128877d2f7f749a7b0951de1c8ac2, type: 3}
@@ -698,6 +739,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1768556590097517686, guid: 34d1d4d11bc8820469a5234e81269348, type: 3}
   m_PrefabInstance: {fileID: 1768556589914387702}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &526108795
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 526108796}
+  - component: {fileID: 526108797}
+  m_Layer: 0
+  m_Name: MobParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &526108796
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 526108795}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1000050728}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &526108797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 526108795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fb052a3c3bd6c641a3645afc3bbfced, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mobObjectPool: []
 --- !u!1001 &568392393
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -984,6 +1069,7 @@ Transform:
   - {fileID: 306718234}
   - {fileID: 443019307}
   - {fileID: 51454303}
+  - {fileID: 526108796}
   m_Father: {fileID: 1486582151}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1116,7 +1202,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1934947906, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
   m_PrefabInstance: {fileID: 1003278497028924638}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 235321978}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2be0a2054ce455c458282f2b3101e32d, type: 3}
@@ -1418,7 +1504,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1686277668661848730, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
   m_PrefabInstance: {fileID: 1003278497028924638}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 235321978}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8813bdb9707f6804c903af3c843c66ef, type: 3}
