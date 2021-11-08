@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3409048646856329290}
   - component: {fileID: 3409048646856329291}
   - component: {fileID: 8023440639743247504}
+  - component: {fileID: 5378878632206891351}
   m_Layer: 0
   m_Name: BrownBunny
   m_TagString: Untagged
@@ -98,9 +99,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 097d961f65d3e7d41a9cccc5f5741825, type: 2}
   status: 0
+  _cam: {fileID: 0}
   type: 9
   costSize: 0
   resourceAmount: 0
+  speed: 0.2
+  duration: 3
+  elapsedTime: 0
+  runSpeed: 1
 --- !u!135 &8023440639743247504
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -113,4 +119,17 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.03436348
+  m_Center: {x: 0.005478792, y: 0.008992727, z: 0.006471515}
+--- !u!135 &5378878632206891351
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3409048646856329292}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.0001
   m_Center: {x: 0.005478792, y: 0.008992727, z: 0.006471515}

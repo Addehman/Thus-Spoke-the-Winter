@@ -16,6 +16,7 @@ public class GroundBehaviour : MonoBehaviour
 
 	void Start()
 	{
+		print($"{this} was Started");
 		SeasonController.Instance.UpdateSeason += UpdateGFX;
 	}
 
@@ -48,7 +49,8 @@ public class GroundBehaviour : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		material.color = spring;
+		print($"{this} was Destroyed!");
+		//material.color = spring;
 		SeasonController.Instance.UpdateSeason -= UpdateGFX;
 	}
 }

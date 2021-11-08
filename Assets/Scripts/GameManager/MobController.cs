@@ -45,7 +45,7 @@ public class MobController : MonoBehaviour
 	private Dictionary<int, Dictionary<string, Vector3>> _savedDeadMobDictionary = new Dictionary<int, Dictionary<string, Vector3>>();
 	private Dictionary<string, Vector3> _tempSavedDeadMobDictionary;
 	private List<Transform> tempSpawns;
-	
+
 
 
 	private void Awake()
@@ -57,16 +57,16 @@ public class MobController : MonoBehaviour
 
 		_camera = Camera.main;
 		_seedGenerator.SendSeed += SpawnMob;
-		/*_player.ResourceGathered += SaveIDToBlacklist;*/ //DON'T NEED THIS?
+		_player.ResourceGathered += SaveIDToBlacklist; //DON'T NEED THIS?
 	}
 
 	private void Start()
 	{
-        InitializeObjectPool();
-    }
+		InitializeObjectPool();
+	}
 
-    private void Update()
-    {
+	private void Update()
+	{
 		/*_playerViewPortPos = _camera.WorldToViewportPoint(_player.transform.position);
 		_VECTOR2_playerViewPos = _camera.WorldToViewportPoint(_player.transform.position);
 
@@ -77,7 +77,7 @@ public class MobController : MonoBehaviour
 		_mobWorldPos = _camera.ViewportToWorldPoint(_mobViewPortPos);*/
 	}
 
-    public void SetCabinParent(GameObject obj)
+	public void SetCabinParent(GameObject obj)
 	{
 		_cabinParent = obj;
 	}
@@ -117,7 +117,7 @@ public class MobController : MonoBehaviour
 		{
 			//This needs to check so that we don't random the same number twice in a row or something like that.
 			int randomObject = UnityEngine.Random.Range(0, MobObjectPool.Instance.mobObjectPool.Length/* - mobRarityWeight*/); //Remove comment from mobRarityWeight when implementing rarity for mobs.
-			
+
 			while (usedRandomNumbers.Contains(randomObject))
 			{
 				randomObject = (randomObject + 1) % MobObjectPool.Instance.mobObjectPool.Length;
@@ -134,11 +134,11 @@ public class MobController : MonoBehaviour
 
 			newObject.gameObject.name = $"{randomID1}{randomID2}";
 
-            if (CheckSavedDeadMobList(newObject))
-            {
+			if (CheckSavedDeadMobList(newObject))
+			{
 				//SetActive dead mob
 				return;
-            }
+			}
 
 			newObject.gameObject.SetActive(true);
 
@@ -165,7 +165,7 @@ public class MobController : MonoBehaviour
 	/// </summary>
 	private void InitializeObjectPool()
 	{
-		_mobObjectPoolQuantitySetup.quantities = new int[1] { _mobObjectPoolQuantitySetup.brownBunny_Amount};
+		_mobObjectPoolQuantitySetup.quantities = new int[1] { _mobObjectPoolQuantitySetup.brownBunny_Amount };
 
 		/*mobRarityWeight = 0;
 		for (int i = _mobObjectPoolQuantitySetup.quantities.Length - uniqueMobObjects; i < _mobObjectPoolQuantitySetup.quantities.Length; i++)
@@ -197,37 +197,40 @@ public class MobController : MonoBehaviour
 
 	private void SaveIDToBlacklist(GameObject obj)
 	{
-		print($"{obj.name} is now blacklisted!");
-
-		_tempSavedDeadMobDictionary.Add(obj.name, obj.transform.position);
-
-		if (_tempSavedDeadMobDictionary.Count != 1)
+		if (obj.TryGetComponent(out MobBehaviour mob))
 		{
-			_savedDeadMobDictionary[_currentSeed] = _tempSavedDeadMobDictionary;
-		}
-		else
-		{
-			_savedDeadMobDictionary.Add(_currentSeed, _tempSavedDeadMobDictionary);
+			print($"{obj.name} is now blacklisted!");
+
+			_tempSavedDeadMobDictionary.Add(obj.name, obj.transform.position);
+
+			if (_tempSavedDeadMobDictionary.Count != 1)
+			{
+				_savedDeadMobDictionary[_currentSeed] = _tempSavedDeadMobDictionary;
+			}
+			else
+			{
+				_savedDeadMobDictionary.Add(_currentSeed, _tempSavedDeadMobDictionary);
+			}
 		}
 	}
 
 	private bool CheckSavedDeadMobList(Transform trans)
 	{
-        trans.TryGetComponent(out MobBehaviour mob); //ADD THIS LINE WHEN MobBehaviour is completed.
+		trans.TryGetComponent(out MobBehaviour mob); //ADD THIS LINE WHEN MobBehaviour is completed.
 
-        if (_tempSavedDeadMobDictionary.Count > 0 && _tempSavedDeadMobDictionary.ContainsKey(trans.gameObject.name))
+		if (_tempSavedDeadMobDictionary.Count > 0 && _tempSavedDeadMobDictionary.ContainsKey(trans.gameObject.name))
 		{
 			print($"{trans.name} is saved to SavedDeadMobList!");
 
 			trans.gameObject.SetActive(true);
 			trans.position = PositionCorrection(trans.position);
-            mob.IsDepleted(true); //ADD THIS LINE WHEN MobBehaviour is completed.
-            return true;
+			mob.IsDepleted(true); //ADD THIS LINE WHEN MobBehaviour is completed.
+			return true;
 		}
 		else // Not on Blacklist - simply update the sprites to not look depleted
 		{
-            mob.IsDepleted(false); //ADD THIS LINE WHEN MobBehaviour is completed.
-        }
+			mob.IsDepleted(false); //ADD THIS LINE WHEN MobBehaviour is completed.
+		}
 		return false;
 	}
 
@@ -301,16 +304,13 @@ public class MobController : MonoBehaviour
 
 			ray = _camera.ScreenPointToRay(new Vector3(Screen.width * _mobViewPortPos.x, Screen.height * _mobViewPortPos.y));
 
-			//print($"Ray hit: {hit.transform.name}. Trying again.");
-
 			tries++;
 			if (tries > 9) break;
 		}
 
 		if (Physics.Raycast(ray, out hit, float.MaxValue, _ground))
 		{
-			generatedPosition = hit.point;
-			//print($"Ray hit: {hit.transform.name}. Sticking with this.");
+			generatedPosition = Vector3.Lerp(hit.point, _player.transform.position, 0.15f);
 		}
 
 		if (hit.collider is null)

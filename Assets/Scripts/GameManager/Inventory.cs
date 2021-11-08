@@ -19,6 +19,7 @@ public class Inventory : MonoBehaviour
 	public int apple;
 	public int mushroom;
 	public int venison;
+	public int bunnyMeat;
 
 	[SerializeField] private PlayerController _player;
 	[SerializeField] private StorageController _storageController;
@@ -52,7 +53,7 @@ public class Inventory : MonoBehaviour
 		int gatheredLingonberry = 0;
 		int gatheredApple = 0;
 		int gatheredMushroom = 0;
-		int gatheredVenison = 0;
+		int gatheredBunnyMeat = 0;
 
 
 		if (currentInventory >= inventoryMaxCapacity)
@@ -61,11 +62,7 @@ public class Inventory : MonoBehaviour
 			return;
 		}
 
-		var treeBehav = obj.GetComponent<TreeBehaviour>();
-
-		var foodBehav = obj.GetComponent<FoodBehaviour>();
-
-		if (treeBehav != null)
+		if (obj.TryGetComponent(out TreeBehaviour treeBehav))
 		{
 			//These switch cases can be removed if we always add to "gatheredWood" as it is right now.
 			//Keeping it for now if we want to add specific kinds of wood later on, for example; "gatheredPineWood" or "gatheredLeafTreeWood".
@@ -95,7 +92,7 @@ public class Inventory : MonoBehaviour
 						}*/
 			}
 		}
-		else if (foodBehav != null)
+		else if (obj.TryGetComponent(out FoodBehaviour foodBehav))
 		{
 			switch (foodBehav.type)
 			{
@@ -128,19 +125,30 @@ public class Inventory : MonoBehaviour
 						}*/
 			}
 		}
+		else if (obj.TryGetComponent(out MobBehaviour mobBehav))
+		{
+			switch (mobBehav.type)
+			{
+				case ResourceType.bunny:
+					gatheredBunnyMeat += mobBehav.resourceAmount;
+					break;
+				default:
+					break;
+			}
+		}
 
 		wood += gatheredWood;
 		blueberry += gatheredBlueberry;
 		lingonberry += gatheredLingonberry;
 		apple += gatheredApple;
 		mushroom += gatheredMushroom;
-		venison += gatheredVenison;
+		bunnyMeat += gatheredBunnyMeat;
 
-		food = (blueberry + lingonberry + apple + mushroom + venison);
+		food = (blueberry + lingonberry + apple + mushroom + bunnyMeat);
 
 
 		InventoryCapacityFailsafe(gatheredWood, gatheredBlueberry, gatheredLingonberry,
-			gatheredApple, gatheredMushroom, gatheredVenison);
+			gatheredApple, gatheredMushroom, gatheredBunnyMeat);
 
 
 		UpdateCurrentInventory();

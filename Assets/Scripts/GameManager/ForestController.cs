@@ -232,6 +232,8 @@ public class ForestController : MonoBehaviour
 
 	private void SaveIDToBlacklist(GameObject obj)
 	{
+		if (obj.TryGetComponent(out MobBehaviour mob)) return;
+
 		print($"{obj.name} is now blacklisted!");
 
 		_tempBlacklist.Add(obj.name);
