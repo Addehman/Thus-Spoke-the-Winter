@@ -285,7 +285,7 @@ public class PlayerController : MonoBehaviour
 		print($"OnResourceDestroy: {obj}");
 		obj.TryGetComponent(out FoodBehaviour food);
 
-		if (!_interactablesInRange.Contains(obj) && food.type != ResourceType.apple)
+		if (!_interactablesInRange.Contains(obj) && food != null && food.type != ResourceType.apple)
 		{
 			return;
 		}

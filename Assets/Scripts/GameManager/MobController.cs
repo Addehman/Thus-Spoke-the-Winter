@@ -165,7 +165,7 @@ public class MobController : MonoBehaviour
 	/// </summary>
 	private void InitializeObjectPool()
 	{
-		_objectQuantitySetup.quantities = new int[1] { _objectQuantitySetup.brownBunny_Amount };
+		_objectQuantitySetup.quantities = new int[2] { _objectQuantitySetup.brownBunny_Amount, _objectQuantitySetup.whiteBunny_Amount };
 
 		/*mobRarityWeight = 0;
 		for (int i = _mobObjectPoolQuantitySetup.quantities.Length - uniqueMobObjects; i < _mobObjectPoolQuantitySetup.quantities.Length; i++)
@@ -219,7 +219,7 @@ public class MobController : MonoBehaviour
 
 		if (_tempSavedDeadMobDictionary.Count > 0 && _tempSavedDeadMobDictionary.ContainsKey(trans.gameObject.name))
 		{
-			print($"{trans.name} is saved to SavedDeadMobList!");
+			print($"{trans.name} is saved to SavedDeadMobList");
 
 			trans.gameObject.SetActive(true);
 			trans.position = PositionCorrection(trans.position);

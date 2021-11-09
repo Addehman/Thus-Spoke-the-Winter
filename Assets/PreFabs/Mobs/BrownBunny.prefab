@@ -102,11 +102,11 @@ MonoBehaviour:
   _cam: {fileID: 0}
   type: 9
   costSize: 0
-  resourceAmount: 0
-  speed: 0.2
+  resourceAmount: 10
+  speed: 1
   duration: 3
   elapsedTime: 0
-  runSpeed: 1
+  runSpeed: 0.3
 --- !u!135 &8023440639743247504
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -131,5 +131,5 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.0001
+  m_Radius: 1.5
   m_Center: {x: 0.005478792, y: 0.008992727, z: 0.006471515}

@@ -142,7 +142,7 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 		RandomBehaviour();
 	}
 
-		private IEnumerator Eating() // Bunny is eating 
+	private IEnumerator Eating() // Bunny is eating 
 	{
 		//print($"Bunny: {_gameObject}, is Eating.");
 		yield return new WaitForSeconds(1f);

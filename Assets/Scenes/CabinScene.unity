@@ -2274,6 +2274,14 @@ PrefabInstance:
       propertyPath: _mobParent
       value: 
       objectReference: {fileID: 526108796}
+    - target: {fileID: 4034851538369987664, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: maxSpawnAmount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4034851538369987664, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: uniqueMobObjects
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5114568113770250190, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
       propertyPath: _player
       value: 
