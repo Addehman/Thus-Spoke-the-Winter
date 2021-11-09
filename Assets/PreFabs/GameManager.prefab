@@ -284,13 +284,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38940711110213440b5ada1a36ff973e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 0}
   _seedGenerator: {fileID: 5129743002338067384}
-  _trapParent: {fileID: 5394431023272021233}
+  _trapParent: {fileID: 0}
   _trapObjectPoolQuantitySetup:
     quantities: 
-    trap_Amount: 1
+    trap_Amount: 3
   _trapObjectPoolPrefabLibrary:
     prefabs:
-    - {fileID: 5062927351200187593, guid: cfbee0a8fd6ec2e4e9de8fef18c54218, type: 3}
-    - {fileID: 5062927351200187593, guid: cfbee0a8fd6ec2e4e9de8fef18c54218, type: 3}
     - {fileID: 5062927351200187593, guid: cfbee0a8fd6ec2e4e9de8fef18c54218, type: 3}
