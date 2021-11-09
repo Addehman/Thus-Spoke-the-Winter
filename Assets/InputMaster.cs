@@ -49,6 +49,22 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Bow"",
+                    ""type"": ""Button"",
+                    ""id"": ""da24ed9a-d997-4bf3-9133-f9f711a69768"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""MousePoint"",
+                    ""type"": ""Value"",
+                    ""id"": ""1855275b-a413-46bb-86df-d38d7c111f30"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -194,6 +210,28 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""action"": ""PlaceTrap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""45909a40-ac96-4768-a5c7-cbbe13df1391"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Bow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a4eca385-fcda-4d1d-b58c-adce63086909"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""MousePoint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -245,6 +283,8 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_PlaceTrap = m_Player.FindAction("PlaceTrap", throwIfNotFound: true);
+        m_Player_Bow = m_Player.FindAction("Bow", throwIfNotFound: true);
+        m_Player_MousePoint = m_Player.FindAction("MousePoint", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -298,6 +338,8 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_PlaceTrap;
+    private readonly InputAction m_Player_Bow;
+    private readonly InputAction m_Player_MousePoint;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -306,6 +348,8 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @PlaceTrap => m_Wrapper.m_Player_PlaceTrap;
+        public InputAction @Bow => m_Wrapper.m_Player_Bow;
+        public InputAction @MousePoint => m_Wrapper.m_Player_MousePoint;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -327,6 +371,12 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @PlaceTrap.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlaceTrap;
                 @PlaceTrap.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlaceTrap;
                 @PlaceTrap.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlaceTrap;
+                @Bow.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBow;
+                @Bow.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBow;
+                @Bow.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBow;
+                @MousePoint.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMousePoint;
+                @MousePoint.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMousePoint;
+                @MousePoint.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMousePoint;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -343,6 +393,12 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @PlaceTrap.started += instance.OnPlaceTrap;
                 @PlaceTrap.performed += instance.OnPlaceTrap;
                 @PlaceTrap.canceled += instance.OnPlaceTrap;
+                @Bow.started += instance.OnBow;
+                @Bow.performed += instance.OnBow;
+                @Bow.canceled += instance.OnBow;
+                @MousePoint.started += instance.OnMousePoint;
+                @MousePoint.performed += instance.OnMousePoint;
+                @MousePoint.canceled += instance.OnMousePoint;
             }
         }
     }
@@ -380,5 +436,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnSprint(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnPlaceTrap(InputAction.CallbackContext context);
+        void OnBow(InputAction.CallbackContext context);
+        void OnMousePoint(InputAction.CallbackContext context);
     }
 }

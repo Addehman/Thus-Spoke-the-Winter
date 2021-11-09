@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
 	public event Action<GameObject> ResourceGathered;
 	public event Action<EnergyCost> EnergyDrain;
 	public event Action<Vector3> OnPlaceTrap;
+	public Vector2 mousePoint;
 
 	private InputMaster _controls;
 	private Transform _transform;
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
 
 		_controls = new InputMaster();
 		_controls.Player.Movement.ReadValue<Vector2>();
+		_controls.Player.MousePoint.ReadValue<Vector2>();
 	}
 
 	private void OnEnable()
@@ -42,6 +44,10 @@ public class PlayerController : MonoBehaviour
 		_controls.Player.Sprint.canceled += ctx => _doSprint = false;
 		_controls.Player.Interact.started += ctx => Interact();
 		_controls.Player.PlaceTrap.started += ctx => PlaceTrap();
+		_controls.Player.Bow.started += ctx => BowBehaviour.Instance.ChargeArrow();
+		_controls.Player.Bow.canceled += ctx => mousePoint = _controls.Player.MousePoint.ReadValue<Vector2>();
+		_controls.Player.Bow.canceled += ctx => BowBehaviour.Instance.ReleaseArrow(mousePoint);
+
 		TreeController.Instance.OnClearTrees += ClearInteractablesInRangeList;
 		FoodController.Instance.OnClearFoods += ClearInteractablesInRangeList;
 		MobController.Instance.OnClearMobs += ClearInteractablesInRangeList;
@@ -56,6 +62,8 @@ public class PlayerController : MonoBehaviour
 	{
 		GetPlayerInput();
 		PlayerAnimation();
+
+		//mousePoint = _controls.Player.MousePoint.ReadValue<Vector2>();
 	}
 
 	private void FixedUpdate()

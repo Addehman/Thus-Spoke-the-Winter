@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 332712203833756743}
   - component: {fileID: 1858088666}
   - component: {fileID: 1858088665}
+  - component: {fileID: 6948897311830590201}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -168,6 +169,25 @@ MonoBehaviour:
   _playerViewPortPos: {x: 0, y: 0, z: 0}
   _hasEnergy: 1
   _seedGenerator: {fileID: 0}
+--- !u!114 &6948897311830590201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 332712203833756749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72dcf780c84a78546a0b4b6d74a6a889, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _arrowPool: []
+  _arrowPrefab: {fileID: 7011060429453249569, guid: 11caebff7e6a4f24584eddcb347ff598, type: 3}
+  arrowAmount: 10
+  _chargeSpeed: 0.1
+  _chargeMax: 3
+  _chargeMin: 1
+  arrowStrength: 0
 --- !u!1 &2841916637874704008
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 {
 	[SerializeField] private ResourceDataSO _data;
 	[SerializeField] private Status status = Status.Alive;
-	[SerializeField] private Camera _cam;
+	[SerializeField] private Camera _camera;
 
 	public event Action<GameObject> OnButcher;
 
@@ -28,7 +28,7 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 		_transform = transform;
 		_gameObject = gameObject;
 		_sr = GetComponent<SpriteRenderer>();
-		_cam = Camera.main;
+		_camera = Camera.main;
 
 		type = _data.type;
 		costSize = _data.energyCostSize;
@@ -55,7 +55,7 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 	{
 		if (!_gameObject.activeSelf) return;
 
-		Vector2 temp = _cam.WorldToViewportPoint(_transform.position);
+		Vector2 temp = _camera.WorldToViewportPoint(_transform.position);
 		if (temp.x > 1f || temp.x < 0f || temp.y > 1f || temp.y < 0f)
 		{
 			_gameObject.SetActive(false);
@@ -73,15 +73,20 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 
 	public void OnInteract()
 	{
-		switch (status)
+		if (status == Status.Dead) // This is probably better anyway, but check out why the switch below sends or is received twice, as it seems to do so.
 		{
-			case Status.Dead:
-				Butcher();
-				break;
-			default:
-				OnDestruction();
-				break;
+			Butcher();
 		}
+
+		//switch (status)
+		//{
+		//	case Status.Dead:
+		//		Butcher();
+		//		break;
+		//	default:
+		//		OnDestruction();
+		//		break;
+		//}
 	}
 
 	public void OnDestruction()
