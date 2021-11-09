@@ -8,6 +8,10 @@ public class SceneController : MonoBehaviour
 	private static SceneController _instance;
 	public static SceneController Instance { get { return _instance; } }
 
+	[SerializeField] private SeedGenerator _seedGenerator;
+
+	private GameObject _cabinParent;
+
 
 	private void Awake()
 	{
@@ -15,6 +19,25 @@ public class SceneController : MonoBehaviour
 			Destroy(this);
 		else
 			_instance = this;
+	}
+
+	private void Start()
+	{
+		_seedGenerator.SendSeed += ChangeScene;
+	}
+
+	private void ChangeScene(int seed)
+	{
+		if (seed == -1)
+		{
+			print("Spawning Cabin");
+			LoadScene("CabinScene");
+		}
+		else if (IsCurrentSceneName("CabinScene"))
+		{
+			_cabinParent.SetActive(false);
+			LoadScene("ForestScene");
+		}
 	}
 
 	public void LoadScene(int index)
@@ -33,5 +56,10 @@ public class SceneController : MonoBehaviour
 			return true;
 		else
 			return false;
+	}
+
+	public void SetCabinParent(GameObject obj)
+	{
+		_cabinParent = obj;
 	}
 }

@@ -44,6 +44,8 @@ public class FoodBehaviour : MonoBehaviour, IInteractable
 
 	public void OnInteract()
 	{
+		if (health <= 0) return;
+
 		health -= _damage;
 
 		if (health <= 0) OnDestruction();

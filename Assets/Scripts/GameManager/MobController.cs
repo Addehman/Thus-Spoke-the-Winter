@@ -24,15 +24,15 @@ public class MobController : MonoBehaviour
 
 	[SerializeField] private Transform _mobParent;
 	[SerializeField] private LayerMask _ground;
-	[SerializeField] private LayerMask _default;
+	[SerializeField] private LayerMask _forestObjects;
 	[SerializeField] private PlayerController _player;
 	[SerializeField] private Vector2 _playerViewPortPos;
 	[SerializeField] private Vector2 _mobViewPortPos;
 	[SerializeField] private Vector3 _mobWorldPos;
 	[SerializeField] private SeedGenerator _seedGenerator;
 	[SerializeField] private int _currentSeed;
-	[SerializeField] private MobObjectPoolQuantitySetup _mobObjectPoolQuantitySetup;
-	[SerializeField] private MobObjectPoolPrefabLibrary _mobObjectPoolPrefabLibrary;
+	[SerializeField] private MobObjectPoolQuantitySetup _objectQuantitySetup;
+	[SerializeField] private MobObjectPoolPrefabLibrary _objectPrefabLibrary;
 	[SerializeField] private int mobRarityWeight;
 	[SerializeField] private int uniqueMobObjects = 1;
 	[Space(10)]
@@ -165,7 +165,7 @@ public class MobController : MonoBehaviour
 	/// </summary>
 	private void InitializeObjectPool()
 	{
-		_mobObjectPoolQuantitySetup.quantities = new int[1] { _mobObjectPoolQuantitySetup.brownBunny_Amount };
+		_objectQuantitySetup.quantities = new int[1] { _objectQuantitySetup.brownBunny_Amount };
 
 		/*mobRarityWeight = 0;
 		for (int i = _mobObjectPoolQuantitySetup.quantities.Length - uniqueMobObjects; i < _mobObjectPoolQuantitySetup.quantities.Length; i++)
@@ -175,11 +175,11 @@ public class MobController : MonoBehaviour
 
 		tempSpawns = new List<Transform>();
 
-		for (int i = 0; i < _mobObjectPoolQuantitySetup.quantities.Length; i++)
+		for (int i = 0; i < _objectQuantitySetup.quantities.Length; i++)
 		{
-			if (_mobObjectPoolQuantitySetup.quantities[i] <= 0) continue;
+			if (_objectQuantitySetup.quantities[i] <= 0) continue;
 
-			SpawnThisTypeThisMany(_mobObjectPoolPrefabLibrary.prefabs[i], _mobObjectPoolQuantitySetup.quantities[i]);
+			SpawnThisTypeThisMany(_objectPrefabLibrary.prefabs[i], _objectQuantitySetup.quantities[i]);
 		}
 		MobObjectPool.Instance.AddMobObjectsToList(tempSpawns);
 	}
@@ -197,20 +197,19 @@ public class MobController : MonoBehaviour
 
 	private void SaveIDToBlacklist(GameObject obj)
 	{
-		if (obj.TryGetComponent(out MobBehaviour mob))
+		if (!obj.TryGetComponent(out MobBehaviour mob)) return;
+
+		print($"{obj.name} is now blacklisted!");
+
+		_tempSavedDeadMobDictionary.Add(obj.name, obj.transform.position);
+
+		if (_tempSavedDeadMobDictionary.Count != 1)
 		{
-			print($"{obj.name} is now blacklisted!");
-
-			_tempSavedDeadMobDictionary.Add(obj.name, obj.transform.position);
-
-			if (_tempSavedDeadMobDictionary.Count != 1)
-			{
-				_savedDeadMobDictionary[_currentSeed] = _tempSavedDeadMobDictionary;
-			}
-			else
-			{
-				_savedDeadMobDictionary.Add(_currentSeed, _tempSavedDeadMobDictionary);
-			}
+			_savedDeadMobDictionary[_currentSeed] = _tempSavedDeadMobDictionary;
+		}
+		else
+		{
+			_savedDeadMobDictionary.Add(_currentSeed, _tempSavedDeadMobDictionary);
 		}
 	}
 
@@ -256,9 +255,9 @@ public class MobController : MonoBehaviour
 		else
 		{
 			mobRarityWeight = 0;
-			for (int i = _mobObjectPoolQuantitySetup.quantities.Length - uniqueMobObjects; i < _mobObjectPoolQuantitySetup.quantities.Length; i++)
+			for (int i = _objectQuantitySetup.quantities.Length - uniqueMobObjects; i < _objectQuantitySetup.quantities.Length; i++)
 			{
-				mobRarityWeight += _mobObjectPoolQuantitySetup.quantities[i];
+				mobRarityWeight += _objectQuantitySetup.quantities[i];
 			}
 		}
 	}
@@ -282,7 +281,7 @@ public class MobController : MonoBehaviour
 		RaycastHit hit;
 
 		int tries = 0;
-		while (Physics.Raycast(ray, out hit, float.MaxValue, _default))
+		while (Physics.Raycast(ray, out hit, float.MaxValue, _forestObjects))
 		{
 			if (_mobViewPortPos.x > 0.5f)
 			{
