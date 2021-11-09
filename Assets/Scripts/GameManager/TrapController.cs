@@ -29,9 +29,9 @@ public class TrapController : MonoBehaviour
 
     private Dictionary<int, List<Vector3>> _savedTrapsDict = new Dictionary<int, List<Vector3>>();
     private List<Vector3> _tempSavedTrapsList;
-    private int _currentSeed;
-
     private List<Transform> tempSpawns;
+    private int _currentSeed;
+    private int _amountOfTraps;
 
     public event Action<Vector3> OnSpawnSavedTraps;
 
@@ -46,14 +46,25 @@ public class TrapController : MonoBehaviour
     void Start()
     {
         _seedGenerator.SendSeed += UpdateCurrentSeed;
+        _player.OnPlaceTrap += SpawnTrap;
 
         InitializeObjectPool();
     }
 
+    private void SpawnTrap(Vector3 position)
+    {
+        if (_amountOfTraps != 0)
+        {
+
+        }
+
+        SaveTrapToDictionary(position);
+    }
+
     /// <summary>
-	/// Here we fill the ObjectPool up with managable accuracy concerning the amounts for each type - Spawns all the objects that will be possible to spawn on each block of forest.
-	/// </summary>
-	private void InitializeObjectPool()
+    /// Here we fill the ObjectPool up with managable accuracy concerning the amounts for each type - Spawns all the objects that will be possible to spawn on each block of forest.
+    /// </summary>
+    private void InitializeObjectPool()
     {
         _trapObjectPoolQuantitySetup.quantities = new int[1] { _trapObjectPoolQuantitySetup.trap_Amount };
 
