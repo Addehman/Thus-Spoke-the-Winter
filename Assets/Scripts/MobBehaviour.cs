@@ -129,7 +129,7 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 
 	private IEnumerator Move(Vector3 newPosition)// Bunny moves towards a random but close position
 	{
-		print($"Bunny: {_gameObject}, is Moving.");
+		//print($"Bunny: {_gameObject}, is Moving.");
 		float step = speed * Time.deltaTime;
 
 		while ((_transform.position - newPosition).sqrMagnitude > 0.1f)
@@ -144,14 +144,14 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 
 		private IEnumerator Eating() // Bunny is eating 
 	{
-		print($"Bunny: {_gameObject}, is Eating.");
+		//print($"Bunny: {_gameObject}, is Eating.");
 		yield return new WaitForSeconds(1f);
 		RandomBehaviour();
 	}
 
 	private IEnumerator Scouting()// Bunny stops to look around for dangers 
 	{
-		print($"Bunny: {_gameObject}, is Scouting.");
+		//print($"Bunny: {_gameObject}, is Scouting.");
 		yield return new WaitForSeconds(1f);
 		RandomBehaviour();
 	}
