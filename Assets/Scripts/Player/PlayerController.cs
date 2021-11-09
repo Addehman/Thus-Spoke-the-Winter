@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
 
 	public event Action<GameObject> ResourceGathered;
 	public event Action<EnergyCost> EnergyDrain;
+	public event Action<Vector3> OnPlaceTrap;
 
 	private InputMaster _controls;
 	private Transform _transform;
@@ -40,6 +41,7 @@ public class PlayerController : MonoBehaviour
 		_controls.Player.Sprint.started += ctx => _doSprint = true;
 		_controls.Player.Sprint.canceled += ctx => _doSprint = false;
 		_controls.Player.Interact.started += ctx => Interact();
+		_controls.Player.PlaceTrap.started += ctx => PlaceTrap();
 		TreeController.Instance.OnClearTrees += ClearInteractablesInRangeList;
 		FoodController.Instance.OnClearFoods += ClearInteractablesInRangeList;
 		MobController.Instance.OnClearMobs += ClearInteractablesInRangeList;
@@ -49,7 +51,8 @@ public class PlayerController : MonoBehaviour
 		StorageController.Instance.GoalAccomplished += SetHasEnergyTrue;
 	}
 
-	private void Update()
+
+    private void Update()
 	{
 		GetPlayerInput();
 		PlayerAnimation();
@@ -155,6 +158,11 @@ public class PlayerController : MonoBehaviour
 
 		return speed;
 	}
+
+    private void PlaceTrap()
+    {
+		OnPlaceTrap?.Invoke(_transform.position);
+    }
 
 	private void Interact()
 	{

@@ -21,6 +21,7 @@ public class TrapController : MonoBehaviour
     private static TrapController _instance;
     public static TrapController Instance { get { return _instance; } }
 
+    [SerializeField] private PlayerController _player;
     [SerializeField] private SeedGenerator _seedGenerator;
     [SerializeField] private Transform _trapParent;
     [SerializeField] private TrapObjectPoolQuantitySetup _trapObjectPoolQuantitySetup;
@@ -45,6 +46,7 @@ public class TrapController : MonoBehaviour
     void Start()
     {
         _seedGenerator.SendSeed += UpdateCurrentSeed;
+
         InitializeObjectPool();
     }
 
