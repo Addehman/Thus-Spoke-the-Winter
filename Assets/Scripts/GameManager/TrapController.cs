@@ -61,12 +61,12 @@ public class TrapController : MonoBehaviour
         {
             if (_trapObjectPoolQuantitySetup.quantities[i] <= 0) continue;
 
-            SpawnThisTypeThisMany(_trapObjectPoolPrefabLibrary.prefabs[i], _trapObjectPoolQuantitySetup.quantities[i]);
+            InitializeThisTypeThisMany(_trapObjectPoolPrefabLibrary.prefabs[i], _trapObjectPoolQuantitySetup.quantities[i]);
         }
         TrapObjectPool.Instance.AddTrapObjectsToList(tempSpawns);
     }
 
-    private void SpawnThisTypeThisMany(GameObject type, int typeAmount)
+    private void InitializeThisTypeThisMany(GameObject type, int typeAmount)
     {
         GameObject spawn = null;
         for (int i = 0; i < typeAmount; i++)
@@ -76,7 +76,6 @@ public class TrapController : MonoBehaviour
             tempSpawns.Add(spawn.transform);
         }
     }
-
 
     void UpdateCurrentSeed(int seed)
     {

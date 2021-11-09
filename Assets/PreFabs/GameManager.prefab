@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 3106118346775221718}
   - component: {fileID: 5314860584786985286}
   - component: {fileID: 1598481676671803577}
+  - component: {fileID: 3697347735707502619}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -182,7 +183,6 @@ MonoBehaviour:
   venison: 0
   bunnyMeat: 0
   _player: {fileID: 0}
-  _storageController: {fileID: 0}
 --- !u!114 &5788918341611528032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,3 +272,25 @@ MonoBehaviour:
     woodDayGoal_lateFall: 100
   woodStorage: 0
   foodStorage: 0
+--- !u!114 &3697347735707502619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5394431023272021239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38940711110213440b5ada1a36ff973e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _seedGenerator: {fileID: 5129743002338067384}
+  _trapParent: {fileID: 5394431023272021233}
+  _trapObjectPoolQuantitySetup:
+    quantities: 
+    trap_Amount: 1
+  _trapObjectPoolPrefabLibrary:
+    prefabs:
+    - {fileID: 5062927351200187593, guid: cfbee0a8fd6ec2e4e9de8fef18c54218, type: 3}
+    - {fileID: 5062927351200187593, guid: cfbee0a8fd6ec2e4e9de8fef18c54218, type: 3}
+    - {fileID: 5062927351200187593, guid: cfbee0a8fd6ec2e4e9de8fef18c54218, type: 3}
