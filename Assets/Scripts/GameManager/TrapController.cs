@@ -31,7 +31,7 @@ public class TrapController : MonoBehaviour
     private List<Vector3> _tempSavedTrapsList;
     private List<Transform> tempSpawns;
     private int _currentSeed;
-    private int _amountOfTraps;
+    private int _trapIndex;
 
     public event Action<Vector3> OnSpawnSavedTraps;
 
@@ -46,19 +46,51 @@ public class TrapController : MonoBehaviour
     void Start()
     {
         _seedGenerator.SendSeed += UpdateCurrentSeed;
-        _player.OnPlaceTrap += SpawnTrap;
+        _player.OnPlaceTrap += PlaceTrap;
+        _player.OnPlaceTrap += SaveTrapToDictionary;
 
         InitializeObjectPool();
+        _trapIndex = 0;
     }
 
-    private void SpawnTrap(Vector3 position)
+    private void PlaceTrap(Vector3 position)
     {
-        if (_amountOfTraps != 0)
+        if (_trapIndex < _trapObjectPoolQuantitySetup.trap_Amount)
         {
+            Transform newTrap = TrapObjectPool.Instance.trapObjectPool[_trapIndex];
 
+            newTrap.position = position;
+            newTrap.gameObject.SetActive(true);
+            _trapIndex++;
         }
+    }
+    private void ClearTraps()
+    {
+        for (int i = 0; i < TrapObjectPool.Instance.trapObjectPool.Length; i++)
+        {
+            TrapObjectPool.Instance.trapObjectPool[i].gameObject.SetActive(false);
+        }
+    }
 
-        SaveTrapToDictionary(position);
+
+    //TO DO: Fix a way to spawn the right trap in TrapObjectPool.Instance.trapObjectPool.
+    //We need to save the index of a placed trap somehow.
+    void SpawnSavedTraps()
+    {
+        if (_savedTrapsDict.TryGetValue(_currentSeed, out List < Vector3 > result))
+        {
+            int savedTrapIndex = 0;
+
+            foreach (Vector3 position in result)
+            {
+                Transform newTrap = TrapObjectPool.Instance.trapObjectPool[savedTrapIndex];
+
+                newTrap.position = position;
+                newTrap.gameObject.SetActive(true);
+
+                savedTrapIndex++;
+            }
+        }
     }
 
     /// <summary>
@@ -93,8 +125,10 @@ public class TrapController : MonoBehaviour
     void UpdateCurrentSeed(int seed)
     {
         _currentSeed = seed;
+        ClearTraps();
         SpawnSavedTraps();
     }
+
 
     void SaveTrapToDictionary(Vector3 position) //This should trigger of an event from the player "OnPlacedTrap" or something like that.
     {
@@ -121,14 +155,11 @@ public class TrapController : MonoBehaviour
         }
     }
 
-    void SpawnSavedTraps()
+    private void OnDestroy()
     {
-        if (_savedTrapsDict.TryGetValue(_currentSeed, out List < Vector3 > result))
-        {
-            foreach (Vector3 position in result)
-            {
-                OnSpawnSavedTraps?.Invoke(position);
-            }
-        }
+        _seedGenerator.SendSeed -= UpdateCurrentSeed;
+        _player.OnPlaceTrap -= PlaceTrap;
+        _player.OnPlaceTrap -= SaveTrapToDictionary;
     }
+
 }
