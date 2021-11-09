@@ -368,6 +368,7 @@ public class PlayerController : MonoBehaviour
 		_controls.Player.Sprint.started -= ctx => _doSprint = true;
 		_controls.Player.Sprint.canceled -= ctx => _doSprint = false;
 		_controls.Player.Interact.started -= ctx => Interact();
+		_controls.Player.PlaceTrap.started -= ctx => PlaceTrap();
 
 		TreeController.Instance.OnClearTrees -= ClearInteractablesInRangeList;
 		FoodController.Instance.OnClearFoods -= ClearInteractablesInRangeList;
