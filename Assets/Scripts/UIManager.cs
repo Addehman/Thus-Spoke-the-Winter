@@ -7,21 +7,18 @@ public class UIManager : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI inventoryText;
 	[SerializeField] private Image energyBar;
 
-	[SerializeField] private Inventory _inventory;
-	[SerializeField] private StorageController _storageController;
-
 
 	private void Start() 
 	{
-		_inventory.UpdateUI += UpdateInventoryUI;
+		Inventory.Instance.UpdateUI += UpdateInventoryUI;
 		EnergyController.Instance.UpdateEnergyUI += UpdateEnergyUI;
-		_storageController.UpdateUI += UpdateInventoryUI;
+		StorageController.Instance.UpdateUI += UpdateInventoryUI;
 		UpdateInventoryUI();
 	}
 
 	private void UpdateInventoryUI()
 	{
-		inventoryText.text = $"{_inventory.currentInventory} / {_inventory.inventoryMaxCapacity}";
+		inventoryText.text = $"{Inventory.Instance.currentInventory} / {Inventory.Instance.inventoryMaxCapacity}";
 	}
 
 	private void UpdateEnergyUI()
@@ -34,7 +31,7 @@ public class UIManager : MonoBehaviour
 
 	private void OnDestroy() 
 	{
-		_inventory.UpdateUI -= UpdateInventoryUI;
+		Inventory.Instance.UpdateUI -= UpdateInventoryUI;
 		EnergyController.Instance.UpdateEnergyUI -= UpdateEnergyUI;
 	}
 }

@@ -3,48 +3,42 @@ using System;
 using System.Collections.Generic;
 
 [Serializable]
-public class ObjectPoolQuantitySetup
+public class TreeObjectPoolQuantitySetup
 {
 	[HideInInspector] public int[] quantities;
 	public int leafTree_1Amount, leafTree_2Amount, leafTree_3Amount, leafTree_4Amount,
-		leafTree_5Amount, pineTreeAmount, tallPineTreeAmount, blueberryAmount,
-		lingonberryAmount, mushroomAmount, fruitTree_1Amount, fruitTree_2Amount,
-		fruitTree_3Amount;
+		leafTree_5Amount, pineTreeAmount, tallPineTreeAmount;
 }
 
 [Serializable]
 public class ObjectPoolPrefabLibrary
 {
-	public GameObject[] prefabs = new GameObject[13];
+	public GameObject[] prefabs = new GameObject[7];
 }
 
-public class ForestController : MonoBehaviour
+public class TreeController : MonoBehaviour
 {
-	private static ForestController _instance;
-	public static ForestController Instance { get { return _instance; } }
+	private static TreeController _instance;
+	public static TreeController Instance { get { return _instance; } }
 
-	public event Action OnClearForest;
+	public event Action OnClearTrees;
 
-	[SerializeField] private Transform _forestParent;
+	[SerializeField] private Transform _treeParent;
 	[SerializeField] private LayerMask _ground;
-	[SerializeField] private LayerMask _default;
+	[SerializeField] private LayerMask _forestObjects;
 	[SerializeField] private PlayerController _player;
 	[SerializeField] private SeedGenerator _seedGenerator;
 	[SerializeField] private int _currentSeed;
-	[SerializeField] private ObjectPoolQuantitySetup _objectPoolQuantitySetup;
-	[SerializeField] private ObjectPoolPrefabLibrary _objectPoolPrefabLibrary;
-	[SerializeField] private int foodRarityWeight;
-	[SerializeField] private int uniqueFoodObjects = 6;
+	[SerializeField] private TreeObjectPoolQuantitySetup _objectQuantitySetup;
+	[SerializeField] private ObjectPoolPrefabLibrary _objectPrefabLibrary;
 	[Space(10)]
 	[SerializeField] private int minSpawnAmount = 5;
 	[SerializeField] private int maxSpawnAmount = 50;
 
-	private GameObject _cabinParent;
-
 	private Camera _camera;
 	private Dictionary<int, List<string>> _blackListDictionary = new Dictionary<int, List<string>>();
 	private List<string> _tempBlacklist;
-	private List<Transform> tempSpawns;
+	private List<Transform> initialSpawns;
 
 
 	private void Awake()
@@ -55,21 +49,16 @@ public class ForestController : MonoBehaviour
 			_instance = this;
 
 		_camera = Camera.main;
-		_seedGenerator.SendSeed += SpawnForest;
+		_seedGenerator.SendSeed += SpawnTrees;
 		_player.ResourceGathered += SaveIDToBlacklist;
 	}
 
 	private void Start()
 	{
-		InitialSpawn();
+		InitializeObjectPool();
 	}
 
-	public void SetCabinParent(GameObject obj)
-	{
-		_cabinParent = obj;
-	}
-
-	public void SpawnForest(int seed)
+	public void SpawnTrees(int seed)
 	{
 		_currentSeed = seed;
 
@@ -86,42 +75,31 @@ public class ForestController : MonoBehaviour
 		ClearForest();
 		// Check if the incoming seed number here is "-1", this means it's the Home block and no forest should spawn.
 		if (seed == -1)
-		{
-			print("Spawning Cabin");
-			SceneController.Instance.LoadScene("CabinScene");
 			return;
-		}
-		else if (SceneController.Instance.IsCurrentSceneName("CabinScene"))
-		{
-			_cabinParent.SetActive(false);
-			SceneController.Instance.LoadScene("ForestScene");
-		}
 
 		List<int> usedRandomNumbers = new List<int>();
 
 		UnityEngine.Random.InitState(seed); // To be used to control the seed of the random forest, whether it should be random or not.
 
 		int spawnCount = UnityEngine.Random.Range(minSpawnAmount, maxSpawnAmount);
-		print("Amount of new Objects: " + spawnCount);
-
-		CheckRarityTier();
+		print("Amount of new Trees: " + spawnCount);
 
 		for (int i = 0; i < spawnCount; i++)
 		{
 			//This needs to check so that we don't random the same number twice in a row or something like that.
-			int randomObject = UnityEngine.Random.Range(0, ForestObjectPool.Instance.forestObjectPool.Length - foodRarityWeight); // This number should be a variable
+			int randomObject = UnityEngine.Random.Range(0, TreeObjectPool.Instance.treeObjectPool.Length); // This number should be a variable
 
 			while (usedRandomNumbers.Contains(randomObject))
 			{
-				randomObject = (randomObject + 1) % ForestObjectPool.Instance.forestObjectPool.Length;
+				randomObject = (randomObject + 1) % TreeObjectPool.Instance.treeObjectPool.Length;
 			}
 			usedRandomNumbers.Add(randomObject);
 
-			Transform newObject = ForestObjectPool.Instance.forestObjectPool[randomObject];
+			Transform newObject = TreeObjectPool.Instance.treeObjectPool[randomObject];
 
 			//A way to make the seed control what the random name is going to be.
-			int randomID1 = UnityEngine.Random.Range(0, 1000000);
-			int randomID2 = UnityEngine.Random.Range(0, 1000000);
+			int randomID_1 = UnityEngine.Random.Range(0, 1000000);
+			int randomID_2 = UnityEngine.Random.Range(0, 1000000);
 
 			//float randomOffset = UnityEngine.Random.Range(-1f, 1f);
 			//randomWorldPos.z += randomOffset;
@@ -138,70 +116,46 @@ public class ForestController : MonoBehaviour
 
 			//Vi kan eventuellt strunta i att ge alla objekt ett random namn varje gång utan bara ge alla ett random namn första gången.
 			//För att spara prestanda. I och med att vi ändå alltid har koll på vilken seed vi är på med Dictionariet.
-			newObject.gameObject.name = $"{randomID1}{randomID2}";
+			newObject.gameObject.name = $"{randomID_1}{randomID_2}";
 
-			if (CheckBlacklist(newObject))
+			if (IsObjectBlacklisted(newObject))
 				continue;
-
-			newObject.gameObject.SetActive(true);
-
-			CheckIfFruitTree(newObject);
-
-			//Another way to give the spawned object a unique ID as name. Does not utilize seed though, so not for us right now.
-			//newObject.name = Guid.NewGuid().ToString();
 
 			// Here we make sure that the spawned object is not in the air.
 			/*Vector3 positionCorrection = newObject.position;
 			positionCorrection.y = 0f;
 			newObject.position = positionCorrection;*/
-
 			newObject.position = PositionCorrection(newObject.position);
+
+			newObject.gameObject.SetActive(true);
+
+			//Another way to give the spawned object a unique ID as name. Does not utilize seed though, so not for us right now.
+			//newObject.name = Guid.NewGuid().ToString();
 		}
 	}
 
-	private bool CheckBlacklist(Transform obj)
+	private bool IsObjectBlacklisted(Transform obj)
 	{
+		obj.TryGetComponent(out TreeBehaviour tree);
+
 		if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(obj.gameObject.name))
 		{
 			print($"{obj.name} is blacklisted!");
 			// here we should check if it's mushroom or apple, then do like we have done
-			if (obj.TryGetComponent(out FoodBehaviour food))
-			{
-				if ((food.type == ResourceType.apple || food.type == ResourceType.mushroom))
-				{
-					return true;
-				}
-				else
-				{
-					obj.gameObject.SetActive(true);
-					obj.position = PositionCorrection(obj.position);
-					food.IsDepleted(true);
-					return true;
-				}
-			}
-			else if (obj.TryGetComponent(out TreeBehaviour tree))
-			{
-				obj.gameObject.SetActive(true);
-				obj.position = PositionCorrection(obj.position);
-				tree.SetSpriteToDepleted();
-				return true;
-			}
+			
+			obj.gameObject.SetActive(true);
+			obj.position = PositionCorrection(obj.position);
+			tree.SetSpriteToDepleted();
+			return true;
 		}
 		else // Not on Blacklist - simply update the sprites to not look depleted/cut down
 		{
-			if (obj.TryGetComponent(out FoodBehaviour food))
-			{
-				food.IsDepleted(false);
-			}
-			else if (obj.TryGetComponent(out TreeBehaviour tree))
-			{
-				tree.UpdateState(SeasonController.Instance.currentSeason);
-			}
+			tree.UpdateState(SeasonController.Instance.currentSeason);
+			return false;
 		}
-		return false;
 	}
 
-	private void CheckIfFruitTree(Transform obj)
+	private void SpawnFruitsIfFruitTree(Transform obj)
 	{
 		if (obj.TryGetComponent(out TreeBehaviour fruitTree) && fruitTree.type == ResourceType.fruitTree)
 		{
@@ -232,7 +186,7 @@ public class ForestController : MonoBehaviour
 
 	private void SaveIDToBlacklist(GameObject obj)
 	{
-		if (obj.TryGetComponent(out MobBehaviour mob)) return;
+		if (!obj.TryGetComponent(out TreeBehaviour tree)) return;
 
 		print($"{obj.name} is now blacklisted!");
 
@@ -250,38 +204,31 @@ public class ForestController : MonoBehaviour
 
 	private void ClearForest()
 	{
-		foreach (Transform forestObject in _forestParent)
+		foreach (Transform forestObject in _treeParent)
 		{
-			OnClearForest?.Invoke();
+			OnClearTrees?.Invoke();
 			forestObject.gameObject.SetActive(false);
 		}
 	}
 	/// <summary>
 	/// Here we fill the ObjectPool up with managable accuracy concerning the amounts for each type - Spawns all the objects that will be possible to spawn on each block of forest.
 	/// </summary>
-	private void InitialSpawn()
+	private void InitializeObjectPool()
 	{
-		_objectPoolQuantitySetup.quantities = new int[13] { _objectPoolQuantitySetup.leafTree_1Amount, _objectPoolQuantitySetup.leafTree_2Amount, _objectPoolQuantitySetup.leafTree_3Amount,
-			_objectPoolQuantitySetup.leafTree_4Amount, _objectPoolQuantitySetup.leafTree_5Amount, _objectPoolQuantitySetup.pineTreeAmount, _objectPoolQuantitySetup.tallPineTreeAmount,
-			_objectPoolQuantitySetup.blueberryAmount, _objectPoolQuantitySetup.lingonberryAmount, _objectPoolQuantitySetup.mushroomAmount,
-			_objectPoolQuantitySetup.fruitTree_1Amount, _objectPoolQuantitySetup.fruitTree_2Amount, _objectPoolQuantitySetup.fruitTree_3Amount};
+		_objectQuantitySetup.quantities = new int[7] { _objectQuantitySetup.leafTree_1Amount, _objectQuantitySetup.leafTree_2Amount, _objectQuantitySetup.leafTree_3Amount,
+			_objectQuantitySetup.leafTree_4Amount, _objectQuantitySetup.leafTree_5Amount, _objectQuantitySetup.pineTreeAmount, _objectQuantitySetup.tallPineTreeAmount};
 
-		foodRarityWeight = 0;
-		for (int i = _objectPoolQuantitySetup.quantities.Length - uniqueFoodObjects; i < _objectPoolQuantitySetup.quantities.Length; i++)
+		initialSpawns = new List<Transform>();
+
+		for (int i = 0; i < _objectQuantitySetup.quantities.Length; i++)
 		{
-			foodRarityWeight += _objectPoolQuantitySetup.quantities[i];
+			// if the amount is set to 0, then we don't want this type -> continue to next iteration in loop.
+			if (_objectQuantitySetup.quantities[i] <= 0) continue;
+
+			SpawnThisTypeThisMany(_objectPrefabLibrary.prefabs[i], _objectQuantitySetup.quantities[i]);
 		}
 
-		tempSpawns = new List<Transform>();
-
-		for (int i = 0; i < _objectPoolQuantitySetup.quantities.Length; i++)
-		{
-			if (_objectPoolQuantitySetup.quantities[i] <= 0) continue;
-
-			SpawnThisTypeThisMany(_objectPoolPrefabLibrary.prefabs[i], _objectPoolQuantitySetup.quantities[i]);
-		}
-
-		ForestObjectPool.Instance.AddForestObjectsToList(tempSpawns);
+		TreeObjectPool.Instance.AddTreeObjectsToArray(initialSpawns);
 	}
 
 	private void SpawnThisTypeThisMany(GameObject type, int typeAmount)
@@ -289,40 +236,12 @@ public class ForestController : MonoBehaviour
 		GameObject spawn = null;
 		for (int i = 0; i < typeAmount; i++)
 		{
-			spawn = Instantiate(type, _forestParent);
+			spawn = Instantiate(type, _treeParent);
 			spawn.SetActive(false);
-			tempSpawns.Add(spawn.transform);
+			initialSpawns.Add(spawn.transform);
 		}
 	}
 
-	private void CheckRarityTier()
-	{
-		int dominant = _seedGenerator.distanceFromHome.x >= _seedGenerator.distanceFromHome.y ? _seedGenerator.distanceFromHome.x : _seedGenerator.distanceFromHome.y;
-		if (dominant > 1 && dominant <= 5)
-		{
-			foodRarityWeight = 30;
-		}
-		else if (dominant > 5 && dominant <= 10)
-		{
-			foodRarityWeight = 25;
-		}
-		else if (dominant > 10 && dominant <= 20)
-		{
-			foodRarityWeight = 15;
-		}
-		else if (dominant > 20)
-		{
-			foodRarityWeight = 0;
-		}
-		else
-		{
-			foodRarityWeight = 0;
-			for (int i = _objectPoolQuantitySetup.quantities.Length - uniqueFoodObjects; i < _objectPoolQuantitySetup.quantities.Length; i++)
-			{
-				foodRarityWeight += _objectPoolQuantitySetup.quantities[i];
-			}
-		}
-	}
 
 	/// <summary>
 	/// Use this to Generate a new Random Position on the Screen using the Camera.
@@ -342,7 +261,7 @@ public class ForestController : MonoBehaviour
 		RaycastHit hit;
 
 		int tries = 0;
-		while (Physics.Raycast(ray, out hit, float.MaxValue, _default))
+		while (Physics.Raycast(ray, out hit, float.MaxValue, _forestObjects))
 		{
 			randomViewPortPosX = UnityEngine.Random.Range(0.1f, 0.9f);
 			randomViewPortPosY = UnityEngine.Random.Range(0.1f, 0.9f);
@@ -369,7 +288,7 @@ public class ForestController : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		_seedGenerator.SendSeed -= SpawnForest;
+		_seedGenerator.SendSeed -= SpawnTrees;
 		_player.ResourceGathered -= SaveIDToBlacklist;
 	}
 }

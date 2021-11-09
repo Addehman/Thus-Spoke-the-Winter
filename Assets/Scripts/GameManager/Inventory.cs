@@ -22,7 +22,6 @@ public class Inventory : MonoBehaviour
 	public int bunnyMeat;
 
 	[SerializeField] private PlayerController _player;
-	[SerializeField] private StorageController _storageController;
 
 
 	private void Awake()
@@ -36,7 +35,7 @@ public class Inventory : MonoBehaviour
 	private void OnEnable()
 	{
 		_player.ResourceGathered += GatherResource;
-		_storageController.UpdateUI += UpdateCurrentInventory;
+		StorageController.Instance.UpdateUI += UpdateCurrentInventory;
 	}
 
 	void Start()
