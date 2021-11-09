@@ -379,6 +379,28 @@ MonoBehaviour:
   uniqueMobObjects: 1
   minSpawnAmount: 1
   maxSpawnAmount: 1
+--- !u!114 &235321983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235321978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38940711110213440b5ada1a36ff973e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _seedGenerator: {fileID: 1348060812}
+  _trapParent: {fileID: 0}
+  _trapObjectPoolQuantitySetup:
+    quantities: 
+    trap_Amount: 0
+  _trapObjectPoolPrefabLibrary:
+    prefabs:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
 --- !u!1 &297288504
 GameObject:
   m_ObjectHideFlags: 0
@@ -1077,6 +1099,50 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78e0b7973a69ef040b3771d6d9dc9ad4, type: 3}
+--- !u!1 &813438148
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 813438149}
+  - component: {fileID: 813438150}
+  m_Layer: 0
+  m_Name: TrapParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &813438149
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813438148}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1000050728}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &813438150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813438148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d45a538810f78804ba2d33262cefeb71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trapObjectPool: []
 --- !u!1 &938328581 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3566489492320712080, guid: 6556beda93d4dfd438172a4774451065, type: 3}
@@ -1114,6 +1180,7 @@ Transform:
   - {fileID: 443019307}
   - {fileID: 51454303}
   - {fileID: 526108796}
+  - {fileID: 813438149}
   m_Father: {fileID: 1486582151}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
