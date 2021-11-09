@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 332712203833756743}
   - component: {fileID: 1858088666}
   - component: {fileID: 1858088665}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb99d2b47c30ca84faf8736c20c06e95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerViewPortPos: {x: 0, y: 0, z: 0}
+  _playerViewPortPos: {x: 0, y: 0, z: 0}
   _hasEnergy: 1
   _seedGenerator: {fileID: 0}
 --- !u!1 &2841916637874704008

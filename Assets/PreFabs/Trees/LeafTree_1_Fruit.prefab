@@ -58,7 +58,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: b94919842c76604468c89ae9853429ac, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -103,8 +103,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 354c152179746c74ea3801ec28a49bca, type: 2}
+  status: 0
   type: 1
-  size: 0
+  costSize: 0
   resourceAmount: 0
   fruits: []
 --- !u!135 &-3322999994223056811
