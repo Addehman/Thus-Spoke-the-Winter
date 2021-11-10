@@ -52,7 +52,8 @@ public class TrapController : MonoBehaviour
         _trapIndex = 0;
     }
 
-    private void PlaceTrap(Vector3 position) //This triggers from 
+    //This triggers from "E" input that executes the "OnPlaceTrap" event in PlayerController and takes in players posistion.
+    private void PlaceTrap(Vector3 position) 
     {
         if (_trapIndex < _trapObjectPoolQuantitySetup.trap_Amount)
         {
