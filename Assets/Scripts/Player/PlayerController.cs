@@ -75,6 +75,7 @@ public class PlayerController : MonoBehaviour
 	{
 		var interactable = other.transform.GetComponent<IInteractable>();
 		if (interactable == null) return;
+        if (other.isTrigger) return;
 		_interactablesInRange.Add(other.gameObject);
 
 		if (other.TryGetComponent(out TreeBehaviour tree))
