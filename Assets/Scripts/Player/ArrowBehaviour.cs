@@ -7,10 +7,12 @@ public class ArrowBehaviour : MonoBehaviour
 {
 	[SerializeField] private Rigidbody _rb;
 	[SerializeField] private LayerMask _ground;
+	[SerializeField] private float disableTimeLimit = 3f;
 
 	private Transform _transform;
 	private GameObject _gameObject;
 	private Camera _camera;
+	public Transform _arrowParent;
 
 
 	private void Awake()
@@ -43,6 +45,9 @@ public class ArrowBehaviour : MonoBehaviour
 
 		BowBehaviour.Instance.OnReleaseArrow -= ReleasedArrow;
 
+		_rb.isKinematic = false;
+		_transform.parent = null;
+
 		Ray ray = _camera.ScreenPointToRay(mousePoint);
 		RaycastHit hit;
 		Vector3 direction = Vector3.zero;
@@ -68,11 +73,37 @@ public class ArrowBehaviour : MonoBehaviour
 
 	private void OnCollisionEnter(Collision other)
 	{
+		_rb.velocity = Vector3.zero;
+		StopAllCoroutines();
 		if (other.transform.TryGetComponent(out MobBehaviour mob))
 		{
+			// Here it's possible to make the arrow stick to the object it hits, by letting other become the parent.
+			// This should be used when hitting something that needs more than one hit to die.
+			// In the case mentioned just above, then the arrow object shouldn't be disabled either. It would be a nice effect if the arrow was stuck to what it hit.
+			// _transform.parent = other.transform; 
 			mob.OnDestruction();
 			_gameObject.SetActive(false);
+
+			_rb.isKinematic = true;
+			_transform.parent = _arrowParent;
 		}
+		else
+		{
+			StartCoroutine(TimeUntilDisabling());
+			_transform.parent = _arrowParent;
+		}
+	}
+
+	private IEnumerator TimeUntilDisabling()
+	{
+		float timeElapsed = 0f;
+		while (timeElapsed < disableTimeLimit)
+		{
+			timeElapsed += Time.deltaTime;
+			yield return null;
+		}
+		_gameObject.SetActive(false);
+		_rb.isKinematic = true;
 	}
 
 	private void OnDestroy()

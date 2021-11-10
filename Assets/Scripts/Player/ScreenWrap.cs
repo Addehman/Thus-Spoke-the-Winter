@@ -4,12 +4,13 @@ using UnityEngine;
 public class ScreenWrap : MonoBehaviour
 {
 	public event Action<Latitude> PlayerTraveling;
+	[SerializeField] private float borderLeft = 0f, borderRight = 1f, borderTop = 0.95f, 
+	borderBottom = -0.05f, extraStepVertical = 0.05f, extraStepHorizontal = 0.01f, entryTop = 2f, entryBottom = -1f;
 
 	private Transform _transform;
 	private Camera _cam;
 
-	[SerializeField]
-	private Vector3 _playerViewPortPos;
+	[SerializeField] private Vector3 _playerViewPortPos;
 	[SerializeField] private bool _hasEnergy = true;
 	[SerializeField] private SeedGenerator _seedGenerator;
 	private bool _northIsNotExplored, _eastIsNotExplored, _southIsNotExplored, _westIsNotExplored;
@@ -42,43 +43,43 @@ public class ScreenWrap : MonoBehaviour
 	{
 		_playerViewPortPos = _cam.WorldToViewportPoint(_transform.position);
 
-		if (_playerViewPortPos.x > 1f)
+		if (_playerViewPortPos.x > borderRight)
 		{
 			if (!_hasEnergy && _eastIsNotExplored)
 			{
-				ConvertPosFromViewPortToWorldPoint(false, true, 1f, Latitude.East);
+				ConvertPosFromViewPortToWorldPoint(false, true, borderRight, Latitude.East);
 				return;
 			}
-			ConvertPosFromViewPortToWorldPoint(true, true, 0f, Latitude.East);
+			ConvertPosFromViewPortToWorldPoint(true, true, borderLeft + extraStepHorizontal, Latitude.East);
 		}
-		else if (_playerViewPortPos.x < 0f)
+		else if (_playerViewPortPos.x < borderLeft)
 		{
 			if (!_hasEnergy && _westIsNotExplored)
 			{
-				ConvertPosFromViewPortToWorldPoint(false, true, 0f, Latitude.West);
+				ConvertPosFromViewPortToWorldPoint(false, true, borderLeft, Latitude.West);
 				return;
 			}
 
-			ConvertPosFromViewPortToWorldPoint(true, true, 1f, Latitude.West);
+			ConvertPosFromViewPortToWorldPoint(true, true, borderRight - extraStepHorizontal, Latitude.West);
 		}
-		else if (_playerViewPortPos.y > 1f)
+		else if (_playerViewPortPos.y > borderTop)
 		{
 			if (!_hasEnergy && _northIsNotExplored)
 			{
-				ConvertPosFromViewPortToWorldPoint(false, false, 1f, Latitude.North);
+				ConvertPosFromViewPortToWorldPoint(false, false, borderTop, Latitude.North);
 				return;
 			}
-			ConvertPosFromViewPortToWorldPoint(true, false, -1f, Latitude.North);
+			ConvertPosFromViewPortToWorldPoint(true, false, -1f + extraStepVertical, Latitude.North);
 		}
-		else if (_playerViewPortPos.y < 0f)
+		else if (_playerViewPortPos.y < borderBottom)
 		{
 			if (!_hasEnergy && _southIsNotExplored)
 			{
-				ConvertPosFromViewPortToWorldPoint(false, false, 0f, Latitude.South);
+				ConvertPosFromViewPortToWorldPoint(false, false, borderBottom, Latitude.South);
 				return;
 			}
 
-			ConvertPosFromViewPortToWorldPoint(true, false, 2f, Latitude.South);
+			ConvertPosFromViewPortToWorldPoint(true, false, 2f - extraStepVertical, Latitude.South);
 		}
 	}
 

@@ -40,6 +40,8 @@ public class BowBehaviour : MonoBehaviour
 		{
 			arrowSpawn = Instantiate(_arrowPrefab, _arrowParent);
 			_arrowPool[i] = arrowSpawn.transform;
+			arrowSpawn.TryGetComponent(out ArrowBehaviour arrow);
+			arrow._arrowParent = _arrowParent;
 			arrowSpawn.SetActive(false);
 		}
 
@@ -59,13 +61,18 @@ public class BowBehaviour : MonoBehaviour
 		_arrowPool[_arrowIndex].position = _transform.position;
 		_arrowPool[_arrowIndex].gameObject.SetActive(true);
 		StartCoroutine(ArrowChargeRoutine());
+		// Insert somewhere here that the position should be stuck to player, if itsn't already due to now being a child to player
 	}
 
 	public void ReleaseArrow(Vector2 mousePos)  //Being run from PlayerController
 	{
 		StopAllCoroutines();
 
-		if (arrowStrength < _chargeMin) return;
+		if (arrowStrength < _chargeMin) // Check if released too early, then return arrow to pool.
+		{
+			_arrowPool[_arrowIndex].gameObject.SetActive(false);
+			return;
+		}
 		
 		OnReleaseArrow?.Invoke(arrowStrength, _transform.position, mousePos);
 

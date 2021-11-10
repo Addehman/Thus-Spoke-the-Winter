@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4008817375727136411}
   m_Layer: 0
   m_Name: WhiteBunny
-  m_TagString: Untagged
+  m_TagString: Bunny
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 6cb2ea40f77b8e842b750983753d05e2, type: 2}
   status: 0
-  _cam: {fileID: 0}
+  _camera: {fileID: 0}
   type: 9
   costSize: 0
   resourceAmount: 10
