@@ -27,12 +27,19 @@ public class ArrowBehaviour : MonoBehaviour
 
 	private void Update()
 	{
+		CheckIfLeavingScreen();
+	}
+
+	private void CheckIfLeavingScreen()
+	{
 		if (!_gameObject.activeSelf) return;
 
 		Vector2 temp = _camera.WorldToViewportPoint(_transform.position); // Maybe this should be replaced with triggers around the screen instead to catch things leaving the screen? at least these smaller things and not player?
 		if (temp.x > 1f || temp.x < 0f || temp.y > 1f || temp.y < 0f)
 		{
 			StopAllCoroutines();
+			_rb.velocity = Vector3.zero;
+			_rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
 			_rb.isKinematic = true;
 			_gameObject.SetActive(false);
 			_transform.parent = _arrowParent;
@@ -56,6 +63,7 @@ public class ArrowBehaviour : MonoBehaviour
 		BowBehaviour.Instance.OnReleaseArrow -= ReleasedArrow;
 
 		_rb.isKinematic = false;
+		_rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
 		_transform.parent = null;
 
 		Ray ray = _camera.ScreenPointToRay(mousePoint);
@@ -83,7 +91,7 @@ public class ArrowBehaviour : MonoBehaviour
 
 	private void OnCollisionEnter(Collision other)
 	{
-		print($"{this.transform} collided with: {other.transform}");
+		print($"{this.transform.GetInstanceID()} collided with: {other.transform}");
 		_rb.velocity = Vector3.zero;
 		StopAllCoroutines();
 		if (other.transform.TryGetComponent(out MobBehaviour mob))
@@ -95,6 +103,7 @@ public class ArrowBehaviour : MonoBehaviour
 			mob.OnDestruction();
 			_gameObject.SetActive(false);
 
+			_rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
 			_rb.isKinematic = true;
 			_transform.parent = _arrowParent;
 		}
@@ -115,12 +124,14 @@ public class ArrowBehaviour : MonoBehaviour
 			yield return null;
 		}
 		_gameObject.SetActive(false);
+		_rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
 		_rb.isKinematic = true;
 	}
 
 	private void OnScreenWrap(Latitude latitude)
 	{
 		StopAllCoroutines();
+		_rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
 		_rb.isKinematic = true;
 		_transform.parent = _arrowParent;
 		_gameObject.SetActive(false);

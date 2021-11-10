@@ -175,6 +175,7 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 	private IEnumerator Fleeing(Vector3 playerPos) // Bunny flees the scene due to being scared by something(player), consider them having a trigger than reacts to the player, this way we can easily set the size for how close the player needs to get to scare them away.
 	{
 		float runStep = runSpeed * Time.deltaTime;
+		playerPos.y = 0f;
 		//print($"playerPos: {playerPos}\nfleePos: {fleePos}");
 		while (_gameObject.activeSelf || status == Status.Alive)
 		{
