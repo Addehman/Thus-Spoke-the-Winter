@@ -73,21 +73,16 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 
 	public void OnInteract()
 	{
-		if (status == Status.Dead) // This is probably better anyway, but check out why the switch below sends or is received twice, as it seems to do so.
-		{
-			Butcher();
-		}
-
-		//switch (status)
-		//{
-		//	case Status.Dead:
-		//		Butcher();
-		//		break;
-		//	default:
-		//		OnDestruction();
-		//		break;
-		//}
-	}
+        switch (status)
+        {
+            case Status.Dead:
+                Butcher();
+                break;
+            default:
+                OnDestruction();
+                break;
+        }
+    }
 
 	public void OnDestruction()
 	{
