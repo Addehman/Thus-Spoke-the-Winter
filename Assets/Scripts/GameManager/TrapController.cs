@@ -27,8 +27,8 @@ public class TrapController : MonoBehaviour
     [SerializeField] private TrapObjectPoolQuantitySetup _trapObjectPoolQuantitySetup;
     [SerializeField] private TrapObjectPoolPrefabLibrary _trapObjectPoolPrefabLibrary;
 
-    private Dictionary<int, List<Vector3>> _savedTrapsDict = new Dictionary<int, List<Vector3>>();
-    private List<Vector3> _tempSavedTrapsList;
+    private Dictionary<int, List<int>> _savedTrapsDict = new Dictionary<int, List<int>>();
+    private List<int> _tempSavedTrapsList;
     private List<Transform> tempSpawns;
     private int _currentSeed;
     private int _trapIndex;
@@ -47,23 +47,24 @@ public class TrapController : MonoBehaviour
     {
         _seedGenerator.SendSeed += UpdateCurrentSeed;
         _player.OnPlaceTrap += PlaceTrap;
-        _player.OnPlaceTrap += SaveTrapToDictionary;
 
         InitializeObjectPool();
         _trapIndex = 0;
     }
 
-    private void PlaceTrap(Vector3 position)
+    private void PlaceTrap(Vector3 position) //This triggers from 
     {
         if (_trapIndex < _trapObjectPoolQuantitySetup.trap_Amount)
         {
             Transform newTrap = TrapObjectPool.Instance.trapObjectPool[_trapIndex];
 
-            newTrap.position = position;
+            newTrap.position = PositionCorrection(position);
             newTrap.gameObject.SetActive(true);
+            SaveTrapToDictionary(_trapIndex);
             _trapIndex++;
         }
     }
+
     private void ClearTraps()
     {
         for (int i = 0; i < TrapObjectPool.Instance.trapObjectPool.Length; i++)
@@ -72,25 +73,52 @@ public class TrapController : MonoBehaviour
         }
     }
 
-
-    //TO DO: Fix a way to spawn the right trap in TrapObjectPool.Instance.trapObjectPool.
-    //We need to save the index of a placed trap somehow.
     void SpawnSavedTraps()
     {
-        if (_savedTrapsDict.TryGetValue(_currentSeed, out List < Vector3 > result))
+        if (_savedTrapsDict.TryGetValue(_currentSeed, out List<int> result))
         {
-            int savedTrapIndex = 0;
-
-            foreach (Vector3 position in result)
+            for (int i = 0; i < result.Count; i++)
             {
-                Transform newTrap = TrapObjectPool.Instance.trapObjectPool[savedTrapIndex];
-
-                newTrap.position = position;
+                Transform newTrap = TrapObjectPool.Instance.trapObjectPool[result[i]];
                 newTrap.gameObject.SetActive(true);
-
-                savedTrapIndex++;
             }
         }
+    }
+
+    void UpdateCurrentSeed(int seed)
+    {
+        _currentSeed = seed;
+        ClearTraps();
+        SpawnSavedTraps();
+    }
+
+    void SaveTrapToDictionary(int index)
+    {
+        if (_savedTrapsDict.TryGetValue(_currentSeed, out List<int> result))
+        {
+            _tempSavedTrapsList = result;
+            _tempSavedTrapsList.Add(index);
+        }
+        else
+        {
+            _tempSavedTrapsList = new List<int>();
+            _tempSavedTrapsList.Add(index);
+        }
+
+        if (_tempSavedTrapsList.Count != 1)
+        {
+            _savedTrapsDict[_currentSeed] = _tempSavedTrapsList;
+        }
+        else
+        {
+            _savedTrapsDict.Add(_currentSeed, _tempSavedTrapsList);
+        }
+    }
+
+    Vector3 PositionCorrection(Vector3 position)
+    {
+        position.y = 0;
+        return position;
     }
 
     /// <summary>
@@ -122,44 +150,9 @@ public class TrapController : MonoBehaviour
         }
     }
 
-    void UpdateCurrentSeed(int seed)
-    {
-        _currentSeed = seed;
-        ClearTraps();
-        SpawnSavedTraps();
-    }
-
-
-    void SaveTrapToDictionary(Vector3 position) //This should trigger of an event from the player "OnPlacedTrap" or something like that.
-    {
-        if (_savedTrapsDict.TryGetValue(_currentSeed, out List<Vector3> result))
-        {
-            _tempSavedTrapsList = result;
-            _tempSavedTrapsList.Add(position);
-        }
-        else
-        {
-            _tempSavedTrapsList = new List<Vector3>();
-            _tempSavedTrapsList.Add(position);
-        }
-
-
-        //Double check that this works as intended.
-        if (_tempSavedTrapsList.Count != 1)
-        {
-            _savedTrapsDict[_currentSeed] = _tempSavedTrapsList;
-        }
-        else
-        {
-            _savedTrapsDict.Add(_currentSeed, _tempSavedTrapsList);
-        }
-    }
-
     private void OnDestroy()
     {
         _seedGenerator.SendSeed -= UpdateCurrentSeed;
         _player.OnPlaceTrap -= PlaceTrap;
-        _player.OnPlaceTrap -= SaveTrapToDictionary;
     }
-
 }
