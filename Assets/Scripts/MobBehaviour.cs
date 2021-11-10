@@ -64,6 +64,8 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 
 	private void OnTriggerEnter(Collider other)
 	{
+		if (status == Status.Dead) return;
+		
 		if (other.CompareTag("Player"))
 		{
 			StopAllCoroutines();
@@ -73,16 +75,16 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 
 	public void OnInteract()
 	{
-        switch (status)
-        {
-            case Status.Dead:
-                Butcher();
-                break;
-            default:
-                OnDestruction();
-                break;
-        }
-    }
+		switch (status)
+		{
+			case Status.Dead:
+				Butcher();
+				break;
+			default:
+				OnDestruction();
+				break;
+		}
+	}
 
 	public void OnDestruction()
 	{

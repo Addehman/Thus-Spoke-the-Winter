@@ -198,6 +198,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb99d2b47c30ca84faf8736c20c06e95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  borderLeft: 0
+  borderRight: 1
+  borderTop: 0.95
+  borderBottom: -0.05
+  extraStepVertical: 0.05
+  extraStepHorizontal: 0.01
+  entryTop: 2
+  entryBottom: -1
   _playerViewPortPos: {x: 0, y: 0, z: 0}
   _hasEnergy: 1
   _seedGenerator: {fileID: 0}
@@ -213,6 +221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72dcf780c84a78546a0b4b6d74a6a889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _screenWrap: {fileID: 1858088665}
   _arrowPool: []
   _arrowPrefab: {fileID: 7011060429453249569, guid: 11caebff7e6a4f24584eddcb347ff598, type: 3}
   _arrowParent: {fileID: 705995631}

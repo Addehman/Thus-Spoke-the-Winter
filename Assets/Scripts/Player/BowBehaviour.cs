@@ -8,6 +8,7 @@ public class BowBehaviour : MonoBehaviour
 	private static BowBehaviour _instance;
 	public static BowBehaviour Instance { get { return _instance; } }
 
+	[SerializeField] private ScreenWrap _screenWrap;
 	[SerializeField] private Transform[] _arrowPool;
 	[SerializeField] private GameObject _arrowPrefab;
 	[SerializeField] private Transform _arrowParent;
@@ -42,6 +43,7 @@ public class BowBehaviour : MonoBehaviour
 			_arrowPool[i] = arrowSpawn.transform;
 			arrowSpawn.TryGetComponent(out ArrowBehaviour arrow);
 			arrow._arrowParent = _arrowParent;
+			arrow.screenWrap = _screenWrap;
 			arrowSpawn.SetActive(false);
 		}
 

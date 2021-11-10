@@ -8,11 +8,12 @@ public class ArrowBehaviour : MonoBehaviour
 	[SerializeField] private Rigidbody _rb;
 	[SerializeField] private LayerMask _ground;
 	[SerializeField] private float disableTimeLimit = 3f;
+	public Transform _arrowParent;
+	public ScreenWrap screenWrap;
 
 	private Transform _transform;
 	private GameObject _gameObject;
 	private Camera _camera;
-	public Transform _arrowParent;
 
 
 	private void Awake()
@@ -30,13 +31,20 @@ public class ArrowBehaviour : MonoBehaviour
 		if (temp.x > 1f || temp.x < 0f || temp.y > 1f || temp.y < 0f)
 		{
 			StopAllCoroutines();
+			_rb.isKinematic = true;
 			_gameObject.SetActive(false);
+			_transform.parent = _arrowParent;
 		}
 	}
 
 	private void OnEnable()
 	{
 		BowBehaviour.Instance.OnReleaseArrow += ReleasedArrow;
+	}
+
+	private void Start()
+	{
+		screenWrap.PlayerTraveling += OnScreenWrap;
 	}
 
 	private void ReleasedArrow(float strength, Vector3 playerPos, Vector2 mousePoint)
@@ -106,8 +114,17 @@ public class ArrowBehaviour : MonoBehaviour
 		_rb.isKinematic = true;
 	}
 
+	private void OnScreenWrap(Latitude latitude)
+	{
+		StopAllCoroutines();
+		_rb.isKinematic = true;
+		_transform.parent = _arrowParent;
+		_gameObject.SetActive(false);
+	}
+
 	private void OnDestroy()
 	{
 		BowBehaviour.Instance.OnReleaseArrow -= ReleasedArrow;
+		screenWrap.PlayerTraveling -= OnScreenWrap;
 	}
 }
