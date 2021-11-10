@@ -134,10 +134,19 @@ public class MobController : MonoBehaviour
 
 			newObject.gameObject.name = $"{randomID1}{randomID2}";
 
-			if (CheckSavedDeadMobList(newObject))
+			newObject.TryGetComponent(out MobBehaviour mob);
+
+			if (CheckSavedDeadMobList(newObject, mob))
 			{
 				//SetActive dead mob
-				return;
+				mob.IsDepleted(true);
+				mob.status = Status.Dead;
+				// return;
+			}
+			else 
+			{
+				mob.IsDepleted(false);
+				mob.status = Status.Alive;
 			}
 
 			newObject.gameObject.SetActive(true);
@@ -203,34 +212,42 @@ public class MobController : MonoBehaviour
 
 		_tempSavedDeadMobDictionary.Add(obj.name, obj.transform.position);
 
-		if (_tempSavedDeadMobDictionary.Count != 1)
+		if (_tempSavedDeadMobDictionary.Count != 1) // If the Dictionary doesn't hold 1 item, then it's holding more and is not new.
 		{
+			// Thus we paste the uppdated temporary list over the list on the dictionary and thus update it.
 			_savedDeadMobDictionary[_currentSeed] = _tempSavedDeadMobDictionary;
 		}
 		else
 		{
+			// if it's a new dictionary, then we need to add the seed and dictionary to the list as a new entry.
 			_savedDeadMobDictionary.Add(_currentSeed, _tempSavedDeadMobDictionary);
 		}
 	}
 
-	private bool CheckSavedDeadMobList(Transform trans)
+	private bool CheckSavedDeadMobList(Transform trans, MobBehaviour mob)
 	{
-		trans.TryGetComponent(out MobBehaviour mob); //ADD THIS LINE WHEN MobBehaviour is completed.
+		// trans.TryGetComponent(out MobBehaviour mob);
 
 		if (_tempSavedDeadMobDictionary.Count > 0 && _tempSavedDeadMobDictionary.ContainsKey(trans.gameObject.name))
 		{
-			print($"{trans.name} is saved to SavedDeadMobList");
+			print($"{trans.name} exists in SavedDeadMobList");
 
 			trans.gameObject.SetActive(true);
 			trans.position = PositionCorrection(trans.position);
-			mob.IsDepleted(true); //ADD THIS LINE WHEN MobBehaviour is completed.
+			mob.status = Status.Dead;
+			mob.IsDepleted(true);
 			return true;
 		}
 		else // Not on Blacklist - simply update the sprites to not look depleted
 		{
-			mob.IsDepleted(false); //ADD THIS LINE WHEN MobBehaviour is completed.
+			mob.IsDepleted(false);
+			return false;
 		}
-		return false;
+	}
+
+	public void RemoveButcheredFromDeadMobDictionary(MobBehaviour mob)
+	{
+		_tempSavedDeadMobDictionary.Remove(mob.transform.name);
 	}
 
 	private void CheckRarityTier()
@@ -324,3 +341,5 @@ public class MobController : MonoBehaviour
 		_seedGenerator.SendSeed -= SpawnMob;
 	}
 }
+
+// public class Mob

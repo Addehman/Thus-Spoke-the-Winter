@@ -5,11 +5,11 @@ using UnityEngine;
 public class MobBehaviour : MonoBehaviour, IInteractable
 {
 	[SerializeField] private ResourceDataSO _data;
-	[SerializeField] private Status status = Status.Alive;
 	[SerializeField] private Camera _camera;
 
 	public event Action<GameObject> OnButcher;
 
+	public Status status = Status.Alive;
 	public ResourceType type;
 	public EnergyCost costSize;
 	public int resourceAmount;
@@ -71,6 +71,19 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 			StopAllCoroutines();
 			StartCoroutine(Fleeing(other.transform.position));
 		}
+		else if (other.TryGetComponent(out ArrowBehaviour arrow))
+		{
+			arrow.ArrowNoise += StartFleeingCoroutine;
+		}
+	}
+
+	private void OnTriggerExit(Collider other)
+	{
+		if (other.TryGetComponent(out ArrowBehaviour arrow))
+		{
+			print($"{transform} is now unsubscribed from arrow: {arrow.transform}");
+			arrow.ArrowNoise -= StartFleeingCoroutine;
+		}
 	}
 
 	public void OnInteract()
@@ -98,6 +111,7 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 		print($"{_gameObject} was butchered and harvested.");
 		_gameObject.SetActive(false);
 		OnButcher?.Invoke(_gameObject);
+		MobController.Instance.RemoveButcheredFromDeadMobDictionary(this);
 	}
 
 	public void IsDepleted(bool isDepleted)
@@ -167,5 +181,11 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 			_transform.position = Vector3.MoveTowards(_transform.position, playerPos, -runStep);
 			yield return null;
 		}
+	}
+
+	private void StartFleeingCoroutine(Vector3 position)
+	{
+		if (_gameObject.activeSelf)
+			StartCoroutine(Fleeing(position));
 	}
 }

@@ -8,6 +8,8 @@ public class ArrowBehaviour : MonoBehaviour
 	[SerializeField] private Rigidbody _rb;
 	[SerializeField] private LayerMask _ground;
 	[SerializeField] private float disableTimeLimit = 3f;
+
+	public event Action<Vector3> ArrowNoise;
 	public Transform _arrowParent;
 	public ScreenWrap screenWrap;
 
@@ -81,6 +83,7 @@ public class ArrowBehaviour : MonoBehaviour
 
 	private void OnCollisionEnter(Collision other)
 	{
+		print($"{this.transform} collided with: {other.transform}");
 		_rb.velocity = Vector3.zero;
 		StopAllCoroutines();
 		if (other.transform.TryGetComponent(out MobBehaviour mob))
@@ -99,6 +102,7 @@ public class ArrowBehaviour : MonoBehaviour
 		{
 			StartCoroutine(TimeUntilDisabling());
 			_transform.parent = _arrowParent;
+			ArrowNoise?.Invoke(_transform.position);
 		}
 	}
 
