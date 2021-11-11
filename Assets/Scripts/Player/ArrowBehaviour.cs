@@ -39,8 +39,8 @@ public class ArrowBehaviour : MonoBehaviour
 		{
 			StopAllCoroutines();
 			_rb.velocity = Vector3.zero;
-			_rb.isKinematic = true;
 			_rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+			_rb.isKinematic = true;
 			_gameObject.SetActive(false);
 			_transform.parent = _arrowParent;
 		}
@@ -77,7 +77,7 @@ public class ArrowBehaviour : MonoBehaviour
 		}
 		//print($"arrow direction: {direction}");
 		//_rb.AddForce(direction * strength, ForceMode.Impulse);
-		StartCoroutine(MoveArrowRoutine(direction, strength));
+		StartCoroutine(MoveArrowRoutine(direction.normalized, strength));
 	}
 
 	private IEnumerator MoveArrowRoutine(Vector3 direction, float strength) // This doesn't shoot the arrow straight..
