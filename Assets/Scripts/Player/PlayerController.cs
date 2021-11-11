@@ -73,12 +73,13 @@ public class PlayerController : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		var interactable = other.transform.GetComponent<IInteractable>();
+		other.TryGetComponent(out IInteractable interactable);
 
 		if (interactable == null) return;
 
 		// We might wanna check if this has a trigger, but isn't blueberries or lingonberries, which has triggers to be able to be interacted with.
-		if (other.isTrigger/* && !other.TryGetComponent(out FoodBehaviour food) && food != null && (food.type != ResourceType.blueberry || food.type != ResourceType.lingonberry)*/) return;
+		other.TryGetComponent(out MobBehaviour mob);
+		if (other.isTrigger && mob != null) return;
 
 		_interactablesInRange.Add(other.gameObject);
 
@@ -95,13 +96,13 @@ public class PlayerController : MonoBehaviour
 			return;
 		}
 
-		if (other.TryGetComponent(out FoodBehaviour food1))
+		if (other.TryGetComponent(out FoodBehaviour food))
 		{
-			food1.OnDestruct += OnResourceDestroy;
+			food.OnDestruct += OnResourceDestroy;
 			return;
 		}
 
-		if (other.TryGetComponent(out MobBehaviour mob))
+		if (mob != null)
 		{
 			mob.OnButcher += OnResourceDestroy;
 			return;

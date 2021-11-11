@@ -3,8 +3,9 @@ using System;
 
 public class FoodBehaviour : MonoBehaviour, IInteractable
 {
-	public ResourceDataSO data;
+	[SerializeField] private Status status = Status.Alive;
 
+	public ResourceDataSO data;
 	public event Action<GameObject> OnDestruct;
 	public ResourceType type;
 	public EnergyCost costSize;
@@ -42,9 +43,14 @@ public class FoodBehaviour : MonoBehaviour, IInteractable
 		//SeasonController.Instance.UpdateSeason += UpdateState;
 	}
 
+	private void OnEnable()
+	{
+		health = data.health;
+	}
+
 	public void OnInteract()
 	{
-		if (health <= 0) return;
+		if (health <= 0 || status == Status.Dead) return;
 
 		health -= _damage;
 
@@ -55,6 +61,7 @@ public class FoodBehaviour : MonoBehaviour, IInteractable
 	{
 		print($"Gathered {_gameObject}");
 		OnDestruct?.Invoke(_gameObject);
+		status = Status.Dead;
 
 		if (type == ResourceType.apple || type == ResourceType.mushroom)
 			_gameObject.SetActive(false);
@@ -65,8 +72,14 @@ public class FoodBehaviour : MonoBehaviour, IInteractable
 	public void IsDepleted(bool isDepleted)
 	{
 		if (isDepleted)
+		{
 			sr.sprite = data.depleted_Sprite;
+			status = Status.Dead;
+		}
 		else
+		{
 			sr.sprite = data.earlySpring_Sprite;
+			status = Status.Alive;
+		}
 	}
 }

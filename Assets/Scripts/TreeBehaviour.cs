@@ -131,7 +131,7 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 		}
 	}
 
-	public void SetSpriteToDepleted()
+	public void SetTreeToDead()
 	{
 		_sr.sprite = _data.depleted_Sprite;
 		status = Status.Dead;

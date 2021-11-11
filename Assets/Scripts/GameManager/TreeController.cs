@@ -145,7 +145,7 @@ public class TreeController : MonoBehaviour
 			
 			obj.gameObject.SetActive(true);
 			//obj.position = PositionCorrection(obj.position);
-			tree.SetSpriteToDepleted();
+			tree.SetTreeToDead();
 			return true;
 		}
 		else // Not on Blacklist - simply update the sprites to not look depleted/cut down
