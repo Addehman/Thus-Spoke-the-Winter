@@ -59,7 +59,8 @@ public class TrapController : MonoBehaviour
         {
             Transform newTrap = TrapObjectPool.Instance.trapObjectPool[_trapIndex];
 
-            newTrap.position = PositionCorrection(position);
+            //OBS: Use PositionCorrection here if we lower the ground again
+            newTrap.position = position /*PositionCorrection(position)*/;
             newTrap.gameObject.SetActive(true);
             SaveTrapToDictionary(_trapIndex);
             _trapIndex++;
@@ -116,11 +117,12 @@ public class TrapController : MonoBehaviour
         }
     }
 
-    Vector3 PositionCorrection(Vector3 position)
-    {
-        position.y = 0;
-        return position;
-    }
+    //OBS: Use this if we lower the ground again
+    //Vector3 PositionCorrection(Vector3 position)
+    //{
+    //    position.y = 0;
+    //    return position;
+    //}
 
     /// <summary>
     /// Here we fill the ObjectPool up with managable accuracy concerning the amounts for each type - Spawns all the objects that will be possible to spawn on each block of forest.
