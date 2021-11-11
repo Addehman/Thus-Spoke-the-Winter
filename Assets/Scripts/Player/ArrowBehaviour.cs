@@ -56,7 +56,7 @@ public class ArrowBehaviour : MonoBehaviour
 		screenWrap.PlayerTraveling += OnScreenWrap;
 	}
 
-	private void ReleasedArrow(float strength, Vector3 playerPos, Vector2 mousePoint)
+	private void ReleasedArrow(float strength, Vector3 arrowParentPos, Vector2 mousePoint)
 	{
 		if (!_gameObject.activeSelf) return;
 
@@ -72,8 +72,8 @@ public class ArrowBehaviour : MonoBehaviour
 
 		if (Physics.Raycast(ray, out hit, float.MaxValue, _ground))
 		{
-			direction = hit.point - playerPos;
-			direction.y = 0f;
+			direction = hit.point - arrowParentPos;
+			direction.z -= arrowParentPos.y;
 		}
 		//print($"arrow direction: {direction}");
 		//_rb.AddForce(direction * strength, ForceMode.Impulse);
@@ -112,7 +112,6 @@ public class ArrowBehaviour : MonoBehaviour
 			_rb.isKinematic = true;
 			_rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
 			StartCoroutine(TimeUntilDisabling());
-			_transform.parent = _arrowParent;
 			ArrowNoise?.Invoke(_transform.position);
 		}
 	}
@@ -125,9 +124,8 @@ public class ArrowBehaviour : MonoBehaviour
 			timeElapsed += Time.deltaTime;
 			yield return null;
 		}
+		_transform.parent = _arrowParent;
 		_gameObject.SetActive(false);
-		_rb.isKinematic = true;
-		_rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
 	}
 
 	private void OnScreenWrap(Latitude latitude)
