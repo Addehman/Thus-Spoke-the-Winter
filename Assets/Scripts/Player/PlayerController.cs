@@ -45,7 +45,6 @@ public class PlayerController : MonoBehaviour
 		_controls.Player.Interact.started += ctx => Interact();
 		_controls.Player.PlaceTrap.started += ctx => PlaceTrap();
 		_controls.Player.Bow.started += ctx => BowBehaviour.Instance.ChargeArrow();
-		_controls.Player.Bow.canceled += ctx => mousePoint = _controls.Player.MousePoint.ReadValue<Vector2>();
 		_controls.Player.Bow.canceled += ctx => BowBehaviour.Instance.ReleaseArrow(mousePoint);
 
 		TreeController.Instance.OnClearTrees += ClearInteractablesInRangeList;
@@ -145,6 +144,7 @@ public class PlayerController : MonoBehaviour
 	private void GetPlayerInput()
 	{
 		_movement = _controls.Player.Movement.ReadValue<Vector2>();
+		mousePoint = _controls.Player.MousePoint.ReadValue<Vector2>();
 
 		_horizontal = _movement.x;
 		_vertical = _movement.y;

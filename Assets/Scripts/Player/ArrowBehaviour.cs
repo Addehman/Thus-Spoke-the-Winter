@@ -6,7 +6,6 @@ using UnityEngine;
 public class ArrowBehaviour : MonoBehaviour
 {
 	[SerializeField] private Rigidbody _rb;
-	[SerializeField] private LayerMask _ground;
 	[SerializeField] private float disableTimeLimit = 3f;
 
 	public event Action<Vector3> ArrowNoise;
@@ -56,7 +55,7 @@ public class ArrowBehaviour : MonoBehaviour
 		screenWrap.PlayerTraveling += OnScreenWrap;
 	}
 
-	private void ReleasedArrow(float strength, Vector3 arrowParentPos, Vector2 mousePoint)
+	private void ReleasedArrow(float strength, Vector3 arrowParentPos, Vector3 arrowDirection)
 	{
 		if (!_gameObject.activeSelf) return;
 
@@ -66,18 +65,19 @@ public class ArrowBehaviour : MonoBehaviour
 		_rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
 		_transform.parent = null;
 
-		Ray ray = _camera.ScreenPointToRay(mousePoint);
-		RaycastHit hit;
-		Vector3 direction = Vector3.zero;
+		//Ray ray = _camera.ScreenPointToRay(mousePoint);
+		//RaycastHit hit;
+		//Vector3 direction = Vector3.zero;
 
-		if (Physics.Raycast(ray, out hit, float.MaxValue, _ground))
-		{
-			direction = hit.point - arrowParentPos;
-			direction.z -= arrowParentPos.y;
-		}
+		//if (Physics.Raycast(ray, out hit, float.MaxValue, _ground))
+		//{
+		//	direction = hit.point - arrowParentPos;
+		//	direction.z -= arrowParentPos.y;
+		//}
+
 		//print($"arrow direction: {direction}");
 		//_rb.AddForce(direction * strength, ForceMode.Impulse);
-		StartCoroutine(MoveArrowRoutine(direction.normalized, strength));
+		StartCoroutine(MoveArrowRoutine(arrowDirection.normalized, strength));
 	}
 
 	private IEnumerator MoveArrowRoutine(Vector3 direction, float strength) // This doesn't shoot the arrow straight..

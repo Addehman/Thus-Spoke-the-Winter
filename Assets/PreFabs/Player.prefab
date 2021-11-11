@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705995630}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.15, z: 0}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 332712203833756736}
@@ -221,6 +221,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72dcf780c84a78546a0b4b6d74a6a889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 332712203833756743}
+  _camera: {fileID: 0}
+  _ground:
+    serializedVersion: 2
+    m_Bits: 64
   _screenWrap: {fileID: 1858088665}
   _arrowPool: []
   _arrowPrefab: {fileID: 7011060429453249569, guid: 11caebff7e6a4f24584eddcb347ff598, type: 3}
@@ -230,6 +235,9 @@ MonoBehaviour:
   _chargeMax: 3
   _chargeMin: 1
   _arrowIndex: 0
+  _arrowDirection: {x: 0, y: 0, z: 0}
+  isHoldingArrow: 0
+  hasInversedDirection: 0
   arrowStrength: 0
 --- !u!1 &6482179965513446621
 GameObject:

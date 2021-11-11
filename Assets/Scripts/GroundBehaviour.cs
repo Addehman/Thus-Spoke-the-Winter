@@ -49,8 +49,6 @@ public class GroundBehaviour : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		print($"{this} was Destroyed!");
-		//material.color = spring;
 		SeasonController.Instance.UpdateSeason -= UpdateGFX;
 	}
 }

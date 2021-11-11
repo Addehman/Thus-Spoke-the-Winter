@@ -1234,6 +1234,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1768556590097517706, guid: 34d1d4d11bc8820469a5234e81269348, type: 3}
   m_PrefabInstance: {fileID: 1768556589914387702}
   m_PrefabAsset: {fileID: 0}
+--- !u!20 &1364980105 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 1768556590097517705, guid: 34d1d4d11bc8820469a5234e81269348, type: 3}
+  m_PrefabInstance: {fileID: 1768556589914387702}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1364980106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1911,6 +1916,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 6948897311830590201, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
+      propertyPath: _camera
+      value: 
+      objectReference: {fileID: 1364980105}
     - target: {fileID: 6948897311830590201, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
       propertyPath: _seedGenerator
       value: 
