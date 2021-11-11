@@ -155,29 +155,6 @@ public class TreeController : MonoBehaviour
 		}
 	}
 
-	//private void SpawnFruitsIfFruitTree(Transform obj)
-	//{
-	//	if (obj.TryGetComponent(out TreeBehaviour fruitTree) && fruitTree.type == ResourceType.fruitTree)
-	//	{
-	//		foreach (Transform item in obj)
-	//		{
-	//			item.gameObject.name = item.gameObject.GetInstanceID().ToString();
-	//			if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(item.gameObject.name))
-	//			{
-	//				print($"{item.gameObject.name} is blacklisted!");
-	//				item.gameObject.SetActive(false);
-	//				continue;
-	//			}
-	//			else
-	//			{
-	//				item.gameObject.SetActive(true);
-	//			}
-	//		}
-	//		// Update/Fill list on this newObject with event
-	//		fruitTree.AddFruitsToList();
-	//	}
-	//}
-
 	private Vector3 PositionCorrection(Vector3 correction)
 	{
 		correction.y = 0f;
