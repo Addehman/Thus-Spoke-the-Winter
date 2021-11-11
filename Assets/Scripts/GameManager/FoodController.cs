@@ -99,17 +99,17 @@ public class FoodController : MonoBehaviour
 			print($"randomObject nr: {randomObject}");
 			Transform newObject = FoodObjectPool.Instance.foodObjectPool[randomObject];
 
+			newObject.position = GenerateRandomPosition();
+
 			int randomID_1 = UnityEngine.Random.Range(0, 1000000);
 			int randomID_2 = UnityEngine.Random.Range(0, 1000000);
-
-			newObject.position = GenerateRandomPosition();
 
 			newObject.gameObject.name = $"{randomID_1}{randomID_2}";
 
 			if (IsObjectBlacklisted(newObject))
 				continue;
 
-			newObject.position = PositionCorrection(newObject.position);
+			//newObject.position = PositionCorrection(newObject.position);
 
 			newObject.gameObject.SetActive(true);
 
@@ -143,6 +143,8 @@ public class FoodController : MonoBehaviour
 			randomViewPortPosY = UnityEngine.Random.Range(0.1f, 0.9f);
 			ray = _camera.ScreenPointToRay(new Vector3(Screen.width * randomViewPortPosX, Screen.height * randomViewPortPosY));
 
+			print($"Food Ray hit: {hit.transform.name}. Trying again.");
+
 			tries++;
 			if (tries > 9) break;
 		}
@@ -174,7 +176,7 @@ public class FoodController : MonoBehaviour
 			else
 			{
 				obj.gameObject.SetActive(true);
-				obj.position = PositionCorrection(obj.position);
+				//obj.position = PositionCorrection(obj.position);
 				food.IsDepleted(true);
 				return true;
 			}
@@ -186,11 +188,11 @@ public class FoodController : MonoBehaviour
 		}
 	}
 
-	private Vector3 PositionCorrection(Vector3 correction)
-	{
-		correction.y = 0f;
-		return correction;
-	}
+	//private Vector3 PositionCorrection(Vector3 correction)
+	//{
+	//	correction.y = 0f;
+	//	return correction;
+	//}
 
 	private void InitializeObjectPool()
 	{

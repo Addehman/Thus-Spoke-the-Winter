@@ -60,7 +60,7 @@ public class BowBehaviour : MonoBehaviour
 	{
 		if (_arrowPool[_arrowIndex].gameObject.activeSelf) return;
 
-		_arrowPool[_arrowIndex].position = _transform.position;
+		_arrowPool[_arrowIndex].position = _arrowParent.position;
 		_arrowPool[_arrowIndex].gameObject.SetActive(true);
 		StartCoroutine(ArrowChargeRoutine());
 		// Insert somewhere here that the position should be stuck to player, if itsn't already due to now being a child to player
@@ -76,7 +76,7 @@ public class BowBehaviour : MonoBehaviour
 			return;
 		}
 		
-		OnReleaseArrow?.Invoke(arrowStrength, _transform.position, mousePos);
+		OnReleaseArrow?.Invoke(arrowStrength, _arrowParent.position, mousePos);
 
 		if (_arrowIndex == _arrowPool.Length - 1)
 			_arrowIndex = 0;

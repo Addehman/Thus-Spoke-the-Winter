@@ -125,7 +125,7 @@ public class TreeController : MonoBehaviour
 			/*Vector3 positionCorrection = newObject.position;
 			positionCorrection.y = 0f;
 			newObject.position = positionCorrection;*/
-			newObject.position = PositionCorrection(newObject.position);
+			//newObject.position = PositionCorrection(newObject.position);
 
 			newObject.gameObject.SetActive(true);
 
@@ -144,7 +144,7 @@ public class TreeController : MonoBehaviour
 			// here we should check if it's mushroom or apple, then do like we have done
 			
 			obj.gameObject.SetActive(true);
-			obj.position = PositionCorrection(obj.position);
+			//obj.position = PositionCorrection(obj.position);
 			tree.SetSpriteToDepleted();
 			return true;
 		}
@@ -155,28 +155,28 @@ public class TreeController : MonoBehaviour
 		}
 	}
 
-	private void SpawnFruitsIfFruitTree(Transform obj)
-	{
-		if (obj.TryGetComponent(out TreeBehaviour fruitTree) && fruitTree.type == ResourceType.fruitTree)
-		{
-			foreach (Transform item in obj)
-			{
-				item.gameObject.name = item.gameObject.GetInstanceID().ToString();
-				if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(item.gameObject.name))
-				{
-					print($"{item.gameObject.name} is blacklisted!");
-					item.gameObject.SetActive(false);
-					continue;
-				}
-				else
-				{
-					item.gameObject.SetActive(true);
-				}
-			}
-			// Update/Fill list on this newObject with event
-			fruitTree.AddFruitsToList();
-		}
-	}
+	//private void SpawnFruitsIfFruitTree(Transform obj)
+	//{
+	//	if (obj.TryGetComponent(out TreeBehaviour fruitTree) && fruitTree.type == ResourceType.fruitTree)
+	//	{
+	//		foreach (Transform item in obj)
+	//		{
+	//			item.gameObject.name = item.gameObject.GetInstanceID().ToString();
+	//			if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(item.gameObject.name))
+	//			{
+	//				print($"{item.gameObject.name} is blacklisted!");
+	//				item.gameObject.SetActive(false);
+	//				continue;
+	//			}
+	//			else
+	//			{
+	//				item.gameObject.SetActive(true);
+	//			}
+	//		}
+	//		// Update/Fill list on this newObject with event
+	//		fruitTree.AddFruitsToList();
+	//	}
+	//}
 
 	private Vector3 PositionCorrection(Vector3 correction)
 	{
@@ -267,7 +267,7 @@ public class TreeController : MonoBehaviour
 			randomViewPortPosY = UnityEngine.Random.Range(0.1f, 0.9f);
 			ray = _camera.ScreenPointToRay(new Vector3(Screen.width * randomViewPortPosX, Screen.height * randomViewPortPosY));
 
-			//print($"Ray hit: {hit.transform.name}. Trying again.");
+			print($"Tree Ray hit: {hit.transform.name}. Trying again.");
 
 			tries++;
 			if (tries > 9) break;

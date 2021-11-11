@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
 	}
 
 
-    private void Update()
+	private void Update()
 	{
 		GetPlayerInput();
 		PlayerAnimation();
@@ -74,8 +74,12 @@ public class PlayerController : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
 		var interactable = other.transform.GetComponent<IInteractable>();
+
 		if (interactable == null) return;
-        if (other.isTrigger) return;
+
+		// We might wanna check if this has a trigger, but isn't blueberries or lingonberries, which has triggers to be able to be interacted with.
+		if (other.isTrigger/* && !other.TryGetComponent(out FoodBehaviour food) && food != null && (food.type != ResourceType.blueberry || food.type != ResourceType.lingonberry)*/) return;
+
 		_interactablesInRange.Add(other.gameObject);
 
 		if (other.TryGetComponent(out TreeBehaviour tree))
@@ -91,12 +95,12 @@ public class PlayerController : MonoBehaviour
 			return;
 		}
 
-		if (other.TryGetComponent(out FoodBehaviour food))
+		if (other.TryGetComponent(out FoodBehaviour food1))
 		{
-			food.OnDestruct += OnResourceDestroy;
+			food1.OnDestruct += OnResourceDestroy;
 			return;
 		}
-		
+
 		if (other.TryGetComponent(out MobBehaviour mob))
 		{
 			mob.OnButcher += OnResourceDestroy;
@@ -168,10 +172,10 @@ public class PlayerController : MonoBehaviour
 		return speed;
 	}
 
-    private void PlaceTrap()
-    {
+	private void PlaceTrap()
+	{
 		OnPlaceTrap?.Invoke(_transform.position);
-    }
+	}
 
 	private void Interact()
 	{
