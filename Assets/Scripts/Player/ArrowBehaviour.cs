@@ -40,6 +40,7 @@ public class ArrowBehaviour : MonoBehaviour
 			StopAllCoroutines();
 			_rb.velocity = Vector3.zero;
 			_rb.isKinematic = true;
+			_rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
 			_gameObject.SetActive(false);
 			_transform.parent = _arrowParent;
 		}
@@ -62,6 +63,7 @@ public class ArrowBehaviour : MonoBehaviour
 		BowBehaviour.Instance.OnReleaseArrow -= ReleasedArrow;
 
 		_rb.isKinematic = false;
+		_rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
 		_transform.parent = null;
 
 		Ray ray = _camera.ScreenPointToRay(mousePoint);
@@ -102,10 +104,13 @@ public class ArrowBehaviour : MonoBehaviour
 			_gameObject.SetActive(false);
 
 			_rb.isKinematic = true;
+			_rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
 			_transform.parent = _arrowParent;
 		}
 		else
 		{
+			_rb.isKinematic = true;
+			_rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
 			StartCoroutine(TimeUntilDisabling());
 			_transform.parent = _arrowParent;
 			ArrowNoise?.Invoke(_transform.position);
@@ -122,12 +127,14 @@ public class ArrowBehaviour : MonoBehaviour
 		}
 		_gameObject.SetActive(false);
 		_rb.isKinematic = true;
+		_rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
 	}
 
 	private void OnScreenWrap(Latitude latitude)
 	{
 		StopAllCoroutines();
 		_rb.isKinematic = true;
+		_rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
 		_transform.parent = _arrowParent;
 		_gameObject.SetActive(false);
 	}
