@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -5545902183321323298}
   - component: {fileID: 4380800712682202362}
   - component: {fileID: 2491352602220291075}
+  - component: {fileID: 6558502778308275788}
   m_Layer: 7
   m_Name: LeafTree_2_Fruit
   m_TagString: Untagged
@@ -102,6 +103,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 15dd204dbcf044543a6d9ef104f20728, type: 2}
   status: 0
+  stumpCollider: {fileID: 4380800712682202362}
+  standingCollider: {fileID: 6558502778308275788}
   type: 1
   costSize: 0
   resourceAmount: 0
@@ -132,6 +135,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.37, y: 0.30355382, z: 0.022705298}
   m_Center: {x: -0.05, y: 0.15177469, z: 1}
+--- !u!136 &6558502778308275788
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7807923653859911093}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.07
+  m_Height: 0.18030058
+  m_Direction: 1
+  m_Center: {x: -0.04, y: 0.02295374, z: 0.000000007552872}
 --- !u!1001 &192283933811250373
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -1445665472992905242}
   - component: {fileID: 5175411732516711741}
   - component: {fileID: 2741925684971864844}
+  - component: {fileID: 2316025048055628198}
   m_Layer: 7
   m_Name: LeafTree_5
   m_TagString: Untagged
@@ -99,6 +100,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 4714896ee466e1f4aae5b64331edbd4b, type: 2}
   status: 0
+  stumpCollider: {fileID: 5175411732516711741}
+  standingCollider: {fileID: 2316025048055628198}
   type: 0
   costSize: 0
   resourceAmount: 0
@@ -115,7 +118,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.04
-  m_Center: {x: 0.04, y: 0.02, z: 0}
+  m_Center: {x: 0.05, y: 0, z: 0}
 --- !u!65 &2741925684971864844
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -129,3 +132,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.25, y: 0.35738203, z: 0.022705317}
   m_Center: {x: 0.03999999, y: 0.061307978, z: 0.9999998}
+--- !u!136 &2316025048055628198
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 864744610175704100}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.04
+  m_Height: 0.11604421
+  m_Direction: 1
+  m_Center: {x: 0.050000004, y: 0.016977899, z: 5.70205e-11}

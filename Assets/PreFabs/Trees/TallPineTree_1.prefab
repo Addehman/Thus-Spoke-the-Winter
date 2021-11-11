@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -3411812676585414658}
   - component: {fileID: -9034402099663642927}
   - component: {fileID: 2037429413122858420}
+  - component: {fileID: 8730147141917702090}
   m_Layer: 7
   m_Name: TallPineTree_1
   m_TagString: Untagged
@@ -99,6 +100,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 1dc0a74b16f8c564caa26757c6210b37, type: 2}
   status: 0
+  stumpCollider: {fileID: -9034402099663642927}
+  standingCollider: {fileID: 8730147141917702090}
   type: 2
   costSize: 0
   resourceAmount: 0
@@ -114,8 +117,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.15433004
-  m_Center: {x: 0, y: -0.06, z: 0.05}
+  m_Radius: 0.1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &2037429413122858420
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -129,3 +132,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.63, y: 0.7821176, z: 0.00999999}
   m_Center: {x: 0, y: 0.08247792, z: 0.9999998}
+--- !u!136 &8730147141917702090
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3906755439078533542}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.1
+  m_Height: 0.15
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}

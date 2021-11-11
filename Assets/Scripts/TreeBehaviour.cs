@@ -6,6 +6,8 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 {
 	[SerializeField] private ResourceDataSO _data;
 	[SerializeField] private Status status = Status.Alive;
+	[SerializeField] private SphereCollider stumpCollider;
+	[SerializeField] private CapsuleCollider standingCollider;
 
 	public event Action<GameObject> OnDestruct;
 	public ResourceType type;
@@ -42,6 +44,8 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 	{
 		_health = _data.health;
 		UpdateState(SeasonController.Instance.currentSeason);
+		standingCollider.enabled = true;
+		stumpCollider.enabled = false;
 	}
 
 	public void AddFruitsToList()
@@ -135,6 +139,8 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 	{
 		_sr.sprite = _data.depleted_Sprite;
 		status = Status.Dead;
+		standingCollider.enabled = false;
+		stumpCollider.enabled = true;
 	}
 
 	//private void OnDestroy()
