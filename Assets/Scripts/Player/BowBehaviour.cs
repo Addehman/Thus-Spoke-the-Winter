@@ -74,6 +74,7 @@ public class BowBehaviour : MonoBehaviour
 				_arrowDirection.z -= _arrowParent.position.y;
 
 				_arrowParent.forward = new Vector3(_arrowDirection.x, 0f, _arrowDirection.z);
+				//_player.SetPlayerAnimationDirection(_arrowPool[_arrowIndex].gameObject);
 			}
 		}
 	}
