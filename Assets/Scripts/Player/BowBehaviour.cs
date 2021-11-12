@@ -22,6 +22,7 @@ public class BowBehaviour : MonoBehaviour
 	[SerializeField] private int _arrowIndex;
 	[SerializeField] private Vector3 _arrowDirection;
 	[SerializeField] private bool isHoldingArrow = false;
+	//[SerializeField] private Vector3 _arrowOriginRotation;
 
 	public event Action<float, Vector3, Vector3> OnReleaseArrow;
 	public float arrowStrength;
@@ -51,6 +52,7 @@ public class BowBehaviour : MonoBehaviour
 			arrow.screenWrap = _screenWrap;
 			arrowSpawn.SetActive(false);
 		}
+		//_arrowOriginRotation = arrowSpawn.transform.eulerAngles;
 
 		_arrowIndex = 0;
 	}
@@ -74,6 +76,7 @@ public class BowBehaviour : MonoBehaviour
 				_arrowDirection.z -= _arrowParent.position.y;
 
 				_arrowParent.forward = new Vector3(_arrowDirection.x, 0f, _arrowDirection.z);
+				//_player.SetPlayerAnimationDirection(_arrowPool[_arrowIndex].gameObject);
 			}
 		}
 	}
@@ -83,6 +86,7 @@ public class BowBehaviour : MonoBehaviour
 		if (_arrowPool[_arrowIndex].gameObject.activeSelf) return;
 
 		_arrowPool[_arrowIndex].position = _arrowOffset.position;
+		_arrowPool[_arrowIndex].localRotation = _arrowPrefab.transform.rotation;
 		_arrowPool[_arrowIndex].gameObject.SetActive(true);
 		isHoldingArrow = true;
 		StartCoroutine(ArrowChargeRoutine());

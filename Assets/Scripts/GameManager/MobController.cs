@@ -38,6 +38,9 @@ public class MobController : MonoBehaviour
 	[Space(10)]
 	[SerializeField] private int minSpawnAmount = 1;
 	[SerializeField] private int maxSpawnAmount = 1;
+	[SerializeField] private List<int> _seedsWithSmell = new List<int>();
+	[SerializeField] private int _lengthOfSmellTrail = 3;
+	[SerializeField] private int _spawnOdds = 100, _spawnRandomMax = 1000;
 
 	private GameObject _cabinParent;
 
@@ -56,8 +59,8 @@ public class MobController : MonoBehaviour
 			_instance = this;
 
 		_camera = Camera.main;
-		_seedGenerator.SendSeed += SpawnMob;
-		_player.ResourceGathered += SaveIDToBlacklist; //DON'T NEED THIS?
+		_seedGenerator.SendSeed += SpawnLottery;
+		_player.ResourceGathered += SaveIDToBlacklist;
 	}
 
 	private void Start()
@@ -80,6 +83,30 @@ public class MobController : MonoBehaviour
 	public void SetCabinParent(GameObject obj)
 	{
 		_cabinParent = obj;
+	}
+
+	private void SpawnLottery(int seed)
+	{
+		if (_seedsWithSmell.Contains(seed))
+		{
+			_seedsWithSmell.RemoveAt(_seedsWithSmell.IndexOf(seed));
+		}
+
+		if (_seedsWithSmell.Count == _lengthOfSmellTrail)
+		{
+			_seedsWithSmell.RemoveAt(0);
+		}
+		_seedsWithSmell.Add(seed);
+
+		if (_seedsWithSmell.Contains(seed)) return;
+
+		int spawnChance = UnityEngine.Random.Range(0, _spawnRandomMax);
+		print($"Bunny Lottery outcome: {spawnChance}");
+		if (spawnChance <= _spawnOdds)
+		{
+			print($"Spawning a bunny on seed: {seed}");
+			SpawnMob(seed);
+		}
 	}
 
 	public void SpawnMob(int seed)

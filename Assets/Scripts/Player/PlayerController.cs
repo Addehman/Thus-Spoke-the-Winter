@@ -205,7 +205,7 @@ public class PlayerController : MonoBehaviour
 		_animator.SetFloat("SpeedY", _vertical);
 	}
 
-	private void SetPlayerAnimationDirection(GameObject faceThisObject)
+	public void SetPlayerAnimationDirection(GameObject faceThisObject)
 	{
 		if (faceThisObject == null) return;
 		Vector3 direction = FindDirectionFromTwoPoints(_transform.position, faceThisObject.transform.position);
