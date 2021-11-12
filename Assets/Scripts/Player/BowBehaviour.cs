@@ -14,7 +14,7 @@ public class BowBehaviour : MonoBehaviour
 	[SerializeField] private ScreenWrap _screenWrap;
 	[SerializeField] private Transform[] _arrowPool;
 	[SerializeField] private GameObject _arrowPrefab;
-	[SerializeField] private Transform _arrowParent;
+	[SerializeField] private Transform _arrowParent, _arrowOffset;
 	[SerializeField] private int arrowAmount = 10;
 	[SerializeField] private float _chargeSpeed = 0.1f;
 	[SerializeField] private float _chargeMax = 3f;
@@ -22,7 +22,6 @@ public class BowBehaviour : MonoBehaviour
 	[SerializeField] private int _arrowIndex;
 	[SerializeField] private Vector3 _arrowDirection;
 	[SerializeField] private bool isHoldingArrow = false;
-	[SerializeField] private bool hasInversedDirection = false;
 
 	public event Action<float, Vector3, Vector3> OnReleaseArrow;
 	public float arrowStrength;
@@ -45,10 +44,10 @@ public class BowBehaviour : MonoBehaviour
 		GameObject arrowSpawn = null;
 		for (int i = 0; i < arrowAmount; i++)
 		{
-			arrowSpawn = Instantiate(_arrowPrefab, _arrowParent);
+			arrowSpawn = Instantiate(_arrowPrefab, _arrowOffset);
 			_arrowPool[i] = arrowSpawn.transform;
 			arrowSpawn.TryGetComponent(out ArrowBehaviour arrow);
-			arrow._arrowParent = _arrowParent;
+			arrow.arrowOffset = _arrowOffset;
 			arrow.screenWrap = _screenWrap;
 			arrowSpawn.SetActive(false);
 		}
@@ -74,13 +73,7 @@ public class BowBehaviour : MonoBehaviour
 				_arrowDirection = hit.point - _arrowParent.position;
 				_arrowDirection.z -= _arrowParent.position.y;
 
-				if (!hasInversedDirection)
-				{
-					hasInversedDirection = false;
-					_arrowDirection = _arrowPool[_arrowIndex].InverseTransformDirection(hit.point);
-				}
-
-				_arrowPool[_arrowIndex].up = _arrowDirection;
+				_arrowParent.forward = new Vector3(_arrowDirection.x, 0f, _arrowDirection.z);
 			}
 		}
 	}
@@ -89,9 +82,8 @@ public class BowBehaviour : MonoBehaviour
 	{
 		if (_arrowPool[_arrowIndex].gameObject.activeSelf) return;
 
-		_arrowPool[_arrowIndex].position = _arrowParent.position;
+		_arrowPool[_arrowIndex].position = _arrowOffset.position;
 		_arrowPool[_arrowIndex].gameObject.SetActive(true);
-		hasInversedDirection = true;
 		isHoldingArrow = true;
 		StartCoroutine(ArrowChargeRoutine());
 		// Insert somewhere here that the position should be stuck to player, if itsn't already due to now being a child to player

@@ -9,7 +9,7 @@ public class ArrowBehaviour : MonoBehaviour
 	[SerializeField] private float disableTimeLimit = 3f;
 
 	public event Action<Vector3> ArrowNoise;
-	public Transform _arrowParent;
+	public Transform arrowOffset;
 	public ScreenWrap screenWrap;
 
 	private Transform _transform;
@@ -41,7 +41,7 @@ public class ArrowBehaviour : MonoBehaviour
 			_rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
 			_rb.isKinematic = true;
 			_gameObject.SetActive(false);
-			_transform.parent = _arrowParent;
+			_transform.parent = arrowOffset;
 		}
 	}
 
@@ -105,7 +105,7 @@ public class ArrowBehaviour : MonoBehaviour
 
 			_rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
 			_rb.isKinematic = true;
-			_transform.parent = _arrowParent;
+			_transform.parent = arrowOffset;
 		}
 		else
 		{
@@ -124,7 +124,7 @@ public class ArrowBehaviour : MonoBehaviour
 			timeElapsed += Time.deltaTime;
 			yield return null;
 		}
-		_transform.parent = _arrowParent;
+		_transform.parent = arrowOffset;
 		_gameObject.SetActive(false);
 	}
 
@@ -133,7 +133,7 @@ public class ArrowBehaviour : MonoBehaviour
 		StopAllCoroutines();
 		_rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
 		_rb.isKinematic = true;
-		_transform.parent = _arrowParent;
+		_transform.parent = arrowOffset;
 		_gameObject.SetActive(false);
 	}
 

@@ -1857,10 +1857,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 1000050728}
     m_Modifications:
     - target: {fileID: 1858088665, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
-      propertyPath: extraStep
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 1858088665, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
       propertyPath: _seedGenerator
       value: 
       objectReference: {fileID: 1003278497284002460}
@@ -1908,10 +1904,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 332712203833756739, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 332712203833756749, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1920,10 +1912,6 @@ PrefabInstance:
       propertyPath: _camera
       value: 
       objectReference: {fileID: 1364980105}
-    - target: {fileID: 6948897311830590201, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
-      propertyPath: _seedGenerator
-      value: 
-      objectReference: {fileID: 1003278497284002460}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
 --- !u!114 &332712203595213403 stripped
