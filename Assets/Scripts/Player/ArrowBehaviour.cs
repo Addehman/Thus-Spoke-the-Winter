@@ -103,14 +103,14 @@ public class ArrowBehaviour : MonoBehaviour
 			mob.OnDestruction();
 			_gameObject.SetActive(false);
 
-			_rb.isKinematic = true;
 			_rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+			_rb.isKinematic = true;
 			_transform.parent = _arrowParent;
 		}
 		else
 		{
-			_rb.isKinematic = true;
 			_rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+			_rb.isKinematic = true;
 			StartCoroutine(TimeUntilDisabling());
 			ArrowNoise?.Invoke(_transform.position);
 		}
@@ -131,8 +131,8 @@ public class ArrowBehaviour : MonoBehaviour
 	private void OnScreenWrap(Latitude latitude)
 	{
 		StopAllCoroutines();
-		_rb.isKinematic = true;
 		_rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+		_rb.isKinematic = true;
 		_transform.parent = _arrowParent;
 		_gameObject.SetActive(false);
 	}
