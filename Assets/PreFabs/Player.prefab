@@ -265,7 +265,7 @@ MonoBehaviour:
   arrowAmount: 10
   _chargeSpeed: 1.5
   _chargeMax: 3
-  _chargeMin: 1
+  _chargeMin: 0.5
   _arrowIndex: 0
   _arrowDirection: {x: 0, y: 0, z: 0}
   isHoldingArrow: 0
