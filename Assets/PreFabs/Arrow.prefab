@@ -182,7 +182,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rb: {fileID: 7011060429453249574}
   disableTimeLimit: 3
-  _arrowParent: {fileID: 0}
+  arrowOffset: {fileID: 0}
   screenWrap: {fileID: 0}
 --- !u!54 &7011060429453249574
 Rigidbody:
