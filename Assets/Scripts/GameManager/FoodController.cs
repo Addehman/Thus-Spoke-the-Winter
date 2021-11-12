@@ -63,6 +63,8 @@ public class FoodController : MonoBehaviour
 	{
 		_currentSeed = seed;
 
+		Debug.LogError($"Seed is {_currentSeed}");
+
 		if (_blacklistDictionary.TryGetValue(_currentSeed, out List<string> result))
 		{
 			_tempBlacklist = result;
@@ -78,12 +80,15 @@ public class FoodController : MonoBehaviour
 
 		UnityEngine.Random.InitState(_currentSeed);
 
-		int spawnCount = UnityEngine.Random.Range(minSpawnAmount, maxSpawnAmount - foodRarityWeight);
-		print($"Amount of new Foods: {spawnCount}");
-
+		//We run CheckRarityTier before setting the spawnCount, so the "-foodRarityWeight"
+		//value is updated before selecting how much food that can spawn.
 		CheckRarityTier();
 		if (foodRarityWeight == FoodObjectPool.Instance.foodObjectPool.Length)
 			return;
+
+		int spawnCount = UnityEngine.Random.Range(minSpawnAmount, maxSpawnAmount - foodRarityWeight);
+		print($"Amount of new Foods: {spawnCount}");
+
 
 		for (int i = 0; i < spawnCount; i++)
 		{
@@ -107,7 +112,9 @@ public class FoodController : MonoBehaviour
 			newObject.gameObject.name = $"{randomID_1}{randomID_2}";
 
 			if (IsObjectBlacklisted(newObject))
+            {
 				continue;
+            }
 
 			//newObject.position = PositionCorrection(newObject.position);
 
@@ -195,14 +202,16 @@ public class FoodController : MonoBehaviour
 
 			if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(obj.gameObject.name))
 			{
-				print($"{obj} is blacklisted!");
+				Debug.LogError($"{obj} is blacklisted!");
+				obj.gameObject.SetActive(true);
 				tree.SetTreeToDead();
+				return true;
 			}
 			else
 			{
 				tree.UpdateState(SeasonController.Instance.currentSeason);
+				return false;
 			}
-			return false;
 		}
 	}
 
@@ -248,7 +257,10 @@ public class FoodController : MonoBehaviour
 
 	private void SaveIDToBlacklist(GameObject obj)
 	{
-		if (!obj.TryGetComponent(out FoodBehaviour food)) return;
+        if (!obj.TryGetComponent(out FoodBehaviour food) && obj.TryGetComponent(out TreeBehaviour tree) && tree.type != ResourceType.fruitTree)
+        {
+			return;
+        }
 
 		print($"{obj.name} is now blacklisted!");
 
@@ -299,6 +311,8 @@ public class FoodController : MonoBehaviour
 		{
 			if (tree.status == Status.Dead) return;
 
+			Debug.LogError("Spawning Fruits!");
+
 			foreach (Transform item in obj)
 			{
 				item.gameObject.name = item.gameObject.GetInstanceID().ToString();
@@ -310,6 +324,9 @@ public class FoodController : MonoBehaviour
 				}
 				else
 				{
+					item.TryGetComponent(out FoodBehaviour food);
+					food.health = food.data.health;
+					food.status = Status.Alive;
 					item.gameObject.SetActive(true);
 				}
 			}

@@ -163,7 +163,7 @@ public class TreeController : MonoBehaviour
 
 	private void SaveIDToBlacklist(GameObject obj)
 	{
-		if (!obj.TryGetComponent(out TreeBehaviour tree)) return;
+		if (!obj.TryGetComponent(out TreeBehaviour tree) || tree.type == ResourceType.fruitTree) return;
 
 		print($"{obj.name} is now blacklisted!");
 

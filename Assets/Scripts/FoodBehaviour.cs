@@ -3,8 +3,7 @@ using System;
 
 public class FoodBehaviour : MonoBehaviour, IInteractable
 {
-	[SerializeField] private Status status = Status.Alive;
-
+	public Status status = Status.Alive;
 	public ResourceDataSO data;
 	public event Action<GameObject> OnDestruct;
 	public ResourceType type;
