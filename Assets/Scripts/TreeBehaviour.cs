@@ -5,10 +5,10 @@ using System.Collections.Generic;
 public class TreeBehaviour : MonoBehaviour, IInteractable
 {
 	[SerializeField] private ResourceDataSO _data;
-	[SerializeField] private Status status = Status.Alive;
 	[SerializeField] private SphereCollider stumpCollider;
 	[SerializeField] private CapsuleCollider standingCollider;
 
+	public Status status = Status.Alive;
 	public event Action<GameObject> OnDestruct;
 	public ResourceType type;
 	public EnergyCost costSize;

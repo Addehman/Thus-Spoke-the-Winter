@@ -111,6 +111,8 @@ public class FoodController : MonoBehaviour
 
 			//newObject.position = PositionCorrection(newObject.position);
 
+			//if (!CanObjectSpawnThisSeason()) return;
+
 			newObject.gameObject.SetActive(true);
 
 			SpawnFruitsIfFruitTree(newObject);
@@ -163,27 +165,43 @@ public class FoodController : MonoBehaviour
 
 	private bool IsObjectBlacklisted(Transform obj)
 	{
-		obj.TryGetComponent(out FoodBehaviour food);
-
-		if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(obj.gameObject.name))
+		if (obj.TryGetComponent(out FoodBehaviour food))
 		{
-			print($"{obj} is blacklisted!");
-
-			if ((food.type == ResourceType.apple || food.type == ResourceType.mushroom))
+			if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(obj.gameObject.name))
 			{
-				return true;
+				print($"{obj} is blacklisted!");
+
+				if ((food.type == ResourceType.apple || food.type == ResourceType.mushroom))
+				{
+					return true;
+				}
+				else
+				{
+					obj.gameObject.SetActive(true);
+					//obj.position = PositionCorrection(obj.position);
+					food.IsDepleted(true);
+					return true;
+				}
 			}
 			else
 			{
-				obj.gameObject.SetActive(true);
-				//obj.position = PositionCorrection(obj.position);
-				food.IsDepleted(true);
-				return true;
+				food.IsDepleted(false);
+				return false;
 			}
 		}
 		else
 		{
-			food.IsDepleted(false);
+			obj.TryGetComponent(out TreeBehaviour tree);
+
+			if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(obj.gameObject.name))
+			{
+				print($"{obj} is blacklisted!");
+				tree.SetTreeToDead();
+			}
+			else
+			{
+				tree.UpdateState(SeasonController.Instance.currentSeason);
+			}
 			return false;
 		}
 	}
@@ -279,6 +297,8 @@ public class FoodController : MonoBehaviour
 	{
 		if (obj.TryGetComponent(out TreeBehaviour tree) && tree.type == ResourceType.fruitTree)
 		{
+			if (tree.status == Status.Dead) return;
+
 			foreach (Transform item in obj)
 			{
 				item.gameObject.name = item.gameObject.GetInstanceID().ToString();
