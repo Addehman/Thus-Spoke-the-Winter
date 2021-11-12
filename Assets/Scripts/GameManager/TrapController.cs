@@ -29,7 +29,9 @@ public class TrapController : MonoBehaviour
 
     private Dictionary<int, List<int>> _savedTrapsDict = new Dictionary<int, List<int>>();
     private List<int> _tempSavedTrapsList;
-    private List<Transform> tempSpawns;
+    private List<Transform> _tempSpawns;
+    private List<float> _startTime;
+    private List<float> _timeToCatch;
     private int _currentSeed;
     private int _trapIndex;
 
@@ -49,10 +51,14 @@ public class TrapController : MonoBehaviour
         _player.OnPlaceTrap += PlaceTrap;
 
         InitializeObjectPool();
+
         _trapIndex = 0;
+        _startTime = new List<float>();
+        _timeToCatch = new List<float>();
     }
 
-    //This triggers from "E" input that executes the "OnPlaceTrap" event in PlayerController and takes in players posistion.
+    //This triggers from "OnPlaceTrap" event in PlayerController that sends the players position.
+    //The OnPlaceTrap event i PlayerController is triggered from keyboard input "E".
     private void PlaceTrap(Vector3 position) 
     {
         if (_trapIndex < _trapObjectPoolQuantitySetup.trap_Amount)
@@ -63,7 +69,37 @@ public class TrapController : MonoBehaviour
             newTrap.position = position /*PositionCorrection(position)*/;
             newTrap.gameObject.SetActive(true);
             SaveTrapToDictionary(_trapIndex);
+            SetStartTime();
+            SetTimeToCatch();
             _trapIndex++;
+        }
+    }
+
+    //Need this to take into account which index we want to set the startTime for since we want to be able to pick up traps later on.
+
+    private void SetStartTime()
+    {
+        _startTime.Add(Time.time);
+    }
+
+    private void SetTimeToCatch()
+    {
+        float randomTime = UnityEngine.Random.Range(60f, 300f);
+
+        _timeToCatch.Add(10f); //Change this to randomTime when done testing.
+    }
+
+    private bool HasTrapCaughtAnimal(int trapIndex)
+    {
+        float elapsedTime = Time.time - _startTime[trapIndex];
+
+        if (elapsedTime >= _timeToCatch[trapIndex])
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -82,6 +118,13 @@ public class TrapController : MonoBehaviour
             for (int i = 0; i < result.Count; i++)
             {
                 Transform newTrap = TrapObjectPool.Instance.trapObjectPool[result[i]];
+
+                if (HasTrapCaughtAnimal(result[i]))
+                {
+                    newTrap.gameObject.name = "CAUGHT ANIMAL";
+                    //ChangeSprite etc.
+                }
+
                 newTrap.gameObject.SetActive(true);
             }
         }
@@ -131,7 +174,7 @@ public class TrapController : MonoBehaviour
     {
         _trapObjectPoolQuantitySetup.quantities = new int[1] { _trapObjectPoolQuantitySetup.trap_Amount };
 
-        tempSpawns = new List<Transform>();
+        _tempSpawns = new List<Transform>();
 
         for (int i = 0; i < _trapObjectPoolQuantitySetup.quantities.Length; i++)
         {
@@ -139,7 +182,7 @@ public class TrapController : MonoBehaviour
 
             InitializeThisTypeThisMany(_trapObjectPoolPrefabLibrary.prefabs[i], _trapObjectPoolQuantitySetup.quantities[i]);
         }
-        TrapObjectPool.Instance.AddTrapObjectsToList(tempSpawns);
+        TrapObjectPool.Instance.AddTrapObjectsToList(_tempSpawns);
     }
 
     private void InitializeThisTypeThisMany(GameObject type, int typeAmount)
@@ -149,7 +192,7 @@ public class TrapController : MonoBehaviour
         {
             spawn = Instantiate(type, _trapParent);
             spawn.SetActive(false);
-            tempSpawns.Add(spawn.transform);
+            _tempSpawns.Add(spawn.transform);
         }
     }
 
