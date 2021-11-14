@@ -51,7 +51,6 @@ public class FoodController : MonoBehaviour
 		_camera = Camera.main;
 		_seedGenerator.SendSeed += SpawnFoods;
 		_player.ResourceGathered += SaveIDToBlacklist;
-
 	}
 
 	private void Start()
@@ -63,7 +62,7 @@ public class FoodController : MonoBehaviour
 	{
 		_currentSeed = seed;
 
-		Debug.LogError($"Seed is {_currentSeed}");
+		Debug.LogWarning($"Seed is {_currentSeed}");
 
 		if (_blacklistDictionary.TryGetValue(_currentSeed, out List<string> result))
 		{
@@ -111,18 +110,18 @@ public class FoodController : MonoBehaviour
 
 			newObject.gameObject.name = $"{randomID_1}{randomID_2}";
 
-			if (IsObjectBlacklisted(newObject))
-            {
+			if (IsObjectBlacklisted(newObject)) // THE DAMN FRUITS AREN'T TURNED OFF!!! The tree is set to depleted if blacklisted, but the fruits aren't considered at all!! :DDD
+			{
 				continue;
-            }
+			}
 
 			//newObject.position = PositionCorrection(newObject.position);
 
 			//if (!CanObjectSpawnThisSeason()) return;
 
-			newObject.gameObject.SetActive(true);
-
 			SpawnFruitsIfFruitTree(newObject);
+
+			newObject.gameObject.SetActive(true);
 		}
 	}
 
@@ -178,7 +177,7 @@ public class FoodController : MonoBehaviour
 			{
 				print($"{obj} is blacklisted!");
 
-				if ((food.type == ResourceType.apple || food.type == ResourceType.mushroom))
+				if ((food.type == ResourceType.apple || food.type == ResourceType.mushroom)) // it's redundant to check for apples as they're not spawned the same way as the other foods, and are checked before they're spawned.
 				{
 					return true;
 				}
@@ -202,7 +201,7 @@ public class FoodController : MonoBehaviour
 
 			if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(obj.gameObject.name))
 			{
-				Debug.LogError($"{obj} is blacklisted!");
+				print($"{obj} is blacklisted!");
 				obj.gameObject.SetActive(true);
 				tree.SetTreeToDead();
 				return true;
@@ -257,10 +256,10 @@ public class FoodController : MonoBehaviour
 
 	private void SaveIDToBlacklist(GameObject obj)
 	{
-        if (!obj.TryGetComponent(out FoodBehaviour food) && obj.TryGetComponent(out TreeBehaviour tree) && tree.type != ResourceType.fruitTree)
-        {
+		if (!obj.TryGetComponent(out FoodBehaviour food) && obj.TryGetComponent(out TreeBehaviour tree) && tree.type != ResourceType.fruitTree)
+		{
 			return;
-        }
+		}
 
 		print($"{obj.name} is now blacklisted!");
 
@@ -311,11 +310,11 @@ public class FoodController : MonoBehaviour
 		{
 			if (tree.status == Status.Dead) return;
 
-			Debug.LogError("Spawning Fruits!");
+			print($"The Status of: {obj} is now: {tree.status}");
 
 			foreach (Transform item in obj)
 			{
-				item.gameObject.name = item.gameObject.GetInstanceID().ToString();
+				//item.gameObject.name = item.gameObject.GetInstanceID().ToString();
 				if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(item.gameObject.name))
 				{
 					print($"{item.gameObject.name} is blacklisted!");
@@ -324,6 +323,7 @@ public class FoodController : MonoBehaviour
 				}
 				else
 				{
+					item.gameObject.name = $"{UnityEngine.Random.Range(0, 1000000)}{UnityEngine.Random.Range(0, 1000000)}";
 					item.TryGetComponent(out FoodBehaviour food);
 					food.health = food.data.health;
 					food.status = Status.Alive;

@@ -2324,6 +2324,18 @@ PrefabInstance:
       propertyPath: _foodParent
       value: 
       objectReference: {fileID: 338646155}
+    - target: {fileID: 5114568113770250190, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: _objectQuantitySetup.fruitTree_1Amount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5114568113770250190, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: _objectQuantitySetup.fruitTree_2Amount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5114568113770250190, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: _objectQuantitySetup.fruitTree_3Amount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5129743002338067384, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
       propertyPath: _screenWrap
       value: 

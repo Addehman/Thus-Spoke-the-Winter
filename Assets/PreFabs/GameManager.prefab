@@ -141,7 +141,7 @@ MonoBehaviour:
     m_Bits: 64
   _forestObjects:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   _player: {fileID: 0}
   _playerViewPortPos: {x: 0, y: 0}
   _mobViewPortPos: {x: 0, y: 0}
@@ -160,6 +160,10 @@ MonoBehaviour:
   uniqueMobObjects: 1
   minSpawnAmount: 1
   maxSpawnAmount: 1
+  _seedsWithSmell: 
+  _lengthOfSmellTrail: 3
+  _spawnOdds: 100
+  _spawnRandomMax: 1000
 --- !u!114 &672142925587344319
 MonoBehaviour:
   m_ObjectHideFlags: 0

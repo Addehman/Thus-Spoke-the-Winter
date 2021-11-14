@@ -16,14 +16,6 @@ public class FoodBehaviour : MonoBehaviour, IInteractable
 	private GameObject _gameObject;
 	private int _damage;
 
-	//private IFoodState _currentState;'
-
-
-	//private void OnEnable()
-	//{
-	//	if (type == ResourceType.blueberry || type == ResourceType.lingonberry)
-	//		sr.sprite = data.earlySpring_Sprite;
-	//}
 
 	private void Start()
 	{
@@ -36,10 +28,6 @@ public class FoodBehaviour : MonoBehaviour, IInteractable
 		health = data.health;
 		_damage = data.damage;
 		sr.sprite = data.earlySpring_Sprite;
-
-		//_currentState = _earlySpringState;
-
-		//SeasonController.Instance.UpdateSeason += UpdateState;
 	}
 
 	private void OnEnable()
