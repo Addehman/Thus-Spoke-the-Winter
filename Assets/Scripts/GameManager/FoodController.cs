@@ -329,7 +329,7 @@ public class FoodController : MonoBehaviour
 				}
 				else
 				{
-					Debug.LogWarning($"MY APPLES WASN'T BLACKLISTED! {item.gameObject.name}");
+					/*Debug.LogWarning($"MY APPLES WASN'T BLACKLISTED! {item.gameObject.name}");*/
 					item.TryGetComponent(out FoodBehaviour food);
 					food.health = food.data.health;
 					food.status = Status.Alive;
