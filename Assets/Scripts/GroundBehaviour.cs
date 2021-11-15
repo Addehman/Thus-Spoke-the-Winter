@@ -16,7 +16,7 @@ public class GroundBehaviour : MonoBehaviour
 
 	void Start()
 	{
-		print($"{this} was Started");
+		/*print($"{this} was Started");*/
 		SeasonController.Instance.UpdateSeason += UpdateGFX;
 	}
 

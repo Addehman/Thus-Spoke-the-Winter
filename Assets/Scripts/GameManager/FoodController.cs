@@ -62,7 +62,7 @@ public class FoodController : MonoBehaviour
 	{
 		_currentSeed = seed;
 
-		Debug.LogWarning($"Seed is {_currentSeed}");
+		/*Debug.LogWarning($"Seed is {_currentSeed}");*/
 
 		if (_blacklistDictionary.TryGetValue(_currentSeed, out List<string> result))
 		{
@@ -86,7 +86,7 @@ public class FoodController : MonoBehaviour
 			return;
 
 		int spawnCount = UnityEngine.Random.Range(minSpawnAmount, maxSpawnAmount - foodRarityWeight);
-		print($"Amount of new Foods: {spawnCount}");
+		/*print($"Amount of new Foods: {spawnCount}");*/
 
 
 		for (int i = 0; i < spawnCount; i++)
@@ -100,7 +100,7 @@ public class FoodController : MonoBehaviour
 				randomObject = (randomObject + 1) % availableObjectsLength;
 			}
 			usedRandomNumbers.Add(randomObject);
-			print($"randomObject nr: {randomObject}");
+			/*print($"randomObject nr: {randomObject}");*/
 			Transform newObject = FoodObjectPool.Instance.foodObjectPool[randomObject];
 
 			newObject.position = GenerateRandomPosition();
@@ -138,6 +138,8 @@ public class FoodController : MonoBehaviour
 	{
 		Vector3 randomPosition = Vector3.zero;
 
+		System.Random randomPos = new System.Random(UnityEngine.Random.Range(0, 10000));
+
 		float randomViewPortPosX = UnityEngine.Random.Range(0.1f, 0.9f);
 		float randomViewPortPosY = UnityEngine.Random.Range(0.1f, 0.9f);
 
@@ -147,11 +149,11 @@ public class FoodController : MonoBehaviour
 		int tries = 0;
 		while (Physics.Raycast(ray, out hit, float.MaxValue, _forestObjects))
 		{
-			randomViewPortPosX = UnityEngine.Random.Range(0.1f, 0.9f);
-			randomViewPortPosY = UnityEngine.Random.Range(0.1f, 0.9f);
+			randomViewPortPosX = randomPos.Next(1000, 9000) / 10000f;
+			randomViewPortPosY = randomPos.Next(1000, 9000) / 10000f;
 			ray = _camera.ScreenPointToRay(new Vector3(Screen.width * randomViewPortPosX, Screen.height * randomViewPortPosY));
 
-			print($"Food Ray hit: {hit.transform.name}. Trying again.");
+			/*print($"Food Ray hit: {hit.transform.name}. Trying again.");*/
 
 			tries++;
 			if (tries > 9) break;
@@ -306,6 +308,9 @@ public class FoodController : MonoBehaviour
 
 	private void SpawnFruitsIfFruitTree(Transform obj)
 	{
+		int counter = 0;
+		string appleParent = obj.name;
+
 		if (obj.TryGetComponent(out TreeBehaviour tree) && tree.type == ResourceType.fruitTree)
 		{
 			if (tree.status == Status.Dead) return;
@@ -314,7 +319,8 @@ public class FoodController : MonoBehaviour
 
 			foreach (Transform item in obj)
 			{
-				//item.gameObject.name = item.gameObject.GetInstanceID().ToString();
+				item.gameObject.name = $"{appleParent}: {counter++}";
+
 				if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(item.gameObject.name))
 				{
 					print($"{item.gameObject.name} is blacklisted!");
@@ -323,7 +329,7 @@ public class FoodController : MonoBehaviour
 				}
 				else
 				{
-					item.gameObject.name = $"{UnityEngine.Random.Range(0, 1000000)}{UnityEngine.Random.Range(0, 1000000)}";
+					Debug.LogWarning($"MY APPLES WASN'T BLACKLISTED! {item.gameObject.name}");
 					item.TryGetComponent(out FoodBehaviour food);
 					food.health = food.data.health;
 					food.status = Status.Alive;
