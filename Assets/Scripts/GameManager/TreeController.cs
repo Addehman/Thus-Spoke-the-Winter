@@ -71,7 +71,7 @@ public class TreeController : MonoBehaviour
 			_tempBlacklist = new List<string>();
 		}
 
-		print($"Seed: {seed}");
+		//print($"Seed: {seed}");
 		ClearForest();
 		// Check if the incoming seed number here is "-1", this means it's the Home block and no forest should spawn.
 		if (seed == -1)

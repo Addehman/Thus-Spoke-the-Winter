@@ -102,10 +102,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 15dd204dbcf044543a6d9ef104f20728, type: 2}
-  status: 0
   stumpCollider: {fileID: 4380800712682202362}
   standingCollider: {fileID: 6558502778308275788}
+  status: 0
   type: 1
+  beginSpawnPeriod: 3
+  endSpawnPeriod: 4
   costSize: 0
   resourceAmount: 0
   fruits: []

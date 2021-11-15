@@ -12,6 +12,7 @@ public class ResourceDataSO : ScriptableObject
 	public int damage;
 	public int resourceAmount;
 	public EnergyCost energyCostSize;
+	public Seasons beginSpawnPeriod, endSpawnPeriod;
 }
 
 public enum ResourceType {

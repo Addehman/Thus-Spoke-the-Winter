@@ -96,9 +96,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68fd72a3bf1661b4fa4e6a9314e6b16c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  status: 0
   data: {fileID: 11400000, guid: be0192a2afa8b3c499b8d6dbb349469e, type: 2}
   type: 5
-  size: 0
+  beginSpawnPeriod: 3
+  endSpawnPeriod: 5
+  costSize: 0
   resourceAmount: 0
   health: 0
   sr: {fileID: 5091730351020701073}

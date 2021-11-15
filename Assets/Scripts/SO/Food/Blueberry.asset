@@ -26,3 +26,5 @@ MonoBehaviour:
   damage: 1
   resourceAmount: 1
   energyCostSize: 3
+  beginSpawnPeriod: 3
+  endSpawnPeriod: 4

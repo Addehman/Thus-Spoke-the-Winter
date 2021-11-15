@@ -101,6 +101,8 @@ MonoBehaviour:
   _camera: {fileID: 0}
   status: 0
   type: 9
+  beginSpawnPeriod: 0
+  endSpawnPeriod: 2
   costSize: 0
   resourceAmount: 10
   speed: 1

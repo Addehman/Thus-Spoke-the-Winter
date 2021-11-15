@@ -8,6 +8,7 @@ public class FoodBehaviour : MonoBehaviour, IInteractable
 	public ResourceDataSO data;
 	public event Action<GameObject> OnDestruct;
 	public ResourceType type;
+	public Seasons beginSpawnPeriod, endSpawnPeriod;
 	public EnergyCost costSize;
 	public int resourceAmount, health;
 	public EarlySpringFoodState _earlySpringState = new EarlySpringFoodState();
@@ -37,6 +38,8 @@ public class FoodBehaviour : MonoBehaviour, IInteractable
 		health = data.health;
 		_damage = data.damage;
 		sr.sprite = data.earlySpring_Sprite;
+		beginSpawnPeriod = data.beginSpawnPeriod;
+		endSpawnPeriod = data.endSpawnPeriod;
 
 		//_currentState = _earlySpringState;
 

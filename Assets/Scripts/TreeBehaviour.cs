@@ -11,6 +11,7 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 	public Status status = Status.Alive;
 	public event Action<GameObject> OnDestruct;
 	public ResourceType type;
+	public Seasons beginSpawnPeriod, endSpawnPeriod;
 	public EnergyCost costSize;
 	public int resourceAmount;
 	public List<FoodBehaviour> fruits = new List<FoodBehaviour>();
@@ -33,6 +34,8 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 		_health = _data.health;
 		_damage = _data.damage;
 		_sr.sprite = _data.earlySpring_Sprite;
+		beginSpawnPeriod = _data.beginSpawnPeriod;
+		endSpawnPeriod = _data.endSpawnPeriod;
 	}
 
 	//private void Start()

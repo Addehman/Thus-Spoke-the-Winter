@@ -27,7 +27,8 @@ public class FoodController : MonoBehaviour
 	[SerializeField] private LayerMask _ground, _forestObjects;
 	[SerializeField] private PlayerController _player;
 	[SerializeField] private SeedGenerator _seedGenerator;
-	[SerializeField] private int _currentSeed, foodRarityWeight;
+	[SerializeField] private int _currentSeed;
+	[SerializeField] private float foodSpawnChance;
 	[SerializeField] private FoodObjectPoolQuantitySetup _objectQuantitySetup;
 	[SerializeField] private FoodObjectPoolPrefabLibrary _objectPrefabLibrary;
 	[Space(10)]
@@ -78,16 +79,17 @@ public class FoodController : MonoBehaviour
 
 		UnityEngine.Random.InitState(_currentSeed);
 
-		int spawnCount = UnityEngine.Random.Range(minSpawnAmount, maxSpawnAmount - foodRarityWeight);
+		int spawnCount = UnityEngine.Random.Range(minSpawnAmount, SetFoodSpawnChance(maxSpawnAmount));
 		print($"Amount of new Foods: {spawnCount}");
 
 		CheckRarityTier();
-		if (foodRarityWeight == FoodObjectPool.Instance.foodObjectPool.Length)
+		if (foodSpawnChance == 0f)
 			return;
+		
+		int availableObjectsLength = SetFoodSpawnChance(FoodObjectPool.Instance.foodObjectPool.Length);
 
 		for (int i = 0; i < spawnCount; i++)
 		{
-			int availableObjectsLength = FoodObjectPool.Instance.foodObjectPool.Length - foodRarityWeight;
 
 			int randomObject = UnityEngine.Random.Range(0, availableObjectsLength);
 
@@ -96,7 +98,7 @@ public class FoodController : MonoBehaviour
 				randomObject = (randomObject + 1) % availableObjectsLength;
 			}
 			usedRandomNumbers.Add(randomObject);
-			print($"randomObject nr: {randomObject}");
+			//print($"randomObject nr: {randomObject}");
 			Transform newObject = FoodObjectPool.Instance.foodObjectPool[randomObject];
 
 			newObject.position = GenerateRandomPosition();
@@ -111,11 +113,12 @@ public class FoodController : MonoBehaviour
 
 			//newObject.position = PositionCorrection(newObject.position);
 
-			//if (!CanObjectSpawnThisSeason()) return;
+			if (!CanObjectSpawnThisSeason(newObject)) 
+				return;
 
 			newObject.gameObject.SetActive(true);
 
-			SpawnFruitsIfFruitTree(newObject);
+			SpawnFruitsIfFruitTree(newObject); // Consider setting this to be called from the FruitTree themselves? Could be done in their OnEnable().
 		}
 	}
 
@@ -217,11 +220,11 @@ public class FoodController : MonoBehaviour
 		_objectQuantitySetup.quantities = new int[6] { _objectQuantitySetup.blueberryAmount, _objectQuantitySetup.lingonberryAmount, _objectQuantitySetup.mushroomAmount,
 		_objectQuantitySetup.fruitTree_1Amount, _objectQuantitySetup.fruitTree_2Amount, _objectQuantitySetup.fruitTree_3Amount };
 
-		foodRarityWeight = 0;
-		for (int i = 0; i < _objectQuantitySetup.quantities.Length; i++)
-		{
-			foodRarityWeight += _objectQuantitySetup.quantities[i];
-		}
+		foodSpawnChance = 0;
+		//for (int i = 0; i < _objectQuantitySetup.quantities.Length; i++)
+		//{
+		//	foodChancePercent += _objectQuantitySetup.quantities[i];
+		//}
 
 		initialSpawns = new List<Transform>();
 
@@ -269,27 +272,27 @@ public class FoodController : MonoBehaviour
 		int dominant = _seedGenerator.distanceFromHome.x >= _seedGenerator.distanceFromHome.y ? _seedGenerator.distanceFromHome.x : _seedGenerator.distanceFromHome.y;
 		if (dominant > 1 && dominant <= 5)
 		{
-			foodRarityWeight = 30;
+			foodSpawnChance = 0.25f;
 		}
 		else if (dominant > 5 && dominant <= 10)
 		{
-			foodRarityWeight = 25;
+			foodSpawnChance = 0.5f;
 		}
 		else if (dominant > 10 && dominant <= 20)
 		{
-			foodRarityWeight = 15;
+			foodSpawnChance = 0.75f;
 		}
 		else if (dominant > 20)
 		{
-			foodRarityWeight = 0;
+			foodSpawnChance = 1f;
 		}
 		else
 		{
-			foodRarityWeight = 0;
-			for (int i = 0; i < _objectQuantitySetup.quantities.Length; i++)
-			{
-				foodRarityWeight += _objectQuantitySetup.quantities[i];
-			}
+			foodSpawnChance = 0f;
+			//for (int i = 0; i < _objectQuantitySetup.quantities.Length; i++)
+			//{
+			//	foodRarityWeight += _objectQuantitySetup.quantities[i];
+			//}
 		}
 	}
 
@@ -316,6 +319,46 @@ public class FoodController : MonoBehaviour
 			// Update/Fill list on this newObject with event
 			tree.AddFruitsToList();
 		}
+	}
+	/// <summary>
+	/// Compare the new object's spawn period to the current season, and if it's not within the right period, continue with next iteration in for-loop
+	/// (This method is expected to be used in a if-statement as argument, have an "!"-mark prior to it, and be accompanied by a "continue"-line as the if-action).
+	/// </summary>
+	/// <param name="obj"></param>
+	/// <returns>bool true for Yes and false for No on the title's question</returns>
+	private bool CanObjectSpawnThisSeason(Transform obj)
+	{
+		Seasons season = SeasonController.Instance.currentSeason;
+		if (obj.TryGetComponent(out FoodBehaviour food))
+		{
+			if (season >= food.beginSpawnPeriod && season <= food.endSpawnPeriod)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else if (obj.TryGetComponent(out TreeBehaviour tree))
+		{
+			if (season >= tree.beginSpawnPeriod && season <= tree.endSpawnPeriod)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		return false;
+	}
+
+	private int SetFoodSpawnChance(int incomingValue)
+	{
+		int outgoingValue = Mathf.RoundToInt(incomingValue * foodSpawnChance);
+		print($"{incomingValue} was converted into {outgoingValue}");
+		return outgoingValue;
 	}
 
 	private void OnDestroy()

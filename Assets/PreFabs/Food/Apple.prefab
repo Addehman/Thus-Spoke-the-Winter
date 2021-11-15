@@ -95,8 +95,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68fd72a3bf1661b4fa4e6a9314e6b16c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  status: 0
   data: {fileID: 11400000, guid: e8c593c09a19c0d4ca79ce400eeffbac, type: 2}
   type: 8
+  beginSpawnPeriod: 3
+  endSpawnPeriod: 4
   costSize: 0
   resourceAmount: 0
   health: 0
