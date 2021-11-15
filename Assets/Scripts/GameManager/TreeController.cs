@@ -36,7 +36,7 @@ public class TreeController : MonoBehaviour
 	[SerializeField] private int maxSpawnAmount = 50;
 
 	private Camera _camera;
-	private Dictionary<int, List<string>> _blackListDictionary = new Dictionary<int, List<string>>();
+	private Dictionary<int, List<string>> _blacklistDictionary = new Dictionary<int, List<string>>();
 	private List<string> _tempBlacklist;
 	private List<Transform> initialSpawns;
 
@@ -60,9 +60,11 @@ public class TreeController : MonoBehaviour
 
 	public void SpawnTrees(int seed)
 	{
+		print("Spawning Tree objects");
+
 		_currentSeed = seed;
 
-		if (_blackListDictionary.TryGetValue(_currentSeed, out List<string> result))
+		if (_blacklistDictionary.TryGetValue(_currentSeed, out List<string> result))
 		{
 			_tempBlacklist = result;
 		}
@@ -82,7 +84,7 @@ public class TreeController : MonoBehaviour
 		UnityEngine.Random.InitState(seed); // To be used to control the seed of the random forest, whether it should be random or not.
 
 		int spawnCount = UnityEngine.Random.Range(minSpawnAmount, maxSpawnAmount);
-		print("Amount of new Trees: " + spawnCount);
+		print("Amount of Trees: " + spawnCount);
 
 		for (int i = 0; i < spawnCount; i++)
 		{
@@ -97,14 +99,14 @@ public class TreeController : MonoBehaviour
 
 			Transform newObject = TreeObjectPool.Instance.treeObjectPool[randomObject];
 
+			newObject.position = GenerateRandomPosition();
+
 			//A way to make the seed control what the random name is going to be.
 			int randomID_1 = UnityEngine.Random.Range(0, 1000000);
 			int randomID_2 = UnityEngine.Random.Range(0, 1000000);
 
 			//float randomOffset = UnityEngine.Random.Range(-1f, 1f);
 			//randomWorldPos.z += randomOffset;
-
-			newObject.position = GenerateRandomPosition();
 
 			//Om vi får seed = 1. Blir namnet sedan 2000.
 			//Vi plockar upp item med ID 2000.
@@ -171,11 +173,11 @@ public class TreeController : MonoBehaviour
 
 		if (_tempBlacklist.Count != 1)
 		{
-			_blackListDictionary[_currentSeed] = _tempBlacklist;
+			_blacklistDictionary[_currentSeed] = _tempBlacklist;
 		}
 		else
 		{
-			_blackListDictionary.Add(_currentSeed, _tempBlacklist);
+			_blacklistDictionary.Add(_currentSeed, _tempBlacklist);
 		}
 	}
 
@@ -183,10 +185,11 @@ public class TreeController : MonoBehaviour
 	{
 		foreach (Transform forestObject in _treeParent)
 		{
-			OnClearTrees?.Invoke();
 			forestObject.gameObject.SetActive(false);
 		}
+		OnClearTrees?.Invoke();
 	}
+
 	/// <summary>
 	/// Here we fill the ObjectPool up with managable accuracy concerning the amounts for each type - Spawns all the objects that will be possible to spawn on each block of forest.
 	/// </summary>
@@ -218,7 +221,6 @@ public class TreeController : MonoBehaviour
 			initialSpawns.Add(spawn.transform);
 		}
 	}
-
 
 	/// <summary>
 	/// Use this to Generate a new Random Position on the Screen using the Camera.

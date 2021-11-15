@@ -17,6 +17,16 @@ public class FoodBehaviour : MonoBehaviour, IInteractable
 	private int _damage;
 
 
+	//public FoodBehaviour()
+	//{
+
+	//}
+
+	//public FoodBehaviour(FoodBehaviour food)
+	//{
+	//	data = 
+	//}
+	
 	private void Start()
 	{
 		_gameObject = gameObject;
@@ -47,13 +57,14 @@ public class FoodBehaviour : MonoBehaviour, IInteractable
 	public void OnDestruction()
 	{
 		print($"Gathered {_gameObject}");
-		OnDestruct?.Invoke(_gameObject);
 		status = Status.Dead;
 
 		if (type == ResourceType.apple || type == ResourceType.mushroom)
 			_gameObject.SetActive(false);
 		else
 			sr.sprite = data.depleted_Sprite;
+
+		OnDestruct?.Invoke(_gameObject);
 	}
 
 	public void IsDepleted(bool isDepleted)

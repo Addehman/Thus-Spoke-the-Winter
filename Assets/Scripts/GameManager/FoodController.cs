@@ -16,6 +16,11 @@ public class FoodObjectPoolPrefabLibrary
 	public GameObject[] prefabs = new GameObject[6];
 }
 
+//public class FoodBlacklistItem
+//{
+
+//}
+
 public class FoodController : MonoBehaviour
 {
 	private static FoodController _instance;
@@ -36,9 +41,11 @@ public class FoodController : MonoBehaviour
 
 
 	private Camera _camera;
-	private Dictionary<int, List<string>> _blacklistDictionary = new Dictionary<int, List<string>>();
-	private List<string> _tempBlacklist;
+	private Dictionary<string, FoodBehaviour> _blacklistDictionary = new Dictionary<string, FoodBehaviour>();
+	//private List<FoodBehaviour> _tempBlacklist;
 	private List<Transform> initialSpawns;
+	private List<string> usedNames = new List<string>();
+	private List<string> _whiteList = new List<string>();
 
 
 	private void Awake()
@@ -62,16 +69,17 @@ public class FoodController : MonoBehaviour
 	{
 		_currentSeed = seed;
 
-		Debug.LogWarning($"Seed is {_currentSeed}");
+		//Debug.LogWarning($"Seed is {_currentSeed}");
+		print("Spawning Food objects");
 
-		if (_blacklistDictionary.TryGetValue(_currentSeed, out List<string> result))
-		{
-			_tempBlacklist = result;
-		}
-		else
-		{
-			_tempBlacklist = new List<string>();
-		}
+		//if (_blacklistDictionary.TryGetValue(_currentSeed, out List<FoodBlacklistItem> result))
+		//{
+		//	_tempBlacklist = result;
+		//}
+		//else
+		//{
+		//	_tempBlacklist = new List<FoodBlacklistItem>();
+		//}
 
 		ClearFoods();
 
@@ -86,7 +94,9 @@ public class FoodController : MonoBehaviour
 			return;
 
 		int spawnCount = UnityEngine.Random.Range(minSpawnAmount, maxSpawnAmount - foodRarityWeight);
-		print($"Amount of new Foods: {spawnCount}");
+		print($"Amount of Foods: {spawnCount}");
+
+		int counter = 0;
 
 
 		for (int i = 0; i < spawnCount; i++)
@@ -105,21 +115,41 @@ public class FoodController : MonoBehaviour
 
 			newObject.position = GenerateRandomPosition();
 
-			int randomID_1 = UnityEngine.Random.Range(0, 1000000);
-			int randomID_2 = UnityEngine.Random.Range(0, 1000000);
-
-			newObject.gameObject.name = $"{randomID_1}{randomID_2}";
-
-			if (IsObjectBlacklisted(newObject)) // THE DAMN FRUITS AREN'T TURNED OFF!!! The tree is set to depleted if blacklisted, but the fruits aren't considered at all!! :DDD
+			//int randomID_1 = UnityEngine.Random.Range(0, 1000000);
+			//int randomID_2 = UnityEngine.Random.Range(0, 1000000);
+			string newName = $"{_currentSeed} {counter++}";
+			
+			if (_whiteList.Contains(newName)) // Old but not destructed/depleted - get's through the gate.
 			{
+				newObject.gameObject.name = newName;
+			}
+			else if (IsObjectBlacklisted(newObject, newName)) // Old and destructed/depleted - doesn't get through the gate.
+			{
+				newObject.gameObject.name = newName;
 				continue;
 			}
+			else // New object and needs a new unique name
+			{ 
+				//while (usedNames.Contains(newName))
+				//{
+				//	randomID_1 = UnityEngine.Random.Range(0, 1000000);
+				//	randomID_2 = UnityEngine.Random.Range(0, 1000000);
+				//}
+				usedNames.Add(newName);
+				_whiteList.Add(newName);
+				newObject.gameObject.name = newName;
+			}
+
+			//if (IsObjectBlacklisted(newObject)) // THE DAMN FRUITS AREN'T TURNED OFF!!! The tree is set to depleted if blacklisted, but the fruits aren't considered at all!! :DDD
+			//{
+			//	continue;
+			//}
 
 			//newObject.position = PositionCorrection(newObject.position);
 
 			//if (!CanObjectSpawnThisSeason()) return;
 
-			SpawnFruitsIfFruitTree(newObject);
+			//SpawnFruitsIfFruitTree(newObject);
 
 			newObject.gameObject.SetActive(true);
 		}
@@ -144,11 +174,12 @@ public class FoodController : MonoBehaviour
 		Ray ray = _camera.ScreenPointToRay(new Vector3(Screen.width * randomViewPortPosX, Screen.height * randomViewPortPosY));
 		RaycastHit hit;
 
+		System.Random randomNr = new System.Random(UnityEngine.Random.Range(0, 10000));
 		int tries = 0;
 		while (Physics.Raycast(ray, out hit, float.MaxValue, _forestObjects))
 		{
-			randomViewPortPosX = UnityEngine.Random.Range(0.1f, 0.9f);
-			randomViewPortPosY = UnityEngine.Random.Range(0.1f, 0.9f);
+			randomViewPortPosX = randomNr.Next(1000, 9000) / 10000f;
+			randomViewPortPosY = randomNr.Next(1000, 9000) / 10000f;
 			ray = _camera.ScreenPointToRay(new Vector3(Screen.width * randomViewPortPosX, Screen.height * randomViewPortPosY));
 
 			print($"Food Ray hit: {hit.transform.name}. Trying again.");
@@ -169,11 +200,11 @@ public class FoodController : MonoBehaviour
 		return randomPosition;
 	}
 
-	private bool IsObjectBlacklisted(Transform obj)
+	private bool IsObjectBlacklisted(Transform obj, string name)
 	{
 		if (obj.TryGetComponent(out FoodBehaviour food))
 		{
-			if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(obj.gameObject.name))
+			if (_blacklistDictionary.Count > 0 && _blacklistDictionary.ContainsKey(name))
 			{
 				print($"{obj} is blacklisted!");
 
@@ -185,7 +216,8 @@ public class FoodController : MonoBehaviour
 				{
 					obj.gameObject.SetActive(true);
 					//obj.position = PositionCorrection(obj.position);
-					food.IsDepleted(true);
+					_blacklistDictionary.TryGetValue(name, out FoodBehaviour savedFood);
+					food = savedFood;
 					return true;
 				}
 			}
@@ -199,7 +231,7 @@ public class FoodController : MonoBehaviour
 		{
 			obj.TryGetComponent(out TreeBehaviour tree);
 
-			if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(obj.gameObject.name))
+			if (_blacklistDictionary.Count > 0 && _blacklistDictionary.ContainsKey(name))
 			{
 				print($"{obj} is blacklisted!");
 				obj.gameObject.SetActive(true);
@@ -257,22 +289,31 @@ public class FoodController : MonoBehaviour
 	private void SaveIDToBlacklist(GameObject obj)
 	{
 		if (!obj.TryGetComponent(out FoodBehaviour food) && obj.TryGetComponent(out TreeBehaviour tree) && tree.type != ResourceType.fruitTree)
-		{
 			return;
-		}
 
 		print($"{obj.name} is now blacklisted!");
 
-		_tempBlacklist.Add(obj.name);
-
-		if (_tempBlacklist.Count != 1)
+		if (_blacklistDictionary.ContainsKey(obj.name))
 		{
-			_blacklistDictionary[_currentSeed] = _tempBlacklist;
+			_blacklistDictionary[obj.name] = food;
 		}
 		else
 		{
-			_blacklistDictionary.Add(_currentSeed, _tempBlacklist);
+			_blacklistDictionary.Add(obj.name, food);
 		}
+
+		_whiteList.Remove(obj.name);
+
+		//_tempBlacklist.Add(obj.name);
+
+		//if (_tempBlacklist.Count != 1)
+		//{
+		//	_blacklistDictionary[_currentSeed] = _tempBlacklist;
+		//}
+		//else
+		//{
+		//	_blacklistDictionary.Add(_currentSeed, _tempBlacklist);
+		//}
 	}
 
 	private void CheckRarityTier() // this needs to more Modular!
@@ -304,8 +345,10 @@ public class FoodController : MonoBehaviour
 		}
 	}
 
-	private void SpawnFruitsIfFruitTree(Transform obj)
+	public void SpawnFruitsIfFruitTree(Transform obj)
 	{
+		int counter = 0;
+		string appleParent = obj.name;
 		if (obj.TryGetComponent(out TreeBehaviour tree) && tree.type == ResourceType.fruitTree)
 		{
 			if (tree.status == Status.Dead) return;
@@ -315,7 +358,7 @@ public class FoodController : MonoBehaviour
 			foreach (Transform item in obj)
 			{
 				//item.gameObject.name = item.gameObject.GetInstanceID().ToString();
-				if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(item.gameObject.name))
+				if (_blacklistDictionary.Count > 0 && _blacklistDictionary.ContainsKey(item.name))
 				{
 					print($"{item.gameObject.name} is blacklisted!");
 					item.gameObject.SetActive(false);
@@ -323,7 +366,7 @@ public class FoodController : MonoBehaviour
 				}
 				else
 				{
-					item.gameObject.name = $"{UnityEngine.Random.Range(0, 1000000)}{UnityEngine.Random.Range(0, 1000000)}";
+					item.gameObject.name = $"{appleParent}: {counter++}";
 					item.TryGetComponent(out FoodBehaviour food);
 					food.health = food.data.health;
 					food.status = Status.Alive;

@@ -111,6 +111,8 @@ public class MobController : MonoBehaviour
 
 	public void SpawnMob(int seed)
 	{
+		print("Spawning Mob objects");
+
 		_currentSeed = seed;
 
 		if (_savedDeadMobDictionary.TryGetValue(_currentSeed, out Dictionary<string, Vector3> result))

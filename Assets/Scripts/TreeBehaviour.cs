@@ -46,6 +46,11 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 		UpdateState(SeasonController.Instance.currentSeason);
 		standingCollider.enabled = true;
 		stumpCollider.enabled = false;
+
+		if (type == ResourceType.fruitTree)
+		{
+			FoodController.Instance.SpawnFruitsIfFruitTree(_transform);
+		}
 	}
 
 	public void AddFruitsToList()
@@ -93,8 +98,8 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 	public void OnDestruction()
 	{
 		print($"{_gameObject} is falling!");
-		OnDestruct?.Invoke(_gameObject);
 		SetTreeToDead();
+		OnDestruct?.Invoke(_gameObject);
 	}
 
 	public void UpdateState(Seasons season)

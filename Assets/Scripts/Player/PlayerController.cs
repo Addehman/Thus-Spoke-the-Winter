@@ -299,6 +299,8 @@ public class PlayerController : MonoBehaviour
 		print($"OnResourceDestroy: {obj}");
 		obj.TryGetComponent(out FoodBehaviour food);
 
+		// apples don't appear on the _interactablesInRange list, thus it needs a special treatment.
+		// Only apples will poass through these barriers and other items that are on the list.
 		if (!_interactablesInRange.Contains(obj) && food != null && food.type != ResourceType.apple)
 		{
 			return;
