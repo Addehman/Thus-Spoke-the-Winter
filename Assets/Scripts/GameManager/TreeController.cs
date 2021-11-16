@@ -106,6 +106,8 @@ public class TreeController : MonoBehaviour
 			int spawnCount = UnityEngine.Random.Range(minSpawnAmount, maxSpawnAmount);
 			/*print("Amount of new Trees: " + spawnCount);*/
 
+			int counter = 0;
+
 			for (int i = 0; i < spawnCount; i++)
 			{
 				//This needs to check so that we don't random the same number twice in a row or something like that.
@@ -120,8 +122,8 @@ public class TreeController : MonoBehaviour
 				Transform newObject = TreeObjectPool.Instance.treeObjectPool[randomObject];
 
 				//A way to make the seed control what the random name is going to be.
-				int randomID_1 = UnityEngine.Random.Range(0, 1000000);
-				int randomID_2 = UnityEngine.Random.Range(0, 1000000);
+				//int randomID_1 = UnityEngine.Random.Range(0, 1000000);
+				//int randomID_2 = UnityEngine.Random.Range(0, 1000000);
 
 				//float randomOffset = UnityEngine.Random.Range(-1f, 1f);
 				//randomWorldPos.z += randomOffset;
@@ -138,7 +140,7 @@ public class TreeController : MonoBehaviour
 
 				//Vi kan eventuellt strunta i att ge alla objekt ett random namn varje gång utan bara ge alla ett random namn första gången.
 				//För att spara prestanda. I och med att vi ändå alltid har koll på vilken seed vi är på med Dictionariet.
-				newObject.gameObject.name = $"{randomID_1}{randomID_2}";
+				newObject.gameObject.name = $"{_currentSeed} {counter++}";
 
 				if (IsObjectBlacklisted(newObject))
 					continue;

@@ -113,6 +113,7 @@ public class FoodController : MonoBehaviour
 			int spawnCount = UnityEngine.Random.Range(minSpawnAmount, SetFoodSpawnChance(maxSpawnAmount));
 			/*print($"Amount of new Foods: {spawnCount}");*/
 
+			int counter = 0;
 
 			for (int i = 0; i < spawnCount; i++)
 			{
@@ -131,7 +132,7 @@ public class FoodController : MonoBehaviour
 				int randomID_1 = UnityEngine.Random.Range(0, 1000000);
 				int randomID_2 = UnityEngine.Random.Range(0, 1000000);
 
-				newObject.gameObject.name = $"{randomID_1}{randomID_2}";
+				newObject.gameObject.name = $"{_currentSeed} {counter++}";
 
 				if (IsObjectBlacklisted(newObject)) // THE DAMN FRUITS AREN'T TURNED OFF!!! The tree is set to depleted if blacklisted, but the fruits aren't considered at all!! :DDD
 				{

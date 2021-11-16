@@ -163,6 +163,8 @@ public class MobController : MonoBehaviour
 
 		/*CheckRarityTier();*/ //Remove comment when testing is done and we want to implement the rarity of mobs aswell.
 
+		int counter = 0;
+
 		for (int i = 0; i < spawnCount; i++)
 		{
 			//This needs to check so that we don't random the same number twice in a row or something like that.
@@ -177,12 +179,12 @@ public class MobController : MonoBehaviour
 			Transform newObject = MobObjectPool.Instance.mobObjectPool[randomObject];
 
 			//A way to make the seed control what the random name is going to be.
-			int randomID1 = UnityEngine.Random.Range(0, 1000000);
-			int randomID2 = UnityEngine.Random.Range(0, 1000000);
+			//int randomID1 = UnityEngine.Random.Range(0, 1000000);
+			//int randomID2 = UnityEngine.Random.Range(0, 1000000);
 
 			newObject.position = GeneratePosition();
 
-			newObject.gameObject.name = $"{randomID1}{randomID2}";
+			newObject.gameObject.name = $"{_currentSeed} {counter++}";
 
 			newObject.TryGetComponent(out MobBehaviour mob);
 
