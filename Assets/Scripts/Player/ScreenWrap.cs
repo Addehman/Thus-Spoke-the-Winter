@@ -69,7 +69,7 @@ public class ScreenWrap : MonoBehaviour
 				ConvertPosFromViewPortToWorldPoint(false, false, borderTop, Latitude.North);
 				return;
 			}
-			ConvertPosFromViewPortToWorldPoint(true, false, -1f + extraStepVertical, Latitude.North);
+			ConvertPosFromViewPortToWorldPoint(true, false, -0.9f/* + extraStepVertical*/, Latitude.North);
 		}
 		else if (_playerViewPortPos.y < borderBottom)
 		{
@@ -79,17 +79,17 @@ public class ScreenWrap : MonoBehaviour
 				return;
 			}
 
-			ConvertPosFromViewPortToWorldPoint(true, false, 2f - extraStepVertical, Latitude.South);
+			ConvertPosFromViewPortToWorldPoint(true, false, 1.9f/* - extraStepVertical*/, Latitude.South);
 		}
 	}
 
 	private void ConvertPosFromViewPortToWorldPoint(bool shouldMove, bool changeX, float value, Latitude latitude)
 	{
-		if (changeX)
+		if (changeX) // horizontal screenwrapping
 		{
 			_playerViewPortPos.x = value;
 		}
-		else
+		else // vertical screenwrapping
 		{
 			_playerViewPortPos.y = value;
 		}
