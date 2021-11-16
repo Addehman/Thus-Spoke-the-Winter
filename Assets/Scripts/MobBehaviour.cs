@@ -7,7 +7,7 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 	[SerializeField] private ResourceDataSO _data;
 	[SerializeField] private Camera _camera;
 
-	public event Action<GameObject> OnButcher;
+	public event Action<GameObject> OnButcher, OnDestruct;
 
 	public Status status = Status.Alive;
 	public ResourceType type;
@@ -107,6 +107,7 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 		status = Status.Dead;
 		StopAllCoroutines();
 		IsDepleted(true);
+		MobController.Instance.SaveIDToBlacklist(_gameObject);
 	}
 
 	private void Butcher()
@@ -114,7 +115,6 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 		print($"{_gameObject} was butchered and harvested.");
 		_gameObject.SetActive(false);
 		OnButcher?.Invoke(_gameObject);
-		MobController.Instance.RemoveButcheredFromDeadMobDictionary(this);
 	}
 
 	public void IsDepleted(bool isDepleted)

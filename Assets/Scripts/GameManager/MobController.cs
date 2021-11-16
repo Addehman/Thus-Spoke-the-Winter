@@ -61,7 +61,7 @@ public class MobController : MonoBehaviour
 
 		_camera = Camera.main;
 		_seedGenerator.SendSeed += SpawnLottery;
-		_player.ResourceGathered += SaveIDToBlacklist;
+		_player.ResourceGathered += RemoveButcheredFromDeadMobDictionary;
 	}
 
 	private void Start()
@@ -88,14 +88,31 @@ public class MobController : MonoBehaviour
 
 	private void SpawnLottery(int seed)
 	{
-		bool isOldSeed = false;
+		_currentSeed = seed;
+
+		bool isSmellySeed = false;
+
+		if (_savedDeadMobDictionary.TryGetValue(_currentSeed, out Dictionary<string, Vector3> result))
+		{
+			_tempSavedDeadMobDictionary = result;
+		}
+		else
+		{
+			_tempSavedDeadMobDictionary = new Dictionary<string, Vector3>();
+		}
+
+		ClearMobs();
+
+		int spawnLotteryOutcome = UnityEngine.Random.Range(0, _spawnRandomMax);
+
 		// If we revisit a square that we've been to recently, and it's within the smell trail,
 		// then remove it from it's older position in the list and add it again, to set it to the most recent visited square - last in list.
 		if (_seedsWithSmell.Contains(seed))
 		{
 			_seedsWithSmell.Remove(seed);
 			_seedsWithSmell.Add(seed);
-			isOldSeed = true;
+			isSmellySeed = true;
+			print("It's an smelly seed, no bunnies should spawn");
 		}
 		// If the list is full, remove the oldest entry and then add new to last spot(automatic), pushing older ones back.
 		else if (_seedsWithSmell.Count == _lengthOfSmellTrail)
@@ -108,8 +125,17 @@ public class MobController : MonoBehaviour
 			_seedsWithSmell.Add(seed);
 		}
 
+		// If there is any Saved Dead Mobs in this seed:
+		if (_tempSavedDeadMobDictionary.Count > 0)
+		{
+			SpawnMob(seed);
+			return;
+		}
 		// If it's an old seed, then don't go further.
-		if (isOldSeed) return;
+		else if (isSmellySeed)
+		{
+			return;
+		}
 
 		// If it's Spring, early or late, then it's high season for animals(mating season = high activity / bold behaviour).
 		if (SeasonController.Instance.currentSeason <= Seasons.lateSpring)
@@ -119,7 +145,6 @@ public class MobController : MonoBehaviour
 		else
 			_spawnChancePercentage = 0.1f; // Maybe even less? 5%?
 
-		int spawnLotteryOutcome = UnityEngine.Random.Range(0, _spawnRandomMax);
 		print($"Bunny Lottery outcome: {spawnLotteryOutcome}");
 		int spawnOdds = Mathf.RoundToInt(_spawnRandomMax * _spawnChancePercentage);
 		print($"The MobSpawnOdds are: {spawnOdds}");
@@ -132,19 +157,7 @@ public class MobController : MonoBehaviour
 
 	public void SpawnMob(int seed)
 	{
-		_currentSeed = seed;
-
-		if (_savedDeadMobDictionary.TryGetValue(_currentSeed, out Dictionary<string, Vector3> result))
-		{
-			_tempSavedDeadMobDictionary = result;
-		}
-		else
-		{
-			_tempSavedDeadMobDictionary = new Dictionary<string, Vector3>();
-		}
-
-		print($"Seed: {seed}");
-		ClearMobs();
+		//print($"Seed: {seed}");
 
 		// Check if the incoming seed number here is "-1", this means it's the Home block and no forest should spawn.
 		if (seed == -1)
@@ -161,6 +174,8 @@ public class MobController : MonoBehaviour
 
 		/*CheckRarityTier();*/ //Remove comment when testing is done and we want to implement the rarity of mobs aswell.
 
+		int counter = 0;
+
 		for (int i = 0; i < spawnCount; i++)
 		{
 			//This needs to check so that we don't random the same number twice in a row or something like that.
@@ -175,12 +190,12 @@ public class MobController : MonoBehaviour
 			Transform newObject = MobObjectPool.Instance.mobObjectPool[randomObject];
 
 			//A way to make the seed control what the random name is going to be.
-			int randomID1 = UnityEngine.Random.Range(0, 1000000);
-			int randomID2 = UnityEngine.Random.Range(0, 1000000);
+			//int randomID1 = UnityEngine.Random.Range(0, 1000000);
+			//int randomID2 = UnityEngine.Random.Range(0, 1000000);
 
 			newObject.position = GeneratePosition();
 
-			newObject.gameObject.name = $"{randomID1}{randomID2}";
+			newObject.gameObject.name = $"{_currentSeed} {counter++}";
 
 			newObject.TryGetComponent(out MobBehaviour mob);
 
@@ -199,7 +214,7 @@ public class MobController : MonoBehaviour
 
 			newObject.gameObject.SetActive(true);
 
-			newObject.position = PositionCorrection(newObject.position);
+			//newObject.position = PositionCorrection(newObject.position);
 		}
 	}
 
@@ -252,7 +267,7 @@ public class MobController : MonoBehaviour
 		}
 	}
 
-	private void SaveIDToBlacklist(GameObject obj)
+	public void SaveIDToBlacklist(GameObject obj)
 	{
 		if (!obj.TryGetComponent(out MobBehaviour mob)) return;
 
@@ -276,12 +291,13 @@ public class MobController : MonoBehaviour
 	{
 		// trans.TryGetComponent(out MobBehaviour mob);
 
-		if (_tempSavedDeadMobDictionary.Count > 0 && _tempSavedDeadMobDictionary.ContainsKey(trans.gameObject.name))
+		if (_tempSavedDeadMobDictionary.Count > 0 && _tempSavedDeadMobDictionary.ContainsKey(trans.name))
 		{
 			print($"{trans.name} exists in SavedDeadMobList");
 
+			trans.position = _tempSavedDeadMobDictionary[trans.name];
 			trans.gameObject.SetActive(true);
-			trans.position = PositionCorrection(trans.position);
+			//trans.position = PositionCorrection(trans.position);
 			mob.status = Status.Dead;
 			mob.IsDepleted(true);
 			return true;
@@ -293,10 +309,10 @@ public class MobController : MonoBehaviour
 		}
 	}
 
-	public void RemoveButcheredFromDeadMobDictionary(MobBehaviour mob)
+	public void RemoveButcheredFromDeadMobDictionary(GameObject obj)
 	{
-		print($"{mob} was Butchered, and Removed from SavedDeadMobList");
-		_tempSavedDeadMobDictionary.Remove(mob.transform.name);
+		print($"{obj} was Butchered, and Removed from SavedDeadMobList");
+		_tempSavedDeadMobDictionary.Remove(obj.name);
 	}
 
 	private void CheckRarityTier()
@@ -388,6 +404,7 @@ public class MobController : MonoBehaviour
 	private void OnDestroy()
 	{
 		_seedGenerator.SendSeed -= SpawnMob;
+		_player.ResourceGathered -= RemoveButcheredFromDeadMobDictionary;
 	}
 }
 

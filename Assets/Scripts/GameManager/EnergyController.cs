@@ -54,7 +54,7 @@ public class EnergyController : MonoBehaviour
 				cost = largeEnergyCost;
 				break;
 		}
-		print($"EnergyCost: {cost}");
+		/*print($"EnergyCost: {cost}");*/
 		currentEnergy -= cost;
 		UpdateEnergyUI?.Invoke();
 

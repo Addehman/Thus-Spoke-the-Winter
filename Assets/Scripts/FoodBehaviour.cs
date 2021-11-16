@@ -3,8 +3,7 @@ using System;
 
 public class FoodBehaviour : MonoBehaviour, IInteractable
 {
-	[SerializeField] private Status status = Status.Alive;
-
+	public Status status = Status.Alive;
 	public ResourceDataSO data;
 	public event Action<GameObject> OnDestruct;
 	public ResourceType type;
@@ -18,14 +17,6 @@ public class FoodBehaviour : MonoBehaviour, IInteractable
 	private GameObject _gameObject;
 	private int _damage;
 
-	//private IFoodState _currentState;'
-
-
-	//private void OnEnable()
-	//{
-	//	if (type == ResourceType.blueberry || type == ResourceType.lingonberry)
-	//		sr.sprite = data.earlySpring_Sprite;
-	//}
 
 	private void Start()
 	{

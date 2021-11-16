@@ -55,7 +55,7 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 	{
 		if (fruits.Count > 0) return;
 
-		foreach (FoodBehaviour fruit in _transform.GetComponentsInChildren<FoodBehaviour>())
+		foreach (FoodBehaviour fruit in _transform.GetComponentsInChildren<FoodBehaviour>()) // This could probably be changed to simply look for "fruit in _transform", I am doing this somewhere else and it works fine, though possibly with another type.
 		{
 			if (fruit.gameObject.activeSelf)
 				fruits.Add(fruit);
@@ -73,9 +73,11 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 
 		if (fruits.Count > 1)
 		{
-			int randomFruit = UnityEngine.Random.Range(0, fruits.Count);
+			/*int randomFruit = UnityEngine.Random.Range(0, fruits.Count);
 			fruits[randomFruit].OnInteract();
-			fruits.RemoveAt(randomFruit);
+			fruits.RemoveAt(randomFruit);*/
+			fruits[0].OnInteract();
+			fruits.RemoveAt(0);
 			return;
 		}
 		else if (fruits.Count == 1)
@@ -95,9 +97,7 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 	{
 		print($"{_gameObject} is falling!");
 		OnDestruct?.Invoke(_gameObject);
-		//_gameObject.SetActive(false);
-		_sr.sprite = _data.depleted_Sprite;
-		status = Status.Dead;
+		SetTreeToDead();
 	}
 
 	public void UpdateState(Seasons season)
@@ -144,6 +144,15 @@ public class TreeBehaviour : MonoBehaviour, IInteractable
 		status = Status.Dead;
 		standingCollider.enabled = false;
 		stumpCollider.enabled = true;
+
+		if (type == ResourceType.fruitTree)
+		{
+			fruits.Clear();
+			foreach(Transform item in _transform)
+			{
+				item.gameObject.SetActive(false);
+			}
+		}
 	}
 
 	//private void OnDestroy()

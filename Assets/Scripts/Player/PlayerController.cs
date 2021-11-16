@@ -190,7 +190,7 @@ public class PlayerController : MonoBehaviour
 
 		var interactable = _interactablesInRange[index].GetComponent<IInteractable>();
 		if (interactable == null) return;
-		interactable.OnInteract();
+		interactable.OnInteract(); 
 
 		// Let's turn the player's animation in the direction of what it is interacting with.
 		SetPlayerAnimationDirection(nearestObject);

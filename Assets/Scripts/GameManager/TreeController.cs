@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 
 [Serializable]
 public class TreeObjectPoolQuantitySetup
@@ -34,6 +35,7 @@ public class TreeController : MonoBehaviour
 	[Space(10)]
 	[SerializeField] private int minSpawnAmount = 5;
 	[SerializeField] private int maxSpawnAmount = 50;
+	[SerializeField] private bool useWaitForFrames = false;
 
 	private Camera _camera;
 	private Dictionary<int, List<string>> _blackListDictionary = new Dictionary<int, List<string>>();
@@ -71,66 +73,89 @@ public class TreeController : MonoBehaviour
 			_tempBlacklist = new List<string>();
 		}
 
-		//print($"Seed: {seed}");
+		/*print($"Seed: {seed}");*/
 		ClearForest();
 		// Check if the incoming seed number here is "-1", this means it's the Home block and no forest should spawn.
 		if (seed == -1)
 			return;
 
-		List<int> usedRandomNumbers = new List<int>();
-
-		UnityEngine.Random.InitState(seed); // To be used to control the seed of the random forest, whether it should be random or not.
-
-		int spawnCount = UnityEngine.Random.Range(minSpawnAmount, maxSpawnAmount);
-		print("Amount of new Trees: " + spawnCount);
-
-		for (int i = 0; i < spawnCount; i++)
+		if (useWaitForFrames)
 		{
-			//This needs to check so that we don't random the same number twice in a row or something like that.
-			int randomObject = UnityEngine.Random.Range(0, TreeObjectPool.Instance.treeObjectPool.Length); // This number should be a variable
+			StartCoroutine(waitForFrames(1));
+		}
+		else
+		{
+			Spawn();
+		}
 
-			while (usedRandomNumbers.Contains(randomObject))
+		IEnumerator waitForFrames(int frames)
+		{
+			for (int i = 0; i < frames; i++)
 			{
-				randomObject = (randomObject + 1) % TreeObjectPool.Instance.treeObjectPool.Length;
+				yield return 0;
 			}
-			usedRandomNumbers.Add(randomObject);
+			Spawn();
+		}
 
-			Transform newObject = TreeObjectPool.Instance.treeObjectPool[randomObject];
+		void Spawn()
+		{
+			List<int> usedRandomNumbers = new List<int>();
 
-			//A way to make the seed control what the random name is going to be.
-			int randomID_1 = UnityEngine.Random.Range(0, 1000000);
-			int randomID_2 = UnityEngine.Random.Range(0, 1000000);
+			UnityEngine.Random.InitState(seed); // To be used to control the seed of the random forest, whether it should be random or not.
 
-			//float randomOffset = UnityEngine.Random.Range(-1f, 1f);
-			//randomWorldPos.z += randomOffset;
+			int spawnCount = UnityEngine.Random.Range(minSpawnAmount, maxSpawnAmount);
+			/*print("Amount of new Trees: " + spawnCount);*/
 
-			newObject.position = GenerateRandomPosition();
+			int counter = 0;
 
-			//Om vi får seed = 1. Blir namnet sedan 2000.
-			//Vi plockar upp item med ID 2000.
-			//Vår lista lägger till ett item med ID 2000 på blacklisten.
-			//Vi går vidare. I nästa ruta får vi seed = 2. Random lyckas välja samma objekt i hierarkin och ger den den här gången ID 5000.
-			//Vi plockar upp objektet med ID 5000. Vi lägger till ID 5000 på blacklisten.
-			//När vi tillslut går tillbaka till platsen med seed = 1 randomas ID 2000 fram igen.
-			//Vi checkar blacklisten. Blacklisten innehåller 2000. Sätt inte objektet aktivt.
+			for (int i = 0; i < spawnCount; i++)
+			{
+				//This needs to check so that we don't random the same number twice in a row or something like that.
+				int randomObject = UnityEngine.Random.Range(0, TreeObjectPool.Instance.treeObjectPool.Length); // This number should be a variable
 
-			//Vi kan eventuellt strunta i att ge alla objekt ett random namn varje gång utan bara ge alla ett random namn första gången.
-			//För att spara prestanda. I och med att vi ändå alltid har koll på vilken seed vi är på med Dictionariet.
-			newObject.gameObject.name = $"{randomID_1}{randomID_2}";
+				while (usedRandomNumbers.Contains(randomObject))
+				{
+					randomObject = (randomObject + 1) % TreeObjectPool.Instance.treeObjectPool.Length;
+				}
+				usedRandomNumbers.Add(randomObject);
 
-			if (IsObjectBlacklisted(newObject))
-				continue;
+				Transform newObject = TreeObjectPool.Instance.treeObjectPool[randomObject];
 
-			// Here we make sure that the spawned object is not in the air.
-			/*Vector3 positionCorrection = newObject.position;
-			positionCorrection.y = 0f;
-			newObject.position = positionCorrection;*/
-			//newObject.position = PositionCorrection(newObject.position);
+				//A way to make the seed control what the random name is going to be.
+				//int randomID_1 = UnityEngine.Random.Range(0, 1000000);
+				//int randomID_2 = UnityEngine.Random.Range(0, 1000000);
 
-			newObject.gameObject.SetActive(true);
+				//float randomOffset = UnityEngine.Random.Range(-1f, 1f);
+				//randomWorldPos.z += randomOffset;
 
-			//Another way to give the spawned object a unique ID as name. Does not utilize seed though, so not for us right now.
-			//newObject.name = Guid.NewGuid().ToString();
+				newObject.position = GenerateRandomPosition();
+
+				//Om vi får seed = 1. Blir namnet sedan 2000.
+				//Vi plockar upp item med ID 2000.
+				//Vår lista lägger till ett item med ID 2000 på blacklisten.
+				//Vi går vidare. I nästa ruta får vi seed = 2. Random lyckas välja samma objekt i hierarkin och ger den den här gången ID 5000.
+				//Vi plockar upp objektet med ID 5000. Vi lägger till ID 5000 på blacklisten.
+				//När vi tillslut går tillbaka till platsen med seed = 1 randomas ID 2000 fram igen.
+				//Vi checkar blacklisten. Blacklisten innehåller 2000. Sätt inte objektet aktivt.
+
+				//Vi kan eventuellt strunta i att ge alla objekt ett random namn varje gång utan bara ge alla ett random namn första gången.
+				//För att spara prestanda. I och med att vi ändå alltid har koll på vilken seed vi är på med Dictionariet.
+				newObject.gameObject.name = $"{_currentSeed} {counter++}";
+
+				if (IsObjectBlacklisted(newObject))
+					continue;
+
+				// Here we make sure that the spawned object is not in the air.
+				/*Vector3 positionCorrection = newObject.position;
+				positionCorrection.y = 0f;
+				newObject.position = positionCorrection;*/
+				//newObject.position = PositionCorrection(newObject.position);
+
+				newObject.gameObject.SetActive(true);
+
+				//Another way to give the spawned object a unique ID as name. Does not utilize seed though, so not for us right now.
+				//newObject.name = Guid.NewGuid().ToString();
+			}
 		}
 	}
 
@@ -142,7 +167,7 @@ public class TreeController : MonoBehaviour
 		{
 			print($"{obj.name} is blacklisted!");
 			// here we should check if it's mushroom or apple, then do like we have done
-			
+
 			obj.gameObject.SetActive(true);
 			//obj.position = PositionCorrection(obj.position);
 			tree.SetTreeToDead();
@@ -163,7 +188,7 @@ public class TreeController : MonoBehaviour
 
 	private void SaveIDToBlacklist(GameObject obj)
 	{
-		if (!obj.TryGetComponent(out TreeBehaviour tree)) return;
+		if (!obj.TryGetComponent(out TreeBehaviour tree) || tree.type == ResourceType.fruitTree) return;
 
 		print($"{obj.name} is now blacklisted!");
 
@@ -228,6 +253,8 @@ public class TreeController : MonoBehaviour
 	{
 		Vector3 randomPosition = Vector3.zero;
 
+		System.Random randomPos = new System.Random(UnityEngine.Random.Range(0, 10000));
+
 		// The X and Y positions ranging from min to max of what the camera displays,
 		// with a padding to make sure that an object doesn't block the player entering a block of forest.
 		float randomViewPortPosX = UnityEngine.Random.Range(0.1f, 0.9f);
@@ -240,11 +267,11 @@ public class TreeController : MonoBehaviour
 		int tries = 0;
 		while (Physics.Raycast(ray, out hit, float.MaxValue, _forestObjects))
 		{
-			randomViewPortPosX = UnityEngine.Random.Range(0.1f, 0.9f);
-			randomViewPortPosY = UnityEngine.Random.Range(0.1f, 0.9f);
+			randomViewPortPosX = randomPos.Next(1000, 9000) / 10000f;
+			randomViewPortPosY = randomPos.Next(1000, 9000) / 10000f;
 			ray = _camera.ScreenPointToRay(new Vector3(Screen.width * randomViewPortPosX, Screen.height * randomViewPortPosY));
 
-			print($"Tree Ray hit: {hit.transform.name}. Trying again.");
+			/*print($"Tree Ray hit: {hit.transform.name}. Trying again.");*/
 
 			tries++;
 			if (tries > 9) break;

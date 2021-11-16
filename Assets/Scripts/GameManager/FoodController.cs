@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,6 +35,7 @@ public class FoodController : MonoBehaviour
 	[Space(10)]
 	[SerializeField] private int minSpawnAmount = 2;
 	[SerializeField] private int maxSpawnAmount = 15;
+	[SerializeField] private bool useWaitForFrames = false;
 
 
 	private Camera _camera;
@@ -52,7 +54,6 @@ public class FoodController : MonoBehaviour
 		_camera = Camera.main;
 		_seedGenerator.SendSeed += SpawnFoods;
 		_player.ResourceGathered += SaveIDToBlacklist;
-
 	}
 
 	private void Start()
@@ -63,6 +64,8 @@ public class FoodController : MonoBehaviour
 	public void SpawnFoods(int seed)
 	{
 		_currentSeed = seed;
+
+		/*Debug.LogWarning($"Seed is {_currentSeed}");*/
 
 		if (_blacklistDictionary.TryGetValue(_currentSeed, out List<string> result))
 		{
@@ -75,50 +78,75 @@ public class FoodController : MonoBehaviour
 
 		ClearFoods();
 
-		List<int> usedRandomNumbers = new List<int>();
-
-		UnityEngine.Random.InitState(_currentSeed);
-
-		int spawnCount = UnityEngine.Random.Range(minSpawnAmount, SetFoodSpawnChance(maxSpawnAmount));
-		print($"Amount of new Foods: {spawnCount}");
-
-		CheckRarityTier();
-		if (foodSpawnChance == 0f)
-			return;
-		
-		int availableObjectsLength = SetFoodSpawnChance(FoodObjectPool.Instance.foodObjectPool.Length);
-
-		for (int i = 0; i < spawnCount; i++)
+		if (useWaitForFrames)
 		{
+			StartCoroutine(waitForFrames(1));
+		}
+		else
+		{
+			Spawn();
+		}
 
-			int randomObject = UnityEngine.Random.Range(0, availableObjectsLength);
-
-			while (usedRandomNumbers.Contains(randomObject))
+		IEnumerator waitForFrames(int frames)
+		{
+			for (int i = 0; i < frames; i++)
 			{
-				randomObject = (randomObject + 1) % availableObjectsLength;
+				yield return 0;
 			}
-			usedRandomNumbers.Add(randomObject);
-			//print($"randomObject nr: {randomObject}");
-			Transform newObject = FoodObjectPool.Instance.foodObjectPool[randomObject];
+			Spawn();
+		}
 
-			newObject.position = GenerateRandomPosition();
+		void Spawn()
+		{
+			List<int> usedRandomNumbers = new List<int>();
 
-			int randomID_1 = UnityEngine.Random.Range(0, 1000000);
-			int randomID_2 = UnityEngine.Random.Range(0, 1000000);
+			UnityEngine.Random.InitState(_currentSeed);
 
-			newObject.gameObject.name = $"{randomID_1}{randomID_2}";
-
-			if (IsObjectBlacklisted(newObject))
-				continue;
-
-			//newObject.position = PositionCorrection(newObject.position);
-
-			if (!CanObjectSpawnThisSeason(newObject)) 
+			//We run CheckRarityTier before setting the spawnCount, so the "-foodRarityWeight"
+			//value is updated before selecting how much food that can spawn.
+			CheckRarityTier();
+			if (foodSpawnChance == 0f)
 				return;
 
-			newObject.gameObject.SetActive(true);
+			int availableObjectsLength = SetFoodSpawnChance(FoodObjectPool.Instance.foodObjectPool.Length);
 
-			SpawnFruitsIfFruitTree(newObject); // Consider setting this to be called from the FruitTree themselves? Could be done in their OnEnable().
+			int spawnCount = UnityEngine.Random.Range(minSpawnAmount, SetFoodSpawnChance(maxSpawnAmount));
+			/*print($"Amount of new Foods: {spawnCount}");*/
+
+			int counter = 0;
+
+			for (int i = 0; i < spawnCount; i++)
+			{
+				int randomObject = UnityEngine.Random.Range(0, availableObjectsLength);
+
+				while (usedRandomNumbers.Contains(randomObject))
+				{
+					randomObject = (randomObject + 1) % availableObjectsLength;
+				}
+				usedRandomNumbers.Add(randomObject);
+				/*print($"randomObject nr: {randomObject}");*/
+				Transform newObject = FoodObjectPool.Instance.foodObjectPool[randomObject];
+
+				newObject.position = GenerateRandomPosition();
+
+				int randomID_1 = UnityEngine.Random.Range(0, 1000000);
+				int randomID_2 = UnityEngine.Random.Range(0, 1000000);
+
+				newObject.gameObject.name = $"{_currentSeed} {counter++}";
+
+				if (IsObjectBlacklisted(newObject)) // THE DAMN FRUITS AREN'T TURNED OFF!!! The tree is set to depleted if blacklisted, but the fruits aren't considered at all!! :DDD
+				{
+					continue;
+				}
+
+				//newObject.position = PositionCorrection(newObject.position);
+
+				//if (!CanObjectSpawnThisSeason()) return;
+
+				SpawnFruitsIfFruitTree(newObject);
+
+				newObject.gameObject.SetActive(true);
+			}
 		}
 	}
 
@@ -135,6 +163,8 @@ public class FoodController : MonoBehaviour
 	{
 		Vector3 randomPosition = Vector3.zero;
 
+		System.Random randomPos = new System.Random(UnityEngine.Random.Range(0, 10000));
+
 		float randomViewPortPosX = UnityEngine.Random.Range(0.1f, 0.9f);
 		float randomViewPortPosY = UnityEngine.Random.Range(0.1f, 0.9f);
 
@@ -144,11 +174,11 @@ public class FoodController : MonoBehaviour
 		int tries = 0;
 		while (Physics.Raycast(ray, out hit, float.MaxValue, _forestObjects))
 		{
-			randomViewPortPosX = UnityEngine.Random.Range(0.1f, 0.9f);
-			randomViewPortPosY = UnityEngine.Random.Range(0.1f, 0.9f);
+			randomViewPortPosX = randomPos.Next(1000, 9000) / 10000f;
+			randomViewPortPosY = randomPos.Next(1000, 9000) / 10000f;
 			ray = _camera.ScreenPointToRay(new Vector3(Screen.width * randomViewPortPosX, Screen.height * randomViewPortPosY));
 
-			print($"Food Ray hit: {hit.transform.name}. Trying again.");
+			/*print($"Food Ray hit: {hit.transform.name}. Trying again.");*/
 
 			tries++;
 			if (tries > 9) break;
@@ -174,7 +204,7 @@ public class FoodController : MonoBehaviour
 			{
 				print($"{obj} is blacklisted!");
 
-				if ((food.type == ResourceType.apple || food.type == ResourceType.mushroom))
+				if ((food.type == ResourceType.apple || food.type == ResourceType.mushroom)) // it's redundant to check for apples as they're not spawned the same way as the other foods, and are checked before they're spawned.
 				{
 					return true;
 				}
@@ -199,13 +229,15 @@ public class FoodController : MonoBehaviour
 			if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(obj.gameObject.name))
 			{
 				print($"{obj} is blacklisted!");
+				obj.gameObject.SetActive(true);
 				tree.SetTreeToDead();
+				return true;
 			}
 			else
 			{
 				tree.UpdateState(SeasonController.Instance.currentSeason);
+				return false;
 			}
-			return false;
 		}
 	}
 
@@ -221,10 +253,6 @@ public class FoodController : MonoBehaviour
 		_objectQuantitySetup.fruitTree_1Amount, _objectQuantitySetup.fruitTree_2Amount, _objectQuantitySetup.fruitTree_3Amount };
 
 		foodSpawnChance = 0;
-		//for (int i = 0; i < _objectQuantitySetup.quantities.Length; i++)
-		//{
-		//	foodChancePercent += _objectQuantitySetup.quantities[i];
-		//}
 
 		initialSpawns = new List<Transform>();
 
@@ -251,7 +279,10 @@ public class FoodController : MonoBehaviour
 
 	private void SaveIDToBlacklist(GameObject obj)
 	{
-		if (!obj.TryGetComponent(out FoodBehaviour food)) return;
+		if (!obj.TryGetComponent(out FoodBehaviour food) && obj.TryGetComponent(out TreeBehaviour tree) && tree.type != ResourceType.fruitTree)
+		{
+			return;
+		}
 
 		print($"{obj.name} is now blacklisted!");
 
@@ -288,23 +319,25 @@ public class FoodController : MonoBehaviour
 		}
 		else
 		{
-			foodSpawnChance = 0f;
-			//for (int i = 0; i < _objectQuantitySetup.quantities.Length; i++)
-			//{
-			//	foodRarityWeight += _objectQuantitySetup.quantities[i];
-			//}
+			foodSpawnChance = 0;
 		}
 	}
 
 	private void SpawnFruitsIfFruitTree(Transform obj)
 	{
+		int counter = 0;
+		string appleParent = obj.name;
+
 		if (obj.TryGetComponent(out TreeBehaviour tree) && tree.type == ResourceType.fruitTree)
 		{
 			if (tree.status == Status.Dead) return;
 
+			print($"The Status of: {obj} is now: {tree.status}");
+
 			foreach (Transform item in obj)
 			{
-				item.gameObject.name = item.gameObject.GetInstanceID().ToString();
+				item.gameObject.name = $"{appleParent}: {counter++}";
+
 				if (_tempBlacklist.Count > 0 && _tempBlacklist.Contains(item.gameObject.name))
 				{
 					print($"{item.gameObject.name} is blacklisted!");
@@ -313,6 +346,10 @@ public class FoodController : MonoBehaviour
 				}
 				else
 				{
+					/*Debug.LogWarning($"MY APPLES WASN'T BLACKLISTED! {item.gameObject.name}");*/
+					item.TryGetComponent(out FoodBehaviour food);
+					food.health = food.data.health;
+					food.status = Status.Alive;
 					item.gameObject.SetActive(true);
 				}
 			}
@@ -320,6 +357,7 @@ public class FoodController : MonoBehaviour
 			tree.AddFruitsToList();
 		}
 	}
+
 	/// <summary>
 	/// Compare the new object's spawn period to the current season, and if it's not within the right period, continue with next iteration in for-loop
 	/// (This method is expected to be used in a if-statement as argument, have an "!"-mark prior to it, and be accompanied by a "continue"-line as the if-action).
