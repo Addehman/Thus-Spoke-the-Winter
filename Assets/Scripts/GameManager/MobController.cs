@@ -40,7 +40,8 @@ public class MobController : MonoBehaviour
 	[SerializeField] private int maxSpawnAmount = 1;
 	[SerializeField] private List<int> _seedsWithSmell = new List<int>();
 	[SerializeField] private int _lengthOfSmellTrail = 3;
-	[SerializeField] private int _spawnOdds = 100, _spawnRandomMax = 1000;
+	[SerializeField] private int _spawnRandomMax = 1000;
+	[SerializeField] private float _spawnChancePercentage;
 
 	private GameObject _cabinParent;
 
@@ -87,22 +88,42 @@ public class MobController : MonoBehaviour
 
 	private void SpawnLottery(int seed)
 	{
+		bool isOldSeed = false;
+		// If we revisit a square that we've been to recently, and it's within the smell trail,
+		// then remove it from it's older position in the list and add it again, to set it to the most recent visited square - last in list.
 		if (_seedsWithSmell.Contains(seed))
 		{
-			_seedsWithSmell.RemoveAt(_seedsWithSmell.IndexOf(seed));
+			_seedsWithSmell.Remove(seed);
+			_seedsWithSmell.Add(seed);
+			isOldSeed = true;
 		}
-
-		if (_seedsWithSmell.Count == _lengthOfSmellTrail)
+		// If the list is full, remove the oldest entry and then add new to last spot(automatic), pushing older ones back.
+		else if (_seedsWithSmell.Count == _lengthOfSmellTrail)
 		{
 			_seedsWithSmell.RemoveAt(0);
+			_seedsWithSmell.Add(seed);
 		}
-		_seedsWithSmell.Add(seed);
+		else
+		{
+			_seedsWithSmell.Add(seed);
+		}
 
-		if (_seedsWithSmell.Contains(seed)) return;
+		// If it's an old seed, then don't go further.
+		if (isOldSeed) return;
 
-		int spawnChance = UnityEngine.Random.Range(0, _spawnRandomMax);
-		print($"Bunny Lottery outcome: {spawnChance}");
-		if (spawnChance <= _spawnOdds)
+		// If it's Spring, early or late, then it's high season for animals(mating season = high activity / bold behaviour).
+		if (SeasonController.Instance.currentSeason <= Seasons.lateSpring)
+			_spawnChancePercentage = 0.5f;
+		else if (SeasonController.Instance.currentSeason == Seasons.earlySummer)
+			_spawnChancePercentage = 0.3f;
+		else
+			_spawnChancePercentage = 0.1f; // Maybe even less? 5%?
+
+		int spawnLotteryOutcome = UnityEngine.Random.Range(0, _spawnRandomMax);
+		print($"Bunny Lottery outcome: {spawnLotteryOutcome}");
+		int spawnOdds = Mathf.RoundToInt(_spawnRandomMax * _spawnChancePercentage);
+		print($"The MobSpawnOdds are: {spawnOdds}");
+		if (spawnLotteryOutcome <= spawnOdds)
 		{
 			print($"Spawning a bunny on seed: {seed}");
 			SpawnMob(seed);
@@ -274,6 +295,7 @@ public class MobController : MonoBehaviour
 
 	public void RemoveButcheredFromDeadMobDictionary(MobBehaviour mob)
 	{
+		print($"{mob} was Butchered, and Removed from SavedDeadMobList");
 		_tempSavedDeadMobDictionary.Remove(mob.transform.name);
 	}
 
