@@ -61,7 +61,7 @@ public class MobController : MonoBehaviour
 
 		_camera = Camera.main;
 		_seedGenerator.SendSeed += SpawnLottery;
-		_player.ResourceGathered += SaveIDToBlacklist;
+		_player.ResourceGathered += RemoveButcheredFromDeadMobDictionary;
 	}
 
 	private void Start()
@@ -88,9 +88,23 @@ public class MobController : MonoBehaviour
 
 	private void SpawnLottery(int seed)
 	{
-		ClearMobs();
+		_currentSeed = seed;
 
 		bool isSmellySeed = false;
+
+		if (_savedDeadMobDictionary.TryGetValue(_currentSeed, out Dictionary<string, Vector3> result))
+		{
+			_tempSavedDeadMobDictionary = result;
+		}
+		else
+		{
+			_tempSavedDeadMobDictionary = new Dictionary<string, Vector3>();
+		}
+
+		ClearMobs();
+
+		int spawnLotteryOutcome = UnityEngine.Random.Range(0, _spawnRandomMax);
+
 		// If we revisit a square that we've been to recently, and it's within the smell trail,
 		// then remove it from it's older position in the list and add it again, to set it to the most recent visited square - last in list.
 		if (_seedsWithSmell.Contains(seed))
@@ -111,8 +125,17 @@ public class MobController : MonoBehaviour
 			_seedsWithSmell.Add(seed);
 		}
 
+		// If there is any Saved Dead Mobs in this seed:
+		if (_tempSavedDeadMobDictionary.Count > 0)
+		{
+			SpawnMob(seed);
+			return;
+		}
 		// If it's an old seed, then don't go further.
-		if (isSmellySeed) return;
+		else if (isSmellySeed)
+		{
+			return;
+		}
 
 		// If it's Spring, early or late, then it's high season for animals(mating season = high activity / bold behaviour).
 		if (SeasonController.Instance.currentSeason <= Seasons.lateSpring)
@@ -122,7 +145,6 @@ public class MobController : MonoBehaviour
 		else
 			_spawnChancePercentage = 0.1f; // Maybe even less? 5%?
 
-		int spawnLotteryOutcome = UnityEngine.Random.Range(0, _spawnRandomMax);
 		print($"Bunny Lottery outcome: {spawnLotteryOutcome}");
 		int spawnOdds = Mathf.RoundToInt(_spawnRandomMax * _spawnChancePercentage);
 		print($"The MobSpawnOdds are: {spawnOdds}");
@@ -135,18 +157,7 @@ public class MobController : MonoBehaviour
 
 	public void SpawnMob(int seed)
 	{
-		_currentSeed = seed;
-
-		if (_savedDeadMobDictionary.TryGetValue(_currentSeed, out Dictionary<string, Vector3> result))
-		{
-			_tempSavedDeadMobDictionary = result;
-		}
-		else
-		{
-			_tempSavedDeadMobDictionary = new Dictionary<string, Vector3>();
-		}
-
-		print($"Seed: {seed}");
+		//print($"Seed: {seed}");
 
 		// Check if the incoming seed number here is "-1", this means it's the Home block and no forest should spawn.
 		if (seed == -1)
@@ -203,7 +214,7 @@ public class MobController : MonoBehaviour
 
 			newObject.gameObject.SetActive(true);
 
-			newObject.position = PositionCorrection(newObject.position);
+			//newObject.position = PositionCorrection(newObject.position);
 		}
 	}
 
@@ -256,7 +267,7 @@ public class MobController : MonoBehaviour
 		}
 	}
 
-	private void SaveIDToBlacklist(GameObject obj)
+	public void SaveIDToBlacklist(GameObject obj)
 	{
 		if (!obj.TryGetComponent(out MobBehaviour mob)) return;
 
@@ -280,12 +291,13 @@ public class MobController : MonoBehaviour
 	{
 		// trans.TryGetComponent(out MobBehaviour mob);
 
-		if (_tempSavedDeadMobDictionary.Count > 0 && _tempSavedDeadMobDictionary.ContainsKey(trans.gameObject.name))
+		if (_tempSavedDeadMobDictionary.Count > 0 && _tempSavedDeadMobDictionary.ContainsKey(trans.name))
 		{
 			print($"{trans.name} exists in SavedDeadMobList");
 
+			trans.position = _tempSavedDeadMobDictionary[trans.name];
 			trans.gameObject.SetActive(true);
-			trans.position = PositionCorrection(trans.position);
+			//trans.position = PositionCorrection(trans.position);
 			mob.status = Status.Dead;
 			mob.IsDepleted(true);
 			return true;
@@ -297,10 +309,10 @@ public class MobController : MonoBehaviour
 		}
 	}
 
-	public void RemoveButcheredFromDeadMobDictionary(MobBehaviour mob)
+	public void RemoveButcheredFromDeadMobDictionary(GameObject obj)
 	{
-		print($"{mob} was Butchered, and Removed from SavedDeadMobList");
-		_tempSavedDeadMobDictionary.Remove(mob.transform.name);
+		print($"{obj} was Butchered, and Removed from SavedDeadMobList");
+		_tempSavedDeadMobDictionary.Remove(obj.name);
 	}
 
 	private void CheckRarityTier()
