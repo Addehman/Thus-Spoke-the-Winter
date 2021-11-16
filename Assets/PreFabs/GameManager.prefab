@@ -33,7 +33,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5394431023272021239}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -81,7 +81,8 @@ MonoBehaviour:
     - {fileID: 3906755439078533542, guid: 8cb842b97f8d35a4e8df8d8f5b89fdb7, type: 3}
     - {fileID: 3906755439078533542, guid: 134bb0d95732e3a44a904ed098f64ea3, type: 3}
   minSpawnAmount: 5
-  maxSpawnAmount: 30
+  maxSpawnAmount: 15
+  useWaitForFrames: 1
 --- !u!114 &5114568113770250190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,6 +124,7 @@ MonoBehaviour:
     - {fileID: 4189062443654764373, guid: 4b8b3209f9b34bb4b9acce051da813e6, type: 3}
   minSpawnAmount: 2
   maxSpawnAmount: 15
+  useWaitForFrames: 1
 --- !u!114 &4034851538369987664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,9 +159,9 @@ MonoBehaviour:
     - {fileID: 3409048646856329292, guid: 3064b9d2e33c63846970b17d46152a8f, type: 3}
     - {fileID: 5929248502673940352, guid: 24532fc205bbe724c9ac569bb8418719, type: 3}
   mobRarityWeight: 0
-  uniqueMobObjects: 1
+  uniqueMobObjects: 2
   minSpawnAmount: 1
-  maxSpawnAmount: 1
+  maxSpawnAmount: 2
   _seedsWithSmell: 
   _lengthOfSmellTrail: 3
   _spawnOdds: 100

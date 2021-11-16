@@ -1447,17 +1447,6 @@ Transform:
   m_Father: {fileID: 1255188203}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
---- !u!114 &1535904476 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1598481676671803577, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-  m_PrefabInstance: {fileID: 5394431023248216356}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4382df7fb5f0ccb45aaf007b626a1609, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1550792401 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 332712203833756749, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
@@ -1959,6 +1948,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1768556590097517705, guid: 34d1d4d11bc8820469a5234e81269348, type: 3}
+      propertyPath: m_BackGroundColor.a
+      value: 0.007843138
+      objectReference: {fileID: 0}
     - target: {fileID: 1768556590097517706, guid: 34d1d4d11bc8820469a5234e81269348, type: 3}
       propertyPath: m_Name
       value: Main Camera
@@ -2284,10 +2277,6 @@ PrefabInstance:
       propertyPath: _player
       value: 
       objectReference: {fileID: 1581711721}
-    - target: {fileID: 672142925587344319, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: _storageController
-      value: 
-      objectReference: {fileID: 1535904476}
     - target: {fileID: 3106118346775221718, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
       propertyPath: _player
       value: 
@@ -2308,14 +2297,6 @@ PrefabInstance:
       propertyPath: _mobParent
       value: 
       objectReference: {fileID: 526108796}
-    - target: {fileID: 4034851538369987664, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: maxSpawnAmount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4034851538369987664, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: uniqueMobObjects
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 5114568113770250190, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
       propertyPath: _player
       value: 
@@ -2324,18 +2305,6 @@ PrefabInstance:
       propertyPath: _foodParent
       value: 
       objectReference: {fileID: 338646155}
-    - target: {fileID: 5114568113770250190, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: _objectQuantitySetup.fruitTree_1Amount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5114568113770250190, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: _objectQuantitySetup.fruitTree_2Amount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5114568113770250190, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: _objectQuantitySetup.fruitTree_3Amount
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5129743002338067384, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
       propertyPath: _screenWrap
       value: 
@@ -2348,10 +2317,6 @@ PrefabInstance:
       propertyPath: _treeParent
       value: 
       objectReference: {fileID: 443019307}
-    - target: {fileID: 5394431023272021232, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
-      propertyPath: maxSpawnAmount
-      value: 15
-      objectReference: {fileID: 0}
     - target: {fileID: 5394431023272021233, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
       propertyPath: m_RootOrder
       value: 0
