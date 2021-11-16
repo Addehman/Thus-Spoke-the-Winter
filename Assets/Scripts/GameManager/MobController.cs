@@ -404,6 +404,7 @@ public class MobController : MonoBehaviour
 	private void OnDestroy()
 	{
 		_seedGenerator.SendSeed -= SpawnMob;
+		_player.ResourceGathered -= RemoveButcheredFromDeadMobDictionary;
 	}
 }
 
