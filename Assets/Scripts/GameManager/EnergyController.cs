@@ -73,6 +73,10 @@ public class EnergyController : MonoBehaviour
 		{
 			return;
 		}
+
+		//Run sleep animation (Crossfade to/from black).
+		UIManager.Instance.Crossfade();
+
 		print($"{this}Resting");
 		currentEnergy = startEnergy;
 		UpdateEnergyUI?.Invoke();
