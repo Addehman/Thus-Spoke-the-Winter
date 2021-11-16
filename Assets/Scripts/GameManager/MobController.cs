@@ -88,14 +88,17 @@ public class MobController : MonoBehaviour
 
 	private void SpawnLottery(int seed)
 	{
-		bool isOldSeed = false;
+		ClearMobs();
+
+		bool isSmellySeed = false;
 		// If we revisit a square that we've been to recently, and it's within the smell trail,
 		// then remove it from it's older position in the list and add it again, to set it to the most recent visited square - last in list.
 		if (_seedsWithSmell.Contains(seed))
 		{
 			_seedsWithSmell.Remove(seed);
 			_seedsWithSmell.Add(seed);
-			isOldSeed = true;
+			isSmellySeed = true;
+			print("It's an smelly seed, no bunnies should spawn");
 		}
 		// If the list is full, remove the oldest entry and then add new to last spot(automatic), pushing older ones back.
 		else if (_seedsWithSmell.Count == _lengthOfSmellTrail)
@@ -109,7 +112,7 @@ public class MobController : MonoBehaviour
 		}
 
 		// If it's an old seed, then don't go further.
-		if (isOldSeed) return;
+		if (isSmellySeed) return;
 
 		// If it's Spring, early or late, then it's high season for animals(mating season = high activity / bold behaviour).
 		if (SeasonController.Instance.currentSeason <= Seasons.lateSpring)
@@ -144,7 +147,6 @@ public class MobController : MonoBehaviour
 		}
 
 		print($"Seed: {seed}");
-		ClearMobs();
 
 		// Check if the incoming seed number here is "-1", this means it's the Home block and no forest should spawn.
 		if (seed == -1)
