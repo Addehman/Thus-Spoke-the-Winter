@@ -11,7 +11,7 @@ public class UIManager : MonoBehaviour
 
 	[SerializeField] private TextMeshProUGUI _inventoryText;
 	[SerializeField] private Image _energyBar;
-	[SerializeField] private ScreenWrap _screenWrap;
+	/*[SerializeField] private ScreenWrap _screenWrap;*/
 	[SerializeField] private Animator _animator;
 
 
@@ -33,20 +33,19 @@ public class UIManager : MonoBehaviour
 	}
 
 	public void Crossfade()
-	{
-		_animator.SetTrigger("Crossfade");
-	}
+    {
+		_animator.SetTrigger("BOTH");
+    }
 
-	public void FadeToBlack()
-	{
-		_animator.SetTrigger("Start");
-	}
+    public void FadeToBlack()
+    {
+		_animator.SetTrigger("START");
+    }
 
-	public void FadeFromBlack(Latitude obj)
-	{
-		_animator.SetTrigger("End");
-	}
-
+    public void FadeFromBlack(Latitude obj)
+    {
+		_animator.SetTrigger("END");
+    }
 
 	private void UpdateInventoryUI()
 	{
@@ -66,6 +65,6 @@ public class UIManager : MonoBehaviour
 		Inventory.Instance.UpdateUI -= UpdateInventoryUI;
 		EnergyController.Instance.UpdateEnergyUI -= UpdateEnergyUI;
 		StorageController.Instance.UpdateUI -= UpdateInventoryUI;
-		_screenWrap.PlayerTraveling -= FadeFromBlack;
+		/*_screenWrap.PlayerTraveling -= FadeFromBlack;*/
 	}
 }
