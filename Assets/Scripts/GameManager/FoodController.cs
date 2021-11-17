@@ -141,7 +141,8 @@ public class FoodController : MonoBehaviour
 
 				//newObject.position = PositionCorrection(newObject.position);
 
-				//if (!CanObjectSpawnThisSeason()) return;
+				if (!CanObjectSpawnThisSeason(newObject)) 
+					return;
 
 				SpawnFruitsIfFruitTree(newObject);
 
