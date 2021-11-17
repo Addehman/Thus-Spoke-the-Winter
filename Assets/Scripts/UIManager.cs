@@ -15,15 +15,15 @@ public class UIManager : MonoBehaviour
 	[SerializeField] private Animator _animator;
 
 
-    private void Awake()
-    {
+	private void Awake()
+	{
 		if (_instance != null && _instance != this)
 			Destroy(this);
 		else
 			_instance = this;
 	}
 
-    private void Start() 
+	private void Start()
 	{
 		Inventory.Instance.UpdateUI += UpdateInventoryUI;
 		EnergyController.Instance.UpdateEnergyUI += UpdateEnergyUI;
@@ -33,35 +33,35 @@ public class UIManager : MonoBehaviour
 	}
 
 	public void Crossfade()
-    {
+	{
 		_animator.SetTrigger("Crossfade");
-    }
+	}
 
-    public void FadeToBlack()
-    {
+	public void FadeToBlack()
+	{
 		_animator.SetTrigger("Start");
-    }
+	}
 
-    public void FadeFromBlack(Latitude obj)
-    {
-        _animator.SetTrigger("End");
-    }
+	public void FadeFromBlack(Latitude obj)
+	{
+		_animator.SetTrigger("End");
+	}
 
 
-    private void UpdateInventoryUI()
+	private void UpdateInventoryUI()
 	{
 		_inventoryText.text = $"{Inventory.Instance.currentInventory} / {Inventory.Instance.inventoryMaxCapacity}";
 	}
 
 	private void UpdateEnergyUI()
 	{
-		float currentEnergy = EnergyController.Instance.currentEnergy / (float)EnergyController.Instance.startEnergy; 
+		float currentEnergy = EnergyController.Instance.currentEnergy / (float)EnergyController.Instance.startEnergy;
 		_energyBar.fillAmount = currentEnergy;
 		//print($"Current Energy UI: {currentEnergy}");
 		//print($"Current Energy: {EnergyController.Instance.currentEnergy}");
 	}
 
-	private void OnDestroy() 
+	private void OnDestroy()
 	{
 		Inventory.Instance.UpdateUI -= UpdateInventoryUI;
 		EnergyController.Instance.UpdateEnergyUI -= UpdateEnergyUI;

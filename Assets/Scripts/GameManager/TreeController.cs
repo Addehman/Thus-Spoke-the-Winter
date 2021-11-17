@@ -46,9 +46,14 @@ public class TreeController : MonoBehaviour
 	private void Awake()
 	{
 		if (_instance != null && _instance != this)
+		{
+			Debug.LogWarning("There can't be more than one TreeController!");
 			Destroy(this);
+		}
 		else
+		{
 			_instance = this;
+		}
 
 		_camera = Camera.main;
 		_seedGenerator.SendSeed += SpawnTrees;

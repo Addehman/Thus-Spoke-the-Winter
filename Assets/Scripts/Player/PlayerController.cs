@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 	public event Action<EnergyCost> EnergyDrain;
 	public event Action<Vector3> OnPlaceTrap;
 	public Vector2 mousePoint;
+	public bool lockInput = false;
 
 	private InputMaster _controls;
 	private Transform _transform;
@@ -59,7 +60,9 @@ public class PlayerController : MonoBehaviour
 
 	private void Update()
 	{
-		GetPlayerInput();
+		if (!lockInput)
+			GetPlayerInput();
+
 		PlayerAnimation();
 
 		//mousePoint = _controls.Player.MousePoint.ReadValue<Vector2>();

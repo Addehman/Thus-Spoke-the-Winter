@@ -10,11 +10,11 @@ public class AssignCabinParentToForestController : MonoBehaviour
 	private void Start()
 	{
 		//_forestController = ForestController.Instance;
-		SceneController.Instance.SetCabinParent(gameObject);
+		//SceneController.Instance.SetCabinParent(gameObject);
 	}
 
 	private void OnDisable()
 	{
-		SceneController.Instance.SetCabinParent(null);
+		//SceneController.Instance.SetCabinParent(null);
 	}
 }
