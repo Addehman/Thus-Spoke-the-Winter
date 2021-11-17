@@ -279,7 +279,7 @@ public class FoodController : MonoBehaviour
 
 	private void SaveIDToBlacklist(GameObject obj)
 	{
-		if (!obj.TryGetComponent(out FoodBehaviour food) && obj.TryGetComponent(out TreeBehaviour tree) && tree.type != ResourceType.fruitTree)
+		if (!obj.TryGetComponent(out FoodBehaviour food) && obj.TryGetComponent(out TreeBehaviour tree) && tree.type != ResourceType.fruitTree || obj.TryGetComponent(out MobBehaviour mob))
 		{
 			return;
 		}

@@ -61,7 +61,7 @@ public class MobController : MonoBehaviour
 
 		_camera = Camera.main;
 		_seedGenerator.SendSeed += SpawnLottery;
-		_player.ResourceGathered += RemoveButcheredFromDeadMobDictionary;
+		//_player.ResourceGathered += RemoveButcheredFromDeadMobDictionary;
 	}
 
 	private void Start()
@@ -280,10 +280,17 @@ public class MobController : MonoBehaviour
 			// Thus we paste the uppdated temporary list over the list on the dictionary and thus update it.
 			_savedDeadMobDictionary[_currentSeed] = _tempSavedDeadMobDictionary;
 		}
-		else
+		else // if it's a new dictionary, then we need to add the seed and dictionary to the list as a new entry.
 		{
-			// if it's a new dictionary, then we need to add the seed and dictionary to the list as a new entry.
-			_savedDeadMobDictionary.Add(_currentSeed, _tempSavedDeadMobDictionary);
+			
+			if (_savedDeadMobDictionary.ContainsKey(_currentSeed))
+			{
+				_savedDeadMobDictionary[_currentSeed] = _tempSavedDeadMobDictionary;
+			}
+			else
+			{
+				_savedDeadMobDictionary.Add(_currentSeed, _tempSavedDeadMobDictionary);
+			}
 		}
 	}
 
@@ -311,8 +318,11 @@ public class MobController : MonoBehaviour
 
 	public void RemoveButcheredFromDeadMobDictionary(GameObject obj)
 	{
+		if (!_tempSavedDeadMobDictionary.ContainsKey(obj.name)) return;
+
 		print($"{obj} was Butchered, and Removed from SavedDeadMobList");
 		_tempSavedDeadMobDictionary.Remove(obj.name);
+		_savedDeadMobDictionary[_currentSeed] = _tempSavedDeadMobDictionary;
 	}
 
 	private void CheckRarityTier()
@@ -404,7 +414,7 @@ public class MobController : MonoBehaviour
 	private void OnDestroy()
 	{
 		_seedGenerator.SendSeed -= SpawnMob;
-		_player.ResourceGathered -= RemoveButcheredFromDeadMobDictionary;
+		//_player.ResourceGathered -= RemoveButcheredFromDeadMobDictionary;
 	}
 }
 

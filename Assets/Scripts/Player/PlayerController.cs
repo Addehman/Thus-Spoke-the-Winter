@@ -337,6 +337,7 @@ public class PlayerController : MonoBehaviour
 		if (obj.TryGetComponent(out MobBehaviour mob))
 		{
 			mob.OnButcher -= OnResourceDestroy;
+			MobController.Instance.RemoveButcheredFromDeadMobDictionary(obj);
 			ResourceGathered?.Invoke(obj);
 			EnergyDrain?.Invoke(mob.costSize);
 		}
