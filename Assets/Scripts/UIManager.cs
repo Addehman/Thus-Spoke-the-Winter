@@ -11,7 +11,6 @@ public class UIManager : MonoBehaviour
 
 	[SerializeField] private TextMeshProUGUI _inventoryText;
 	[SerializeField] private Image _energyBar;
-	/*[SerializeField] private ScreenWrap _screenWrap;*/
 	[SerializeField] private Animator _animator;
 
 
@@ -28,7 +27,6 @@ public class UIManager : MonoBehaviour
 		Inventory.Instance.UpdateUI += UpdateInventoryUI;
 		EnergyController.Instance.UpdateEnergyUI += UpdateEnergyUI;
 		StorageController.Instance.UpdateUI += UpdateInventoryUI;
-		//_screenWrap.PlayerTraveling += FadeFromBlack;
 		UpdateInventoryUI();
 	}
 
@@ -65,6 +63,5 @@ public class UIManager : MonoBehaviour
 		Inventory.Instance.UpdateUI -= UpdateInventoryUI;
 		EnergyController.Instance.UpdateEnergyUI -= UpdateEnergyUI;
 		StorageController.Instance.UpdateUI -= UpdateInventoryUI;
-		/*_screenWrap.PlayerTraveling -= FadeFromBlack;*/
 	}
 }

@@ -101,7 +101,6 @@ public class ScreenWrap : MonoBehaviour
 		if (!shouldMove) return;
 
 		//Run FadeFromBlack animation.
-		print("yes");
 		UIManager.Instance.FadeFromBlack(Latitude.North);
 
 		PlayerTraveling?.Invoke(latitude);

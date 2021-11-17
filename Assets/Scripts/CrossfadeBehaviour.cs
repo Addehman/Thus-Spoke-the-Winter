@@ -16,12 +16,6 @@ public class CrossfadeBehaviour : MonoBehaviour
 
     void UpdateColor(Seasons currentSeason)
     {
-        if (_crossfadeImage == null)
-        {
-			transform.TryGetComponent(out Image image);
-			_crossfadeImage = image;
-        }
-
 		switch (currentSeason)
 		{
 			case Seasons.earlySpring:
