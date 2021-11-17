@@ -74,7 +74,12 @@ public class EnergyController : MonoBehaviour
 			return;
 		}
 
+		//Resting. Lock player inputs.
+		_player.lockInput = true;
+
 		//Run sleep animation (Crossfade to/from black).
+		//The animation executes an event in the end of the animation,
+		//setting the _player.lockInput back to false again.
 		UIManager.Instance.Crossfade();
 
 		print($"{this}Resting");

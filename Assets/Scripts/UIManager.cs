@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI _inventoryText;
 	[SerializeField] private Image _energyBar;
 	[SerializeField] private Animator _animator;
+	[SerializeField] private PlayerController _player;
 
 
 	private void Awake()
@@ -29,6 +30,11 @@ public class UIManager : MonoBehaviour
 		StorageController.Instance.UpdateUI += UpdateInventoryUI;
 		UpdateInventoryUI();
 	}
+
+	private void UnlockPlayerInput()
+    {
+		_player.UnlockInput();
+    }
 
 	public void Crossfade()
     {

@@ -144,6 +144,11 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
+	public void UnlockInput()
+    {
+		lockInput = false;
+    }
+
 	private void GetPlayerInput()
 	{
 		_movement = _controls.Player.Movement.ReadValue<Vector2>();
