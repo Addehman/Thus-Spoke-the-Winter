@@ -1,31 +1,19 @@
 fileFormatVersion: 2
-guid: 4f93ccf10950ebd45aa14a46842e5b64
+guid: 6d6805a5fbb9294469461d953edfcb2e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2435301500484193355
-    second: Bear_Trap_0
+      213: -6392327745248702931
+    second: deadBunnies_brown_and_white_0
   - first:
-      213: -9080635200827685749
-    second: Bear_Trap_1
+      213: 3609007194328432440
+    second: deadBunnies_brown_and_white_1
   - first:
-      213: -2400208759518429876
-    second: Bear_Trap_2
+      213: -7547407461900126157
+    second: deadBunnies_brown_and_white_2
   - first:
-      213: 1351451857679782963
-    second: Bear_Trap_3
-  - first:
-      213: -894080948239011975
-    second: Bear_Trap_4
-  - first:
-      213: 6489366200590883201
-    second: Bear_Trap_5
-  - first:
-      213: 8363332783339243082
-    second: Bear_Trap_6
-  - first:
-      213: 3306774555314085935
-    second: Bear_Trap_7
+      213: 7005247259047817013
+    second: deadBunnies_brown_and_white_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -70,7 +58,7 @@ TextureImporter:
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 300
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -127,137 +115,11 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Bear_Trap_0
+      name: deadBunnies_brown_and_white_0
       rect:
         serializedVersion: 2
-        x: 6
+        x: 3
         y: 77
-        width: 20
-        height: 14
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b4c0659dfcdebc120800000000000000
-      internalID: 2435301500484193355
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Bear_Trap_1
-      rect:
-        serializedVersion: 2
-        x: 38
-        y: 85
-        width: 4
-        height: 7
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b8402c7656a1bf180800000000000000
-      internalID: -9080635200827685749
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Bear_Trap_2
-      rect:
-        serializedVersion: 2
-        x: 44
-        y: 77
-        width: 8
-        height: 18
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c4d7f1e99deb0bed0800000000000000
-      internalID: -2400208759518429876
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Bear_Trap_3
-      rect:
-        serializedVersion: 2
-        x: 53
-        y: 86
-        width: 4
-        height: 6
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3349b04ed4251c210800000000000000
-      internalID: 1351451857679782963
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Bear_Trap_4
-      rect:
-        serializedVersion: 2
-        x: 73
-        y: 77
-        width: 14
-        height: 18
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 97fe4c75d169793f0800000000000000
-      internalID: -894080948239011975
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Bear_Trap_5
-      rect:
-        serializedVersion: 2
-        x: 108
-        y: 77
-        width: 8
-        height: 18
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 18955a36d2cde0a50800000000000000
-      internalID: 6489366200590883201
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Bear_Trap_6
-      rect:
-        serializedVersion: 2
-        x: 7
-        y: 40
         width: 35
         height: 21
       alignment: 7
@@ -267,18 +129,39 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a4680590bd6801470800000000000000
-      internalID: 8363332783339243082
+      spriteID: d2ec390a8c3e947a0800000000000000
+      internalID: -6392327745248702931
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Bear_Trap_7
+      name: deadBunnies_brown_and_white_1
       rect:
         serializedVersion: 2
-        x: 63
-        y: 40
+        x: 47
+        y: 59
+        width: 41
+        height: 38
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83f76c10ce4c51230800000000000000
+      internalID: 3609007194328432440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: deadBunnies_brown_and_white_2
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 53
         width: 35
         height: 21
       alignment: 7
@@ -288,8 +171,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f20ebc120f504ed20800000000000000
-      internalID: 3306774555314085935
+      spriteID: 3387f4ab6e8324790800000000000000
+      internalID: -7547407461900126157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: deadBunnies_brown_and_white_3
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 15
+        width: 41
+        height: 38
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53fe2574443a73160800000000000000
+      internalID: 7005247259047817013
       vertices: []
       indices: 
       edges: []

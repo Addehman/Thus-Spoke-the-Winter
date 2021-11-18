@@ -299,7 +299,7 @@ public class FoodController : MonoBehaviour
 		}
 	}
 
-	private void CheckRarityTier() // this needs to more Modular!
+	private void CheckRarityTier() // this needs to be more Modular!
 	{
 		int dominant = _seedGenerator.distanceFromHome.x >= _seedGenerator.distanceFromHome.y ? _seedGenerator.distanceFromHome.x : _seedGenerator.distanceFromHome.y;
 		if (dominant > 1 && dominant <= 5)

@@ -120,9 +120,15 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 	public void IsDepleted(bool isDepleted)
 	{
 		if (isDepleted)
+		{
 			_sr.sprite = _data.depleted_Sprite;
+			status = Status.Dead;
+		}
 		else
+		{
 			_sr.sprite = _data.earlySpring_Sprite;
+			status = Status.Alive;
+		}
 	}
 
 	private void RandomBehaviour()

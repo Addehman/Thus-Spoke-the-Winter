@@ -71,6 +71,9 @@ TextureImporter:
   - first:
       213: 6592315450395694517
     second: bunny-Sheet_22
+  - first:
+      213: 8524744098344794682
+    second: bunny-Sheet_23
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -112,7 +115,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 300
@@ -176,7 +179,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 15
-        y: 376
+        y: 532
         width: 33
         height: 54
       alignment: 7
@@ -197,7 +200,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 70
-        y: 376
+        y: 532
         width: 33
         height: 54
       alignment: 7
@@ -218,7 +221,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 125
-        y: 376
+        y: 532
         width: 33
         height: 54
       alignment: 7
@@ -239,7 +242,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 178
-        y: 376
+        y: 532
         width: 35
         height: 51
       alignment: 7
@@ -260,7 +263,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 12
-        y: 302
+        y: 458
         width: 36
         height: 46
       alignment: 7
@@ -281,7 +284,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 66
-        y: 299
+        y: 455
         width: 37
         height: 37
       alignment: 7
@@ -302,7 +305,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 121
-        y: 299
+        y: 455
         width: 37
         height: 37
       alignment: 7
@@ -323,7 +326,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 176
-        y: 300
+        y: 456
         width: 37
         height: 37
       alignment: 7
@@ -344,7 +347,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 6
-        y: 225
+        y: 381
         width: 42
         height: 41
       alignment: 7
@@ -365,7 +368,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 61
-        y: 225
+        y: 381
         width: 46
         height: 44
       alignment: 7
@@ -386,7 +389,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 119
-        y: 222
+        y: 378
         width: 35
         height: 44
       alignment: 7
@@ -407,7 +410,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 175
-        y: 223
+        y: 379
         width: 36
         height: 42
       alignment: 7
@@ -428,7 +431,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 11
-        y: 149
+        y: 305
         width: 37
         height: 43
       alignment: 7
@@ -449,7 +452,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 63
-        y: 149
+        y: 305
         width: 42
         height: 35
       alignment: 7
@@ -470,7 +473,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 124
-        y: 151
+        y: 307
         width: 34
         height: 32
       alignment: 7
@@ -491,7 +494,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 179
-        y: 151
+        y: 307
         width: 34
         height: 32
       alignment: 7
@@ -512,7 +515,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 14
-        y: 77
+        y: 233
         width: 34
         height: 32
       alignment: 7
@@ -533,7 +536,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 70
-        y: 80
+        y: 236
         width: 33
         height: 54
       alignment: 7
@@ -554,7 +557,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 126
-        y: 80
+        y: 236
         width: 32
         height: 58
       alignment: 7
@@ -575,7 +578,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 183
-        y: 80
+        y: 236
         width: 30
         height: 61
       alignment: 7
@@ -596,7 +599,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 23
-        y: 6
+        y: 162
         width: 25
         height: 65
       alignment: 7
@@ -617,7 +620,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 78
-        y: 6
+        y: 162
         width: 25
         height: 65
       alignment: 7
@@ -638,7 +641,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 133
-        y: 6
+        y: 162
         width: 25
         height: 65
       alignment: 7
@@ -650,6 +653,27 @@ TextureImporter:
       bones: []
       spriteID: 5b5972c79fb9c7b50800000000000000
       internalID: 6592315450395694517
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bunny-Sheet_23
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 86
+        width: 37
+        height: 58
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3af2f66799fd4670800000000000000
+      internalID: 8524744098344794682
       vertices: []
       indices: 
       edges: []

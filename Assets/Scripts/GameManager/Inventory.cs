@@ -135,6 +135,17 @@ public class Inventory : MonoBehaviour
 					break;
 			}
 		}
+		else if (obj.TryGetComponent(out TrapBehaviour trapBehav))
+		{
+			switch (trapBehav.type)
+			{
+				case ResourceType.bunny:
+					gatheredBunnyMeat += trapBehav.resourceAmount;
+					break;
+				default:
+					break;
+			}
+		}
 
 		wood += gatheredWood;
 		blueberry += gatheredBlueberry;

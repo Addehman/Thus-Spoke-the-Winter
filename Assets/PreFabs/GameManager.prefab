@@ -178,7 +178,7 @@ MonoBehaviour:
   minSpawnAmount: 1
   maxSpawnAmount: 2
   _seedsWithSmell: 
-  _lengthOfSmellTrail: 3
+  _lengthOfSmellTrail: 4
   _spawnRandomMax: 1000
   _spawnChancePercentage: 0
 --- !u!114 &672142925587344319
@@ -216,8 +216,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8813bdb9707f6804c903af3c843c66ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _seedGenerator: {fileID: 5129743002338067384}
-  _cabinSceneGroup: {fileID: 0}
 --- !u!114 &5129743002338067384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,6 +232,7 @@ MonoBehaviour:
   _seed: 0
   _worldGridSize: 10000
   position: {x: 0, y: 0}
+  currentSeed: 0
   distanceFromHome: {x: 0, y: 0}
 --- !u!114 &3106118346775221718
 MonoBehaviour:
@@ -315,3 +314,7 @@ MonoBehaviour:
   _trapObjectPoolPrefabLibrary:
     prefabs:
     - {fileID: 5062927351200187593, guid: cfbee0a8fd6ec2e4e9de8fef18c54218, type: 3}
+  _trapIndex: 0
+  _minRandomCatchTime: 60
+  _maxRandomCatchTime: 300
+  isMobTrapped: 0

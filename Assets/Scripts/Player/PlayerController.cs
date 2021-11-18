@@ -109,6 +109,12 @@ public class PlayerController : MonoBehaviour
 			mob.OnButcher += OnResourceDestroy;
 			return;
 		}
+
+		if (other.TryGetComponent(out TrapBehaviour trap))
+		{
+			trap.OnCollect += OnResourceDestroy;
+			return;
+		}
 	}
 
 	private void OnTriggerExit(Collider other)
@@ -140,6 +146,12 @@ public class PlayerController : MonoBehaviour
 		if (other.TryGetComponent(out MobBehaviour mob))
 		{
 			mob.OnButcher -= OnResourceDestroy;
+			return;
+		}
+
+		if (other.TryGetComponent(out TrapBehaviour trap))
+		{
+			trap.OnCollect -= OnResourceDestroy;
 			return;
 		}
 	}
@@ -315,7 +327,8 @@ public class PlayerController : MonoBehaviour
 		{
 			//print("Not Apple");
 			int index = GetIndexFromList(_interactablesInRange, obj);
-			_interactablesInRange.RemoveAt(index);
+			if (_interactablesInRange.Contains(obj))
+				_interactablesInRange.RemoveAt(index);
 		}
 
 		if (obj.TryGetComponent(out TreeBehaviour tree))
@@ -340,6 +353,15 @@ public class PlayerController : MonoBehaviour
 			MobController.Instance.RemoveButcheredFromDeadMobDictionary(obj);
 			ResourceGathered?.Invoke(obj);
 			EnergyDrain?.Invoke(mob.costSize);
+			return;
+		}
+
+		if (obj.TryGetComponent(out TrapBehaviour trap))
+		{
+			trap.OnCollect -= OnResourceDestroy;
+			ResourceGathered?.Invoke(obj);
+			EnergyDrain?.Invoke(trap.costSize);
+			return;
 		}
 	}
 

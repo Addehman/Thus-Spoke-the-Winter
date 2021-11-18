@@ -5,22 +5,32 @@ using UnityEngine;
 
 public class SeedGenerator : MonoBehaviour
 {
+	private static SeedGenerator _instance;
+	public static SeedGenerator Instance { get { return _instance; } }
+
 	public event Action<int> SendSeed;
 	public event Action<EnergyCost> DrainEnergy;
 	public event Action<bool, bool, bool, bool> UpdateExploration;
 
 	[SerializeField] private ScreenWrap _screenWrap;
 	[SerializeField] private int _seed = 0, _worldGridSize = 100;
-	private int _seedOffset, _startPos;
-	private bool _north, _east, _south, _west;
 
 	public Vector2Int position;
 	public int[,] worldGrid;
+	public int currentSeed;
 	public Vector2Int distanceFromHome;
+
+	private int _seedOffset, _startPos;
+	private bool _north, _east, _south, _west;
 
 
 	private void Awake()
 	{
+		if (_instance != null && _instance != this)
+			Destroy(this);
+		else
+			_instance = this;
+
 		worldGrid = new int[_worldGridSize, _worldGridSize];
 		_screenWrap.PlayerTraveling += UpdatePosition;
 	}
@@ -70,6 +80,7 @@ public class SeedGenerator : MonoBehaviour
 		WhatHasBeenExplored();
 		UpdateDistanceFromHome();
 		GenerateSeed(position.x, position.y);
+		currentSeed = worldGrid[position.x, position.y];
 	}
 
 	private void GenerateSeed(int x, int y)

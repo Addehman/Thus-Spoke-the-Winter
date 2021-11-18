@@ -43,11 +43,11 @@ public class MobController : MonoBehaviour
 	[SerializeField] private int _spawnRandomMax = 1000;
 	[SerializeField] private float _spawnChancePercentage;
 
-	private GameObject _cabinParent;
+	public Dictionary<string, Vector3> tempSavedDeadMobDictionary;
 
+	private GameObject _cabinParent;
 	private Camera _camera;
 	private Dictionary<int, Dictionary<string, Vector3>> _savedDeadMobDictionary = new Dictionary<int, Dictionary<string, Vector3>>();
-	private Dictionary<string, Vector3> _tempSavedDeadMobDictionary;
 	private List<Transform> tempSpawns;
 
 
@@ -94,11 +94,11 @@ public class MobController : MonoBehaviour
 
 		if (_savedDeadMobDictionary.TryGetValue(_currentSeed, out Dictionary<string, Vector3> result))
 		{
-			_tempSavedDeadMobDictionary = result;
+			tempSavedDeadMobDictionary = result;
 		}
 		else
 		{
-			_tempSavedDeadMobDictionary = new Dictionary<string, Vector3>();
+			tempSavedDeadMobDictionary = new Dictionary<string, Vector3>();
 		}
 
 		ClearMobs();
@@ -126,13 +126,13 @@ public class MobController : MonoBehaviour
 		}
 
 		// If there is any Saved Dead Mobs in this seed:
-		if (_tempSavedDeadMobDictionary.Count > 0)
+		if (tempSavedDeadMobDictionary.Count > 0)
 		{
 			SpawnMob(seed);
 			return;
 		}
-		// If it's an old seed, then don't go further.
-		else if (isSmellySeed)
+		// If it's a seed that still smells like player, Or if there is a trapped animal there, then don't go further.
+		else if (isSmellySeed || TrapController.Instance.CheckIfThereAreAnyTrappedMobs(seed))
 		{
 			return;
 		}
@@ -179,7 +179,7 @@ public class MobController : MonoBehaviour
 		for (int i = 0; i < spawnCount; i++)
 		{
 			//This needs to check so that we don't random the same number twice in a row or something like that.
-			int randomObject = UnityEngine.Random.Range(0, MobObjectPool.Instance.mobObjectPool.Length/* - mobRarityWeight*/); //Remove comment from mobRarityWeight when implementing rarity for mobs.
+			int randomObject = UnityEngine.Random.Range(0, MobObjectPool.Instance.mobObjectPool.Length);
 
 			while (usedRandomNumbers.Contains(randomObject))
 			{
@@ -273,23 +273,23 @@ public class MobController : MonoBehaviour
 
 		print($"{obj.name} is now blacklisted!");
 
-		_tempSavedDeadMobDictionary.Add(obj.name, obj.transform.position);
+		tempSavedDeadMobDictionary.Add(obj.name, obj.transform.position);
 
-		if (_tempSavedDeadMobDictionary.Count != 1) // If the Dictionary doesn't hold 1 item, then it's holding more and is not new.
+		if (tempSavedDeadMobDictionary.Count != 1) // If the Dictionary doesn't hold 1 item, then it's holding more and is not new.
 		{
 			// Thus we paste the uppdated temporary list over the list on the dictionary and thus update it.
-			_savedDeadMobDictionary[_currentSeed] = _tempSavedDeadMobDictionary;
+			_savedDeadMobDictionary[_currentSeed] = tempSavedDeadMobDictionary;
 		}
 		else // if it's a new dictionary, then we need to add the seed and dictionary to the list as a new entry.
 		{
 			
 			if (_savedDeadMobDictionary.ContainsKey(_currentSeed))
 			{
-				_savedDeadMobDictionary[_currentSeed] = _tempSavedDeadMobDictionary;
+				_savedDeadMobDictionary[_currentSeed] = tempSavedDeadMobDictionary;
 			}
 			else
 			{
-				_savedDeadMobDictionary.Add(_currentSeed, _tempSavedDeadMobDictionary);
+				_savedDeadMobDictionary.Add(_currentSeed, tempSavedDeadMobDictionary);
 			}
 		}
 	}
@@ -298,11 +298,11 @@ public class MobController : MonoBehaviour
 	{
 		// trans.TryGetComponent(out MobBehaviour mob);
 
-		if (_tempSavedDeadMobDictionary.Count > 0 && _tempSavedDeadMobDictionary.ContainsKey(trans.name))
+		if (tempSavedDeadMobDictionary.Count > 0 && tempSavedDeadMobDictionary.ContainsKey(trans.name))
 		{
 			print($"{trans.name} exists in SavedDeadMobList");
 
-			trans.position = _tempSavedDeadMobDictionary[trans.name];
+			trans.position = tempSavedDeadMobDictionary[trans.name];
 			trans.gameObject.SetActive(true);
 			//trans.position = PositionCorrection(trans.position);
 			mob.status = Status.Dead;
@@ -318,11 +318,11 @@ public class MobController : MonoBehaviour
 
 	public void RemoveButcheredFromDeadMobDictionary(GameObject obj)
 	{
-		if (!_tempSavedDeadMobDictionary.ContainsKey(obj.name)) return;
+		if (!tempSavedDeadMobDictionary.ContainsKey(obj.name)) return;
 
 		print($"{obj} was Butchered, and Removed from SavedDeadMobList");
-		_tempSavedDeadMobDictionary.Remove(obj.name);
-		_savedDeadMobDictionary[_currentSeed] = _tempSavedDeadMobDictionary;
+		tempSavedDeadMobDictionary.Remove(obj.name);
+		_savedDeadMobDictionary[_currentSeed] = tempSavedDeadMobDictionary;
 	}
 
 	private void CheckRarityTier()
@@ -410,6 +410,17 @@ public class MobController : MonoBehaviour
 		}
 		return generatedPosition;
 	}
+
+	//public void SpawnTrappedMob(Transform parent)
+	//{
+	//	int randomObject = UnityEngine.Random.Range(0, MobObjectPool.Instance.mobObjectPool.Length);
+	//	Transform newObject = MobObjectPool.Instance.mobObjectPool[randomObject];
+	//	newObject.TryGetComponent(out MobBehaviour mob);
+	//	mob.IsDepleted(true);
+	//	newObject.parent = parent;
+	//	newObject.position = Vector3.zero;
+	//	newObject.gameObject.SetActive(true);
+	//}
 
 	private void OnDestroy()
 	{
