@@ -175,7 +175,7 @@ public class Inventory : MonoBehaviour
 
 	public void ClearFood()
 	{
-		food = blueberry = lingonberry = apple = mushroom = venison = 0;
+		food = blueberry = lingonberry = apple = mushroom = bunnyMeat = 0;
 	}
 
 	public void ClearWood()

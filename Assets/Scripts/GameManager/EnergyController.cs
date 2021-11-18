@@ -83,9 +83,13 @@ public class EnergyController : MonoBehaviour
 		UIManager.Instance.Crossfade();
 
 		print($"{this}Resting");
+		PlayerRestingEndingRound?.Invoke();
+	}
+
+	public void RegainEnergy() // This function is now called from the Fade-animation "Both" on the Crossfade object.
+	{
 		currentEnergy = startEnergy;
 		UpdateEnergyUI?.Invoke();
-		PlayerRestingEndingRound?.Invoke();
 	}
 
 	private void OnDestroy()

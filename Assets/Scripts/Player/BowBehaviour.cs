@@ -93,7 +93,7 @@ public class BowBehaviour : MonoBehaviour
 		// Insert somewhere here that the position should be stuck to player, if itsn't already due to now being a child to player
 	}
 
-	public void ReleaseArrow(Vector2 mousePos)  //Being called from PlayerController
+	public void ReleaseArrow(Vector2 mousePos)  //Being called from PlayerController,  EnergyCost is also being drained from there.
 	{
 		StopAllCoroutines();
 		isHoldingArrow = false;

@@ -269,7 +269,8 @@ public class MobController : MonoBehaviour
 
 	public void SaveIDToBlacklist(GameObject obj)
 	{
-		if (!obj.TryGetComponent(out MobBehaviour mob)) return;
+		if (!obj.TryGetComponent(out MobBehaviour mob) || tempSavedDeadMobDictionary.ContainsKey(obj.name)) 
+			return;
 
 		print($"{obj.name} is now blacklisted!");
 

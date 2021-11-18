@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
 		_controls.Player.Interact.started += ctx => Interact();
 		_controls.Player.PlaceTrap.started += ctx => PlaceTrap();
 		_controls.Player.Bow.started += ctx => BowBehaviour.Instance.ChargeArrow();
-		_controls.Player.Bow.canceled += ctx => BowBehaviour.Instance.ReleaseArrow(mousePoint);
+		_controls.Player.Bow.canceled += ctx => ReleaseArrow();
 
 		TreeController.Instance.OnClearTrees += ClearInteractablesInRangeList;
 		FoodController.Instance.OnClearFoods += ClearInteractablesInRangeList;
@@ -214,6 +214,12 @@ public class PlayerController : MonoBehaviour
 
 		// Let's turn the player's animation in the direction of what it is interacting with.
 		SetPlayerAnimationDirection(nearestObject);
+	}
+
+	private void ReleaseArrow()
+	{
+		BowBehaviour.Instance.ReleaseArrow(mousePoint);
+		EnergyDrain(EnergyCost.Mini);
 	}
 
 	private void SetHasEnergyFalse() => _hasEnergy = false;

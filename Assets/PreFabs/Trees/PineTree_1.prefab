@@ -99,10 +99,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 7c2b1e17f5780b04498f9fd29f4d3fb4, type: 2}
-  status: 0
   stumpCollider: {fileID: -9034402099663642927}
   standingCollider: {fileID: 1651910893}
+  status: 0
   type: 2
+  beginSpawnPeriod: 0
+  endSpawnPeriod: 0
   costSize: 0
   resourceAmount: 0
   fruits: []
@@ -118,7 +120,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.05
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: -0.015, z: 0.015}
 --- !u!65 &5338743004885045908
 BoxCollider:
   m_ObjectHideFlags: 0

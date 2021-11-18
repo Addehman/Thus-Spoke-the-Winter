@@ -32,24 +32,29 @@ public class UIManager : MonoBehaviour
 	}
 
 	private void UnlockPlayerInput()
-    {
+	{
 		_player.UnlockInput();
-    }
+	}
+
+	private void RegainEnergy()
+	{
+		EnergyController.Instance.RegainEnergy();
+	}
 
 	public void Crossfade()
-    {
+	{
 		_animator.SetTrigger("BOTH");
-    }
+	}
 
-    public void FadeToBlack()
-    {
+	public void FadeToBlack()
+	{
 		_animator.SetTrigger("START");
-    }
+	}
 
-    public void FadeFromBlack(Latitude obj)
-    {
+	public void FadeFromBlack(Latitude obj)
+	{
 		_animator.SetTrigger("END");
-    }
+	}
 
 	private void UpdateInventoryUI()
 	{
