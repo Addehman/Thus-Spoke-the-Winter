@@ -30,7 +30,9 @@ public class TrapController : MonoBehaviour
 	[SerializeField] private float _minRandomCatchTime = 60f, _maxRandomCatchTime = 300f;
 
 	public event Action<Vector3> OnSpawnSavedTraps;
+	public event Action<int> UpdateTrapUI;
 	public bool isMobTrapped = false;
+	public int totalTrapCount = 3;
 
 	private Dictionary<int, List<int>> _savedTrapsDict = new Dictionary<int, List<int>>();
 	private List<int> _tempSavedTrapsList;
@@ -56,6 +58,7 @@ public class TrapController : MonoBehaviour
 		InitializeObjectPool();
 
 		_trapIndex = 0;
+		totalTrapCount = 3;
 		_startTime = new List<float>();
 		_timeToCatch = new List<float>();
 
@@ -77,6 +80,7 @@ public class TrapController : MonoBehaviour
 			SetStartTime();
 			SetTimeToCatch();
 			_trapIndex++;
+			UpdateTrapUI?.Invoke(totalTrapCount - _trapIndex);
 		}
 	}
 
@@ -88,6 +92,7 @@ public class TrapController : MonoBehaviour
 			_tempSavedTrapsList.Remove(index);
 			_savedTrapsDict[_currentSeed] = _tempSavedTrapsList;
 			_trapIndex--;
+			UpdateTrapUI?.Invoke(totalTrapCount - _trapIndex);
 		}
 	}
 

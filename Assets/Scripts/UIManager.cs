@@ -9,7 +9,7 @@ public class UIManager : MonoBehaviour
 	private static UIManager _instance;
 	public static UIManager Instance { get { return _instance; } }
 
-	[SerializeField] private TextMeshProUGUI _inventoryText;
+	[SerializeField] private TextMeshProUGUI _inventoryText, _trapCounterTxt;
 	[SerializeField] private Image _energyBar;
 	[SerializeField] private Animator _animator;
 	[SerializeField] private PlayerController _player;
@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour
 		Inventory.Instance.UpdateUI += UpdateInventoryUI;
 		EnergyController.Instance.UpdateEnergyUI += UpdateEnergyUI;
 		StorageController.Instance.UpdateUI += UpdateInventoryUI;
+		TrapController.Instance.UpdateTrapUI += UpdateTrapUI;
 		UpdateInventoryUI();
 	}
 
@@ -67,6 +68,11 @@ public class UIManager : MonoBehaviour
 		_energyBar.fillAmount = currentEnergy;
 		//print($"Current Energy UI: {currentEnergy}");
 		//print($"Current Energy: {EnergyController.Instance.currentEnergy}");
+	}
+
+	private void UpdateTrapUI(int trapCount)
+	{
+		_trapCounterTxt.text = $"x{trapCount}";
 	}
 
 	private void OnDestroy()
