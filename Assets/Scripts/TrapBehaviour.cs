@@ -14,7 +14,7 @@ public class TrapBehaviour : MonoBehaviour, IInteractable
 	public TrapState state = TrapState.Untriggered;
 	public event Action<GameObject> OnCollect;
 	public int resourceAmount;
-	public int dictionaryIndex;
+	public int listIndex;
 	public EnergyCost costSize;
 
 	private GameObject _gameObject;
@@ -61,7 +61,7 @@ public class TrapBehaviour : MonoBehaviour, IInteractable
 	public void OnInteract()
 	{
 		_gameObject.SetActive(false);
-		TrapController.Instance.PickUpTrap(dictionaryIndex);
+		TrapController.Instance.PickUpTrap(listIndex);
 		
 		if (state == TrapState.Triggered)
 		{

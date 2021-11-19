@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
 		_controls.Player.Sprint.canceled += ctx => _doSprint = false;
 		_controls.Player.Interact.started += ctx => Interact();
 		_controls.Player.PlaceTrap.started += ctx => PlaceTrap();
-		_controls.Player.ShootArrow.started += ctx => BowBehaviour.Instance.ChargeArrow();
+		_controls.Player.ShootArrow.started += ctx => ChargeArrow();
 		_controls.Player.ShootArrow.canceled += ctx => ReleaseArrow(true);
 		_controls.Player.CancelArrow.started += ctx => ReleaseArrow(false);
 		_controls.Player.CancelArrow.canceled += ctx => ReleaseArrow(false);
@@ -217,6 +217,12 @@ public class PlayerController : MonoBehaviour
 
 		// Let's turn the player's animation in the direction of what it is interacting with.
 		SetPlayerAnimationDirection(nearestObject);
+	}
+
+	private void ChargeArrow()
+	{
+		_arrowCanceled = false;
+		BowBehaviour.Instance.ChargeArrow();
 	}
 
 	private void ReleaseArrow(bool doShoot)

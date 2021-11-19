@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3194166101076102492}
   - component: {fileID: 3476345933052699466}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: TrapGfx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6442616496571613116}
   - component: {fileID: 5886438810002496862}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: deadBrownBunny
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,9 +175,9 @@ GameObject:
   - component: {fileID: 5062927351200187595}
   - component: {fileID: 1030715427554180479}
   - component: {fileID: 388375256819623223}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Trap
-  m_TagString: Untagged
+  m_TagString: Trap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -221,6 +221,8 @@ MonoBehaviour:
   _triggeredTrapSprite: {fileID: 6489366200590883201, guid: 4f93ccf10950ebd45aa14a46842e5b64, type: 3}
   state: 0
   resourceAmount: 10
+  listIndex: 0
+  costSize: 0
 --- !u!135 &388375256819623223
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -244,7 +246,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3876606512325079443}
   - component: {fileID: 2570280012223279312}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: deadWhiteBunny
   m_TagString: Untagged
   m_Icon: {fileID: 0}

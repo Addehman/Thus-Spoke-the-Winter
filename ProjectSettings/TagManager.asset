@@ -8,6 +8,7 @@ TagManager:
   - WorldGroup
   - DontDestroy
   - Bunny
+  - Trap
   layers:
   - Default
   - TransparentFX
@@ -18,8 +19,8 @@ TagManager:
   - Ground
   - ForestObjects
   - Player
-  - Arrow
-  - 
+  - IgnoreByArrow
+  - Trap
   - 
   - 
   - 

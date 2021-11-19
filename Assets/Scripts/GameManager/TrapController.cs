@@ -26,8 +26,9 @@ public class TrapController : MonoBehaviour
 	[SerializeField] private Transform _trapParent;
 	[SerializeField] private TrapObjectPoolQuantitySetup _trapObjectPoolQuantitySetup;
 	[SerializeField] private TrapObjectPoolPrefabLibrary _trapObjectPoolPrefabLibrary;
-	[SerializeField] private int _trapIndex;
+	[SerializeField] private int _availableTraps;
 	[SerializeField] private float _minRandomCatchTime = 60f, _maxRandomCatchTime = 300f;
+	[SerializeField] private Transform[] trapHolder;
 
 	public event Action<Vector3> OnSpawnSavedTraps;
 	public event Action<int> UpdateTrapUI;
@@ -36,7 +37,6 @@ public class TrapController : MonoBehaviour
 
 	private Dictionary<int, List<int>> _savedTrapsDict = new Dictionary<int, List<int>>();
 	private List<int> _tempSavedTrapsList;
-	private List<Transform> _tempSpawns;
 	private List<float> _startTime;
 	private List<float> _timeToCatch;
 	private int _currentSeed;
@@ -57,8 +57,8 @@ public class TrapController : MonoBehaviour
 
 		InitializeObjectPool();
 
-		_trapIndex = 0;
 		totalTrapCount = 3;
+		_availableTraps = totalTrapCount;
 		_startTime = new List<float>();
 		_timeToCatch = new List<float>();
 
@@ -69,19 +69,42 @@ public class TrapController : MonoBehaviour
 	//The OnPlaceTrap event i PlayerController is triggered from keyboard input "E".
 	private void PlaceTrap(Vector3 position)
 	{
-		if (_trapIndex < _trapObjectPoolQuantitySetup.trap_Amount)
-		{
-			Transform newTrap = TrapObjectPool.Instance.trapObjectPool[_trapIndex];
+		if (_availableTraps == 0) return;
 
-			//OBS: Use PositionCorrection here if we lower the ground again
-			newTrap.position = position /*PositionCorrection(position)*/;
-			newTrap.gameObject.SetActive(true);
-			SaveTrapToDictionary(_trapIndex);
-			SetStartTime();
-			SetTimeToCatch();
-			_trapIndex++;
-			UpdateTrapUI?.Invoke(totalTrapCount - _trapIndex);
+		foreach(Transform trap in trapHolder)
+		{
+			if (!trap.gameObject.activeSelf) // the inactive ones are available - add them to _availableTraps
+			{
+				PlaceTheTrap();
+				break;
+			}
+
+			void PlaceTheTrap()
+			{
+				_availableTraps--;
+				trap.transform.position = position;
+				trap.gameObject.SetActive(true);
+				trap.TryGetComponent(out TrapBehaviour trapBehav);
+				SaveTrapToDictionary(trapBehav.listIndex);
+				SetStartTime();
+				SetTimeToCatch();
+			}
 		}
+		UpdateTrapUI?.Invoke(_availableTraps);
+
+		//if (_trapIndex < _trapObjectPoolQuantitySetup.trap_Amount)
+		//{
+		//	Transform newTrap = TrapObjectPool.Instance.trapObjectPool[_trapIndex];
+
+		//	//OBS: Use PositionCorrection here if we lower the ground again
+		//	newTrap.position = position /*PositionCorrection(position)*/;
+		//	newTrap.gameObject.SetActive(true);
+		//	SaveTrapToDictionary(_trapIndex);
+		//	SetStartTime();
+		//	SetTimeToCatch();
+		//	_trapIndex++;
+		//	UpdateTrapUI?.Invoke(totalTrapCount - _trapIndex);
+		//}
 	}
 
 	public void PickUpTrap(int index)
@@ -91,8 +114,8 @@ public class TrapController : MonoBehaviour
 			print($"Removing {index} and decrementing _trapIndex");
 			_tempSavedTrapsList.Remove(index);
 			_savedTrapsDict[_currentSeed] = _tempSavedTrapsList;
-			_trapIndex--;
-			UpdateTrapUI?.Invoke(totalTrapCount - _trapIndex);
+			_availableTraps++;
+			UpdateTrapUI?.Invoke(_availableTraps);
 		}
 	}
 
@@ -213,7 +236,7 @@ public class TrapController : MonoBehaviour
 	{
 		_trapObjectPoolQuantitySetup.quantities = new int[1] { _trapObjectPoolQuantitySetup.trap_Amount };
 
-		_tempSpawns = new List<Transform>();
+		trapHolder = new Transform[totalTrapCount];
 
 		for (int i = 0; i < _trapObjectPoolQuantitySetup.quantities.Length; i++)
 		{
@@ -221,7 +244,7 @@ public class TrapController : MonoBehaviour
 
 			InitializeThisTypeThisMany(_trapObjectPoolPrefabLibrary.prefabs[i], _trapObjectPoolQuantitySetup.quantities[i]);
 		}
-		TrapObjectPool.Instance.AddTrapObjectsToList(_tempSpawns);
+		//TrapObjectPool.Instance.AddTrapObjectsToList(_tempSpawns);
 	}
 
 	private void InitializeThisTypeThisMany(GameObject type, int typeAmount)
@@ -231,9 +254,9 @@ public class TrapController : MonoBehaviour
 		{
 			spawn = Instantiate(type, _trapParent);
 			spawn.SetActive(false);
-			_tempSpawns.Add(spawn.transform);
 			spawn.TryGetComponent(out TrapBehaviour trap);
-			trap.dictionaryIndex = i;
+			trapHolder[i] = trap.transform;
+			trap.listIndex = i;
 		}
 	}
 
