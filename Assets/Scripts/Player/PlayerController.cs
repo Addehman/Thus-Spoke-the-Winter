@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour
 		_controls.Player.ShootArrow.started += ctx => BowBehaviour.Instance.ChargeArrow();
 		_controls.Player.ShootArrow.canceled += ctx => ReleaseArrow(true);
 		_controls.Player.CancelArrow.started += ctx => ReleaseArrow(false);
+		_controls.Player.CancelArrow.canceled += ctx => ReleaseArrow(false);
 		_controls.Player.Inventory.started += ctx => UIManager.Instance.ToggleInventoryActive();
 
 		TreeController.Instance.OnClearTrees += ClearInteractablesInRangeList;
@@ -438,6 +439,7 @@ public class PlayerController : MonoBehaviour
 		_controls.Player.ShootArrow.started -= ctx => BowBehaviour.Instance.ChargeArrow();
 		_controls.Player.ShootArrow.canceled -= ctx => ReleaseArrow(true);
 		_controls.Player.CancelArrow.started -= ctx => ReleaseArrow(false);
+		_controls.Player.CancelArrow.canceled -= ctx => ReleaseArrow(false);
 		_controls.Player.Inventory.started -= ctx => UIManager.Instance.ToggleInventoryActive();
 
 		TreeController.Instance.OnClearTrees -= ClearInteractablesInRangeList;
