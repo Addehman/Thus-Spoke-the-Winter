@@ -28,7 +28,7 @@ public class TrapController : MonoBehaviour
 	[SerializeField] private TrapObjectPoolPrefabLibrary _trapObjectPoolPrefabLibrary;
 	[SerializeField] private int _availableTraps;
 	[SerializeField] private float _minRandomCatchTime = 60f, _maxRandomCatchTime = 300f;
-	[SerializeField] private Transform[] trapHolder;
+	[SerializeField] private TrapBehaviour[] trapHolder;
 
 	public event Action<Vector3> OnSpawnSavedTraps;
 	public event Action<int> UpdateTrapUI;
@@ -71,23 +71,24 @@ public class TrapController : MonoBehaviour
 	{
 		if (_availableTraps == 0) return;
 
-		foreach(Transform trap in trapHolder)
+		foreach(TrapBehaviour trap in trapHolder)
 		{
-			if (!trap.gameObject.activeSelf) // the inactive ones are available - add them to _availableTraps
+			if (!trap.gameObject.activeSelf && !trap.isPlaced) // the inactive ones are available - add them to _availableTraps
 			{
-				PlaceTheTrap();
+				PlacingTrap();
 				break;
 			}
 
-			void PlaceTheTrap()
+			void PlacingTrap()
 			{
 				_availableTraps--;
 				trap.transform.position = position;
 				trap.gameObject.SetActive(true);
 				trap.TryGetComponent(out TrapBehaviour trapBehav);
+				trap.isPlaced = true;
 				SaveTrapToDictionary(trapBehav.listIndex);
 				SetStartTime();
-				SetTimeToCatch();
+				SetTimeToCatch(trap);
 			}
 		}
 		UpdateTrapUI?.Invoke(_availableTraps);
@@ -107,15 +108,16 @@ public class TrapController : MonoBehaviour
 		//}
 	}
 
-	public void PickUpTrap(int index)
+	public void PickUpTrap(TrapBehaviour trap)
 	{
-		if (_tempSavedTrapsList.Contains(index))
+		if (_tempSavedTrapsList.Contains(trap.listIndex))
 		{
-			print($"Removing {index} and decrementing _trapIndex");
-			_tempSavedTrapsList.Remove(index);
+			print($"Removing {trap.listIndex} and incrementing _availableTraps");
+			_tempSavedTrapsList.Remove(trap.listIndex);
 			_savedTrapsDict[_currentSeed] = _tempSavedTrapsList;
 			_availableTraps++;
 			UpdateTrapUI?.Invoke(_availableTraps);
+			trap.isPlaced = false;
 		}
 	}
 
@@ -126,15 +128,28 @@ public class TrapController : MonoBehaviour
 		_startTime.Add(Time.time);
 	}
 
-	private void SetTimeToCatch()
+	private void SetTimeToCatch(TrapBehaviour trap)
 	{
 		float randomTime = UnityEngine.Random.Range(_minRandomCatchTime, _maxRandomCatchTime);
 
-		_timeToCatch.Add(randomTime); //Change this to randomTime when done testing.
+		_timeToCatch.Add(randomTime);
+		trap.timeUntilCatch = randomTime;
 	}
 
 	private bool HasTrapCaughtAnimal(int trapIndex)
 	{
+		if (MobController.Instance.tempSavedDeadMobDictionary.Count > 0 || _currentSeed == -1)
+			return false;
+
+		for (int i = 0; i < MobController.Instance.seedsWithSmell.Count - 1; i++) // We want to check what seeds that are in the list, but not the most recent one as it has already added the current seed to last on list.
+		{
+			if (MobController.Instance.seedsWithSmell[i] == _currentSeed)
+			{
+				print($"This smelly Seed has index: {i}, in seedsWithSmell-list");
+				return false;
+			}
+		}
+
 		float elapsedTime = Time.time - _startTime[trapIndex];
 
 		if (elapsedTime >= _timeToCatch[trapIndex])
@@ -149,9 +164,14 @@ public class TrapController : MonoBehaviour
 
 	private void ClearTraps()
 	{
-		for (int i = 0; i < TrapObjectPool.Instance.trapObjectPool.Length; i++)
+		//for (int i = 0; i < TrapObjectPool.Instance.trapObjectPool.Length; i++)
+		//{
+		//	TrapObjectPool.Instance.trapObjectPool[i].gameObject.SetActive(false);
+		//}
+
+		foreach (TrapBehaviour trap in trapHolder)
 		{
-			TrapObjectPool.Instance.trapObjectPool[i].gameObject.SetActive(false);
+			trap.gameObject.SetActive(false);
 		}
 	}
 
@@ -162,15 +182,16 @@ public class TrapController : MonoBehaviour
 		{
 			for (int i = 0; i < result.Count; i++)
 			{
-				Transform newTrap = TrapObjectPool.Instance.trapObjectPool[result[i]];
+				//Transform newTrap = TrapObjectPool.Instance.trapObjectPool[result[i]];
+				TrapBehaviour newTrap = trapHolder[result[i]];
 
 				newTrap.gameObject.SetActive(true);
 
 				// Check if the trap have been out long enough, and make sure that there is no dead mobs lying around, and that it's not the cabin scene.
-				if (HasTrapCaughtAnimal(result[i]) && MobController.Instance.tempSavedDeadMobDictionary.Count == 0 && _currentSeed != -1)
+				if (HasTrapCaughtAnimal(result[i]))
 				{
-					newTrap.TryGetComponent(out TrapBehaviour trap);
-					trap.SetTrapToTriggered();
+					//newTrap.TryGetComponent(out TrapBehaviour trap);
+					newTrap.SetTrapToTriggered();
 					//isMobTrapped = true;
 					//newTrap.gameObject.name = "CAUGHT ANIMAL";
 					//MobController.Instance.SpawnTrappedMob(newTrap);
@@ -236,7 +257,7 @@ public class TrapController : MonoBehaviour
 	{
 		_trapObjectPoolQuantitySetup.quantities = new int[1] { _trapObjectPoolQuantitySetup.trap_Amount };
 
-		trapHolder = new Transform[totalTrapCount];
+		trapHolder = new TrapBehaviour[totalTrapCount];
 
 		for (int i = 0; i < _trapObjectPoolQuantitySetup.quantities.Length; i++)
 		{
@@ -255,7 +276,7 @@ public class TrapController : MonoBehaviour
 			spawn = Instantiate(type, _trapParent);
 			spawn.SetActive(false);
 			spawn.TryGetComponent(out TrapBehaviour trap);
-			trapHolder[i] = trap.transform;
+			trapHolder[i] = trap;
 			trap.listIndex = i;
 		}
 	}
@@ -272,8 +293,14 @@ public class TrapController : MonoBehaviour
 		{
 			if (tempList.Count > 0)
 			{
-				isMobTrapped = true;
-				return true;
+				foreach (TrapBehaviour trap in trapHolder)
+				{
+					if (trap.state == TrapState.Triggered)
+					{
+						isMobTrapped = true;
+						return true;
+					}
+				}
 			}
 		}
 		return false;

@@ -38,11 +38,11 @@ public class MobController : MonoBehaviour
 	[Space(10)]
 	[SerializeField] private int minSpawnAmount = 1;
 	[SerializeField] private int maxSpawnAmount = 1;
-	[SerializeField] private List<int> _seedsWithSmell = new List<int>();
-	[SerializeField] private int _lengthOfSmellTrail = 3;
+	[SerializeField] private int _lengthOfSmellTrail = 4;
 	[SerializeField] private int _spawnRandomMax = 1000;
 	[SerializeField] private float _spawnChancePercentage;
 
+	public List<int> seedsWithSmell = new List<int>();
 	public Dictionary<string, Vector3> tempSavedDeadMobDictionary;
 
 	private GameObject _cabinParent;
@@ -107,22 +107,25 @@ public class MobController : MonoBehaviour
 
 		// If we revisit a square that we've been to recently, and it's within the smell trail,
 		// then remove it from it's older position in the list and add it again, to set it to the most recent visited square - last in list.
-		if (_seedsWithSmell.Contains(seed))
+		if (seedsWithSmell.Contains(seed))
 		{
-			_seedsWithSmell.Remove(seed);
-			_seedsWithSmell.Add(seed);
+			seedsWithSmell.Remove(seed);
+			seedsWithSmell.Add(seed);
 			isSmellySeed = true;
 			print("It's an smelly seed, no bunnies should spawn");
 		}
 		// If the list is full, remove the oldest entry and then add new to last spot(automatic), pushing older ones back.
-		else if (_seedsWithSmell.Count == _lengthOfSmellTrail)
+		else if (seedsWithSmell.Count == _lengthOfSmellTrail)
 		{
-			_seedsWithSmell.RemoveAt(0);
-			_seedsWithSmell.Add(seed);
+			seedsWithSmell.RemoveAt(0);
+			seedsWithSmell.Add(seed);
 		}
-		else
+		else // The list is probably empty so we fill the list with this seed to make sure that the list is full - trapController depend on this.
 		{
-			_seedsWithSmell.Add(seed);
+			for (int i = 0; i < _lengthOfSmellTrail; i++)
+			{
+				seedsWithSmell.Add(seed);
+			}
 		}
 
 		// If there is any Saved Dead Mobs in this seed:

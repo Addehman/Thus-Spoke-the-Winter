@@ -15,6 +15,8 @@ public class TrapBehaviour : MonoBehaviour, IInteractable
 	public event Action<GameObject> OnCollect;
 	public int resourceAmount;
 	public int listIndex;
+	public float timeUntilCatch;
+	public bool isPlaced = false;
 	public EnergyCost costSize;
 
 	private GameObject _gameObject;
@@ -61,7 +63,7 @@ public class TrapBehaviour : MonoBehaviour, IInteractable
 	public void OnInteract()
 	{
 		_gameObject.SetActive(false);
-		TrapController.Instance.PickUpTrap(listIndex);
+		TrapController.Instance.PickUpTrap(this);
 		
 		if (state == TrapState.Triggered)
 		{
