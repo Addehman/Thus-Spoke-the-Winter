@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
 	private Rigidbody _rb;
 	private Vector2 _movement;
 	private float _horizontal, _vertical;
-	private bool _doSprint, _arrowCanceled = false;
+	[SerializeField] private bool _doSprint, _arrowCanceled = false;
 
 
 	private void Awake()
@@ -235,7 +235,6 @@ public class PlayerController : MonoBehaviour
 		}
 
 		BowBehaviour.Instance.ReleaseArrow(mousePoint);
-		EnergyDrain(EnergyCost.Mini);
 	}
 
 	private void SetHasEnergyFalse() => _hasEnergy = false;

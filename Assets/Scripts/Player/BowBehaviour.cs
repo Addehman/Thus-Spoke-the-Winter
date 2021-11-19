@@ -104,6 +104,7 @@ public class BowBehaviour : MonoBehaviour
 			_arrowPool[_arrowIndex].gameObject.SetActive(false);
 			return;
 		}
+		EnergyController.Instance.LoseEnergy(EnergyCost.Mini);
 		
 		OnReleaseArrow?.Invoke(arrowStrength, _arrowParent.position, _arrowDirection);
 
