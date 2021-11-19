@@ -38,7 +38,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Bow",
+                    "name": "ShootArrow",
                     "type": "Button",
                     "id": "da24ed9a-d997-4bf3-9133-f9f711a69768",
                     "expectedControlType": "Button",
@@ -50,6 +50,22 @@
                     "type": "Value",
                     "id": "1855275b-a413-46bb-86df-d38d7c111f30",
                     "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Inventory",
+                    "type": "Button",
+                    "id": "1beeb672-a0bf-45d2-a3c8-2dbc6e657568",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "CancelArrow",
+                    "type": "Button",
+                    "id": "975ff4be-615a-4496-baa8-eafb6728cb1e",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 }
@@ -201,11 +217,11 @@
                 {
                     "name": "",
                     "id": "45909a40-ac96-4768-a5c7-cbbe13df1391",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "Bow",
+                    "action": "ShootArrow",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -217,6 +233,61 @@
                     "processors": "",
                     "groups": "Keyboard and Mouse",
                     "action": "MousePoint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "31f2f5c9-a48a-44fd-bce3-a269284b82d4",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ce29fec5-4c6f-41c1-bf42-355eb2b50fbc",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "CancelArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3aa7401c-05ed-4ae9-9482-cff68a18e266",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "CancelArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "46ec6474-5ea6-4df9-8a10-0d5c81f854d0",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "CancelArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "db391e67-f366-4561-9ac7-0519e8abc0f8",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "CancelArrow",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

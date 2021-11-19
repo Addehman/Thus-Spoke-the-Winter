@@ -26,6 +26,7 @@ public class BowBehaviour : MonoBehaviour
 
 	public event Action<float, Vector3, Vector3> OnReleaseArrow;
 	public float arrowStrength;
+	public bool doCancelArrow = false;
 
 	//private Transform _transform;
 	private InputMaster _controls;
@@ -110,6 +111,12 @@ public class BowBehaviour : MonoBehaviour
 			_arrowIndex = 0;
 		else
 			_arrowIndex++;
+	}
+
+	public void CancelArrow()
+	{
+		StopAllCoroutines();
+		_arrowPool[_arrowIndex].gameObject.SetActive(false);
 	}
 
 	private IEnumerator ArrowChargeRoutine()

@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
 	private Rigidbody _rb;
 	private Vector2 _movement;
 	private float _horizontal, _vertical;
-	private bool _doSprint;
+	private bool _doSprint, _arrowCanceled = false;
 
 
 	private void Awake()
@@ -45,8 +45,10 @@ public class PlayerController : MonoBehaviour
 		_controls.Player.Sprint.canceled += ctx => _doSprint = false;
 		_controls.Player.Interact.started += ctx => Interact();
 		_controls.Player.PlaceTrap.started += ctx => PlaceTrap();
-		_controls.Player.Bow.started += ctx => BowBehaviour.Instance.ChargeArrow();
-		_controls.Player.Bow.canceled += ctx => ReleaseArrow();
+		_controls.Player.ShootArrow.started += ctx => BowBehaviour.Instance.ChargeArrow();
+		_controls.Player.ShootArrow.canceled += ctx => ReleaseArrow(true);
+		_controls.Player.CancelArrow.started += ctx => ReleaseArrow(false);
+		_controls.Player.Inventory.started += ctx => UIManager.Instance.ToggleInventoryActive();
 
 		TreeController.Instance.OnClearTrees += ClearInteractablesInRangeList;
 		FoodController.Instance.OnClearFoods += ClearInteractablesInRangeList;
@@ -216,8 +218,21 @@ public class PlayerController : MonoBehaviour
 		SetPlayerAnimationDirection(nearestObject);
 	}
 
-	private void ReleaseArrow()
+	private void ReleaseArrow(bool doShoot)
 	{
+		if (!doShoot)
+		{
+			BowBehaviour.Instance.CancelArrow();
+			_arrowCanceled = true;
+			return;
+		}
+
+		if (_arrowCanceled)
+		{
+			_arrowCanceled = false;
+			return;
+		}
+
 		BowBehaviour.Instance.ReleaseArrow(mousePoint);
 		EnergyDrain(EnergyCost.Mini);
 	}
@@ -420,6 +435,10 @@ public class PlayerController : MonoBehaviour
 		_controls.Player.Sprint.canceled -= ctx => _doSprint = false;
 		_controls.Player.Interact.started -= ctx => Interact();
 		_controls.Player.PlaceTrap.started -= ctx => PlaceTrap();
+		_controls.Player.ShootArrow.started -= ctx => BowBehaviour.Instance.ChargeArrow();
+		_controls.Player.ShootArrow.canceled -= ctx => ReleaseArrow(true);
+		_controls.Player.CancelArrow.started -= ctx => ReleaseArrow(false);
+		_controls.Player.Inventory.started -= ctx => UIManager.Instance.ToggleInventoryActive();
 
 		TreeController.Instance.OnClearTrees -= ClearInteractablesInRangeList;
 		FoodController.Instance.OnClearFoods -= ClearInteractablesInRangeList;

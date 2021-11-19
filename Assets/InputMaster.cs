@@ -51,7 +51,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Bow"",
+                    ""name"": ""ShootArrow"",
                     ""type"": ""Button"",
                     ""id"": ""da24ed9a-d997-4bf3-9133-f9f711a69768"",
                     ""expectedControlType"": ""Button"",
@@ -63,6 +63,22 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""type"": ""Value"",
                     ""id"": ""1855275b-a413-46bb-86df-d38d7c111f30"",
                     ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Inventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""1beeb672-a0bf-45d2-a3c8-2dbc6e657568"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""CancelArrow"",
+                    ""type"": ""Button"",
+                    ""id"": ""975ff4be-615a-4496-baa8-eafb6728cb1e"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -214,11 +230,11 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""45909a40-ac96-4768-a5c7-cbbe13df1391"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""Bow"",
+                    ""action"": ""ShootArrow"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -230,6 +246,61 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
                     ""action"": ""MousePoint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""31f2f5c9-a48a-44fd-bce3-a269284b82d4"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ce29fec5-4c6f-41c1-bf42-355eb2b50fbc"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""CancelArrow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3aa7401c-05ed-4ae9-9482-cff68a18e266"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""CancelArrow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""46ec6474-5ea6-4df9-8a10-0d5c81f854d0"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""CancelArrow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""db391e67-f366-4561-9ac7-0519e8abc0f8"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""CancelArrow"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -283,8 +354,10 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_PlaceTrap = m_Player.FindAction("PlaceTrap", throwIfNotFound: true);
-        m_Player_Bow = m_Player.FindAction("Bow", throwIfNotFound: true);
+        m_Player_ShootArrow = m_Player.FindAction("ShootArrow", throwIfNotFound: true);
         m_Player_MousePoint = m_Player.FindAction("MousePoint", throwIfNotFound: true);
+        m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
+        m_Player_CancelArrow = m_Player.FindAction("CancelArrow", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -338,8 +411,10 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_PlaceTrap;
-    private readonly InputAction m_Player_Bow;
+    private readonly InputAction m_Player_ShootArrow;
     private readonly InputAction m_Player_MousePoint;
+    private readonly InputAction m_Player_Inventory;
+    private readonly InputAction m_Player_CancelArrow;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -348,8 +423,10 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @PlaceTrap => m_Wrapper.m_Player_PlaceTrap;
-        public InputAction @Bow => m_Wrapper.m_Player_Bow;
+        public InputAction @ShootArrow => m_Wrapper.m_Player_ShootArrow;
         public InputAction @MousePoint => m_Wrapper.m_Player_MousePoint;
+        public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
+        public InputAction @CancelArrow => m_Wrapper.m_Player_CancelArrow;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -371,12 +448,18 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @PlaceTrap.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlaceTrap;
                 @PlaceTrap.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlaceTrap;
                 @PlaceTrap.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlaceTrap;
-                @Bow.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBow;
-                @Bow.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBow;
-                @Bow.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBow;
+                @ShootArrow.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShootArrow;
+                @ShootArrow.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShootArrow;
+                @ShootArrow.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShootArrow;
                 @MousePoint.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMousePoint;
                 @MousePoint.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMousePoint;
                 @MousePoint.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMousePoint;
+                @Inventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
+                @Inventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
+                @Inventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
+                @CancelArrow.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCancelArrow;
+                @CancelArrow.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCancelArrow;
+                @CancelArrow.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCancelArrow;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -393,12 +476,18 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @PlaceTrap.started += instance.OnPlaceTrap;
                 @PlaceTrap.performed += instance.OnPlaceTrap;
                 @PlaceTrap.canceled += instance.OnPlaceTrap;
-                @Bow.started += instance.OnBow;
-                @Bow.performed += instance.OnBow;
-                @Bow.canceled += instance.OnBow;
+                @ShootArrow.started += instance.OnShootArrow;
+                @ShootArrow.performed += instance.OnShootArrow;
+                @ShootArrow.canceled += instance.OnShootArrow;
                 @MousePoint.started += instance.OnMousePoint;
                 @MousePoint.performed += instance.OnMousePoint;
                 @MousePoint.canceled += instance.OnMousePoint;
+                @Inventory.started += instance.OnInventory;
+                @Inventory.performed += instance.OnInventory;
+                @Inventory.canceled += instance.OnInventory;
+                @CancelArrow.started += instance.OnCancelArrow;
+                @CancelArrow.performed += instance.OnCancelArrow;
+                @CancelArrow.canceled += instance.OnCancelArrow;
             }
         }
     }
@@ -436,7 +525,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnSprint(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnPlaceTrap(InputAction.CallbackContext context);
-        void OnBow(InputAction.CallbackContext context);
+        void OnShootArrow(InputAction.CallbackContext context);
         void OnMousePoint(InputAction.CallbackContext context);
+        void OnInventory(InputAction.CallbackContext context);
+        void OnCancelArrow(InputAction.CallbackContext context);
     }
 }

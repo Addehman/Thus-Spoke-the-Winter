@@ -9,7 +9,7 @@ public class Inventory : MonoBehaviour
 	public event Action UpdateUI;
 
 	public int inventoryMaxCapacity = 100;
-	public int currentInventory;
+	public int currentTotalInventory;
 	[Space(10)]
 	public int wood;
 	public int food;
@@ -40,7 +40,7 @@ public class Inventory : MonoBehaviour
 
 	void Start()
 	{
-		currentInventory = 0;
+		currentTotalInventory = 0;
 	}
 
 	void GatherResource(GameObject obj)
@@ -55,7 +55,7 @@ public class Inventory : MonoBehaviour
 		int gatheredBunnyMeat = 0;
 
 
-		if (currentInventory >= inventoryMaxCapacity)
+		if (currentTotalInventory >= inventoryMaxCapacity)
 		{
 			print("Inventory is full");
 			return;
@@ -170,7 +170,7 @@ public class Inventory : MonoBehaviour
 
 	private void UpdateCurrentInventory()
 	{
-		currentInventory = (wood + food);
+		currentTotalInventory = (wood + food);
 	}
 
 	public void ClearFood()

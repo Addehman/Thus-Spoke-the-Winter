@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class ScreenWrap : MonoBehaviour
 {
+	private static ScreenWrap _instance;
+	public static ScreenWrap Instance { get { return _instance; } }
+
 	public event Action<Latitude> PlayerTraveling;
 	[SerializeField] private float borderLeft = 0f, borderRight = 1f, borderTop = 0.95f, 
 	borderBottom = -0.05f, extraStepVertical = 0.05f, extraStepHorizontal = 0.01f, entryTop = 2f, entryBottom = -1f;
@@ -15,6 +18,14 @@ public class ScreenWrap : MonoBehaviour
 	[SerializeField] private SeedGenerator _seedGenerator;
 	private bool _northIsNotExplored, _eastIsNotExplored, _southIsNotExplored, _westIsNotExplored;
 
+
+	private void Awake()
+	{
+		if (_instance != null && _instance != this)
+			Destroy(this);
+		else
+			_instance = this;
+	}
 
 	void Start()
 	{
