@@ -76,13 +76,14 @@ public class EnergyController : MonoBehaviour
 
 		//Resting. Lock player inputs.
 		_player.lockInput = true;
+		//_player.playerInput.DeactivateInput(); // This could probably only be used if we would only use the PlayerInput-component to connect the actions to the buttons.
 
 		//Run sleep animation (Crossfade to/from black).
 		//The animation executes an event in the end of the animation,
 		//setting the _player.lockInput back to false again.
 		UIManager.Instance.Crossfade();
 
-		print($"{this}Resting");
+		print($"{this}: Resting");
 		PlayerRestingEndingRound?.Invoke();
 	}
 

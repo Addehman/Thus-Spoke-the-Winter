@@ -13,6 +13,7 @@ public class TrapBehaviour : MonoBehaviour, IInteractable
 	[SerializeField] private Sprite _untriggeredTrapSprite, _triggeredTrapSprite;
 	public TrapState state = TrapState.Untriggered;
 	public event Action<GameObject> OnCollect;
+	public event Action<GameObject, TrapBehaviour> PickupTrap;
 	public int resourceAmount;
 	public int listIndex;
 	public float timeUntilCatch;
@@ -56,7 +57,6 @@ public class TrapBehaviour : MonoBehaviour, IInteractable
 
 	private void OnEnable()
 	{
-		
 		Init();
 	}
 
@@ -64,10 +64,11 @@ public class TrapBehaviour : MonoBehaviour, IInteractable
 	{
 		_gameObject.SetActive(false);
 		TrapController.Instance.PickUpTrap(this);
+		PickupTrap?.Invoke(_gameObject, this);
 		
 		if (state == TrapState.Triggered)
 		{
-			OnCollect(_gameObject);
+			OnCollect?.Invoke(_gameObject);
 		}
 	}
 

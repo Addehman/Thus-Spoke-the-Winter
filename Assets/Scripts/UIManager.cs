@@ -83,6 +83,8 @@ public class UIManager : MonoBehaviour
 
 	public void ToggleInventoryActive()
 	{
+		if (_player.lockInput) return;
+
 		isInventoryActive = !isInventoryActive;
 		_inventoryGfx.SetActive(isInventoryActive);
 	}

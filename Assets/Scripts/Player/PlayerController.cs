@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
 	public event Action<Vector3> OnPlaceTrap;
 	public Vector2 mousePoint;
 	public bool lockInput = false;
+	public PlayerInput playerInput;
 
 	private InputMaster _controls;
 	private Transform _transform;
@@ -90,12 +91,12 @@ public class PlayerController : MonoBehaviour
 
 		if (other.TryGetComponent(out TreeBehaviour tree))
 		{
-			tree.OnDestruct += OnResourceDestroy;
+			tree.OnDestruct += OnInteractableDestroy;
 			if (tree.fruits.Count > 0)
 			{
 				for (int i = 0; i < tree.fruits.Count; i++)
 				{
-					tree.fruits[i].OnDestruct += OnResourceDestroy;
+					tree.fruits[i].OnDestruct += OnInteractableDestroy;
 				}
 			}
 			return;
@@ -103,19 +104,20 @@ public class PlayerController : MonoBehaviour
 
 		if (other.TryGetComponent(out FoodBehaviour food))
 		{
-			food.OnDestruct += OnResourceDestroy;
+			food.OnDestruct += OnInteractableDestroy;
 			return;
 		}
 
 		if (mob != null)
 		{
-			mob.OnButcher += OnResourceDestroy;
+			mob.OnButcher += OnInteractableDestroy;
 			return;
 		}
 
 		if (other.TryGetComponent(out TrapBehaviour trap))
 		{
-			trap.OnCollect += OnResourceDestroy;
+			trap.OnCollect += OnInteractableDestroy;
+			trap.PickupTrap += RemoveTrapFromInteractablesList;
 			return;
 		}
 	}
@@ -129,12 +131,12 @@ public class PlayerController : MonoBehaviour
 
 		if (other.TryGetComponent(out TreeBehaviour tree))
 		{
-			tree.OnDestruct -= OnResourceDestroy;
+			tree.OnDestruct -= OnInteractableDestroy;
 			if (tree.fruits.Count > 0)
 			{
 				for (int i = 0; i < tree.fruits.Count; i++)
 				{
-					tree.fruits[i].OnDestruct -= OnResourceDestroy;
+					tree.fruits[i].OnDestruct -= OnInteractableDestroy;
 				}
 			}
 			return;
@@ -142,27 +144,29 @@ public class PlayerController : MonoBehaviour
 
 		if (other.TryGetComponent(out FoodBehaviour food))
 		{
-			food.OnDestruct -= OnResourceDestroy;
+			food.OnDestruct -= OnInteractableDestroy;
 			return;
 		}
 
 		if (other.TryGetComponent(out MobBehaviour mob))
 		{
-			mob.OnButcher -= OnResourceDestroy;
+			mob.OnButcher -= OnInteractableDestroy;
 			return;
 		}
 
 		if (other.TryGetComponent(out TrapBehaviour trap))
 		{
-			trap.OnCollect -= OnResourceDestroy;
+			trap.OnCollect -= OnInteractableDestroy;
+			trap.PickupTrap += RemoveTrapFromInteractablesList;
 			return;
 		}
 	}
 
 	public void UnlockInput()
-    {
+	{
 		lockInput = false;
-    }
+		//playerInput.ActivateInput(); // This could probably only be used if we would only use the PlayerInput-component to connect the actions to the buttons.
+	}
 
 	private void GetPlayerInput()
 	{
@@ -198,12 +202,14 @@ public class PlayerController : MonoBehaviour
 
 	private void PlaceTrap()
 	{
+		if (lockInput) return;
+
 		OnPlaceTrap?.Invoke(_transform.position);
 	}
 
 	private void Interact()
 	{
-		if (_interactablesInRange.Count == 0 || _interactablesInRange[0] == null) return;
+		if (lockInput || _interactablesInRange.Count == 0 || _interactablesInRange[0] == null) return;
 
 		GameObject nearestObject = NearestObject();
 		int index = GetIndexFromList(_interactablesInRange, nearestObject);
@@ -213,7 +219,7 @@ public class PlayerController : MonoBehaviour
 
 		var interactable = _interactablesInRange[index].GetComponent<IInteractable>();
 		if (interactable == null) return;
-		interactable.OnInteract(); 
+		interactable.OnInteract();
 
 		// Let's turn the player's animation in the direction of what it is interacting with.
 		SetPlayerAnimationDirection(nearestObject);
@@ -221,12 +227,16 @@ public class PlayerController : MonoBehaviour
 
 	private void ChargeArrow()
 	{
+		if (lockInput) return; 
+
 		_arrowCanceled = false;
 		BowBehaviour.Instance.ChargeArrow();
 	}
 
 	private void ReleaseArrow(bool doShoot)
 	{
+		if (lockInput) return;
+
 		if (!doShoot)
 		{
 			BowBehaviour.Instance.CancelArrow();
@@ -341,7 +351,7 @@ public class PlayerController : MonoBehaviour
 		return direction;
 	}
 
-	private void OnResourceDestroy(GameObject obj)
+	private void OnInteractableDestroy(GameObject obj)
 	{
 		print($"OnResourceDestroy: {obj}");
 		obj.TryGetComponent(out FoodBehaviour food);
@@ -353,14 +363,14 @@ public class PlayerController : MonoBehaviour
 		else if (food == null || (food != null && food.type != ResourceType.apple))
 		{
 			//print("Not Apple");
-			int index = GetIndexFromList(_interactablesInRange, obj);
+			//int index = GetIndexFromList(_interactablesInRange, obj); // not necessary considering that we already have a reference to the object that we want to remove
 			if (_interactablesInRange.Contains(obj))
-				_interactablesInRange.RemoveAt(index);
+				_interactablesInRange.Remove(obj);
 		}
 
 		if (obj.TryGetComponent(out TreeBehaviour tree))
 		{
-			tree.OnDestruct -= OnResourceDestroy;
+			tree.OnDestruct -= OnInteractableDestroy;
 			ResourceGathered?.Invoke(obj);
 			EnergyDrain?.Invoke(tree.costSize);
 			return;
@@ -368,7 +378,7 @@ public class PlayerController : MonoBehaviour
 
 		if (food != null)
 		{
-			food.OnDestruct -= OnResourceDestroy;
+			food.OnDestruct -= OnInteractableDestroy;
 			ResourceGathered?.Invoke(obj);
 			EnergyDrain?.Invoke(food.costSize);
 			return;
@@ -376,7 +386,7 @@ public class PlayerController : MonoBehaviour
 
 		if (obj.TryGetComponent(out MobBehaviour mob))
 		{
-			mob.OnButcher -= OnResourceDestroy;
+			mob.OnButcher -= OnInteractableDestroy;
 			MobController.Instance.RemoveButcheredFromDeadMobDictionary(obj);
 			ResourceGathered?.Invoke(obj);
 			EnergyDrain?.Invoke(mob.costSize);
@@ -385,14 +395,23 @@ public class PlayerController : MonoBehaviour
 
 		if (obj.TryGetComponent(out TrapBehaviour trap))
 		{
-			trap.OnCollect -= OnResourceDestroy;
+			trap.OnCollect -= OnInteractableDestroy;
+			if (_interactablesInRange.Contains(obj))
+				_interactablesInRange.Remove(obj);
 			ResourceGathered?.Invoke(obj);
 			EnergyDrain?.Invoke(trap.costSize);
 			return;
 		}
 	}
 
-	private void ClearInteractablesInRangeList()
+	public void RemoveTrapFromInteractablesList(GameObject obj, TrapBehaviour trap)
+	{
+		_interactablesInRange.Remove(obj);
+		trap.OnCollect -= OnInteractableDestroy;
+		trap.PickupTrap -= RemoveTrapFromInteractablesList;
+	}
+
+	public void ClearInteractablesInRangeList()
 	{
 		_interactablesInRange.Clear();
 	}
