@@ -201,13 +201,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _walkSpeed: 20
   _sprintSpeed: 100
+  aimParentYOffset: 0.1
   _interactablesInRange: []
   _hasEnergy: 1
-  mousePoint: {x: 0, y: 0}
-  lockInput: 0
-  playerInput: {fileID: 1076928753723853447}
   _doSprint: 0
   _arrowCanceled: 0
+  aimParent: {fileID: 0}
+  aimChild: {fileID: 0}
+  aimPoint: {x: 0, y: 0}
+  lockInput: 0
+  playerInput: {fileID: 1076928753723853447}
+  currentControlScheme: 0
 --- !u!136 &1858088666
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -289,7 +293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: 304e62256edcb51408497b3d2ddc5f77, type: 3}
-  m_NotificationBehavior: 2
+  m_NotificationBehavior: 3
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:

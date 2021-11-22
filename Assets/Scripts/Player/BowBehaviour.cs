@@ -66,9 +66,11 @@ public class BowBehaviour : MonoBehaviour
 
 	private void Update()
 	{
-		if (isHoldingArrow)
+		if (!isHoldingArrow) return;
+
+		if (_player.currentControlScheme == ControlSchemes.KeyboardAndMouse)
 		{
-			Ray ray = _camera.ScreenPointToRay(_player.mousePoint);
+			Ray ray = _camera.ScreenPointToRay(_player.aimPoint);
 			RaycastHit hit;
 
 			if (Physics.Raycast(ray, out hit, float.MaxValue, _ground))
@@ -79,6 +81,13 @@ public class BowBehaviour : MonoBehaviour
 				_arrowParent.forward = new Vector3(_arrowDirection.x, 0f, _arrowDirection.z);
 				//_player.SetPlayerAnimationDirection(_arrowPool[_arrowIndex].gameObject);
 			}
+		}
+		else if (_player.currentControlScheme == ControlSchemes.Gamepad || _player.currentControlScheme == ControlSchemes.Touch)
+		{
+			_arrowDirection = _player.aimChild.position - _arrowParent.position;
+			_arrowDirection.z -= _arrowParent.position.y;
+
+			_arrowParent.forward = new Vector3(_arrowDirection.x, 0f, _arrowDirection.z);
 		}
 	}
 

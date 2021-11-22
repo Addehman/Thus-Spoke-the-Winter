@@ -59,7 +59,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""MousePoint"",
+                    ""name"": ""AimPoint"",
                     ""type"": ""Value"",
                     ""id"": ""1855275b-a413-46bb-86df-d38d7c111f30"",
                     ""expectedControlType"": ""Vector2"",
@@ -262,6 +262,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""096d445d-4c08-4c1a-8aa3-36505c77a104"",
+                    ""path"": ""<Touchscreen>/primaryTouch/tap"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Touch"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""edb29882-9b2f-4e97-967e-eb70c0ea043a"",
                     ""path"": ""<Keyboard>/#(e)"",
                     ""interactions"": """",
@@ -306,12 +317,23 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""e8385389-6936-46d9-bc1e-a6eb861de551"",
+                    ""path"": ""<Touchscreen>/press"",
+                    ""interactions"": ""Hold(duration=0.5)"",
+                    ""processors"": """",
+                    ""groups"": ""Touch"",
+                    ""action"": ""ShootArrow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""a4eca385-fcda-4d1d-b58c-adce63086909"",
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""MousePoint"",
+                    ""action"": ""AimPoint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -322,7 +344,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""MousePoint"",
+                    ""action"": ""AimPoint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -487,7 +509,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_PlaceTrap = m_Player.FindAction("PlaceTrap", throwIfNotFound: true);
         m_Player_ShootArrow = m_Player.FindAction("ShootArrow", throwIfNotFound: true);
-        m_Player_MousePoint = m_Player.FindAction("MousePoint", throwIfNotFound: true);
+        m_Player_AimPoint = m_Player.FindAction("AimPoint", throwIfNotFound: true);
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
         m_Player_CancelArrow = m_Player.FindAction("CancelArrow", throwIfNotFound: true);
     }
@@ -544,7 +566,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_PlaceTrap;
     private readonly InputAction m_Player_ShootArrow;
-    private readonly InputAction m_Player_MousePoint;
+    private readonly InputAction m_Player_AimPoint;
     private readonly InputAction m_Player_Inventory;
     private readonly InputAction m_Player_CancelArrow;
     public struct PlayerActions
@@ -556,7 +578,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @PlaceTrap => m_Wrapper.m_Player_PlaceTrap;
         public InputAction @ShootArrow => m_Wrapper.m_Player_ShootArrow;
-        public InputAction @MousePoint => m_Wrapper.m_Player_MousePoint;
+        public InputAction @AimPoint => m_Wrapper.m_Player_AimPoint;
         public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
         public InputAction @CancelArrow => m_Wrapper.m_Player_CancelArrow;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -583,9 +605,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @ShootArrow.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShootArrow;
                 @ShootArrow.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShootArrow;
                 @ShootArrow.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShootArrow;
-                @MousePoint.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMousePoint;
-                @MousePoint.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMousePoint;
-                @MousePoint.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMousePoint;
+                @AimPoint.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAimPoint;
+                @AimPoint.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAimPoint;
+                @AimPoint.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAimPoint;
                 @Inventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
                 @Inventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
                 @Inventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventory;
@@ -611,9 +633,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @ShootArrow.started += instance.OnShootArrow;
                 @ShootArrow.performed += instance.OnShootArrow;
                 @ShootArrow.canceled += instance.OnShootArrow;
-                @MousePoint.started += instance.OnMousePoint;
-                @MousePoint.performed += instance.OnMousePoint;
-                @MousePoint.canceled += instance.OnMousePoint;
+                @AimPoint.started += instance.OnAimPoint;
+                @AimPoint.performed += instance.OnAimPoint;
+                @AimPoint.canceled += instance.OnAimPoint;
                 @Inventory.started += instance.OnInventory;
                 @Inventory.performed += instance.OnInventory;
                 @Inventory.canceled += instance.OnInventory;
@@ -658,7 +680,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnPlaceTrap(InputAction.CallbackContext context);
         void OnShootArrow(InputAction.CallbackContext context);
-        void OnMousePoint(InputAction.CallbackContext context);
+        void OnAimPoint(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
         void OnCancelArrow(InputAction.CallbackContext context);
     }

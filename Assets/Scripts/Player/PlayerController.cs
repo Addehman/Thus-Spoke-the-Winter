@@ -3,18 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+public enum ControlSchemes
+{
+	KeyboardAndMouse, Gamepad, Touch,
+}
 public class PlayerController : MonoBehaviour
 {
-	[SerializeField] private float _walkSpeed = 20f, _sprintSpeed = 40f;
+	[SerializeField] private float _walkSpeed = 20f, _sprintSpeed = 40f, aimParentYOffset = 0.1f;
 	[SerializeField] private List<GameObject> _interactablesInRange;
 	[SerializeField] private bool _hasEnergy = true;
+	[SerializeField] private bool _doSprint, _arrowCanceled = false;
+	[SerializeField] private RectTransform _moveDigitalJoystick;
 
+	public Transform aimParent, aimChild;
 	public event Action<GameObject> ResourceGathered;
 	public event Action<EnergyCost> EnergyDrain;
 	public event Action<Vector3> OnPlaceTrap;
-	public Vector2 mousePoint;
+	public Vector2 aimPoint;
 	public bool lockInput = false;
 	public PlayerInput playerInput;
+	public ControlSchemes currentControlScheme;
 
 	private InputMaster _controls;
 	private Transform _transform;
@@ -23,7 +32,6 @@ public class PlayerController : MonoBehaviour
 	private Rigidbody _rb;
 	private Vector2 _movement;
 	private float _horizontal, _vertical;
-	[SerializeField] private bool _doSprint, _arrowCanceled = false;
 
 
 	private void Awake()
@@ -35,11 +43,37 @@ public class PlayerController : MonoBehaviour
 
 		_controls = new InputMaster();
 		_controls.Player.Movement.ReadValue<Vector2>();
-		_controls.Player.MousePoint.ReadValue<Vector2>();
+		_controls.Player.AimPoint.ReadValue<Vector2>();
 	}
 
 	private void OnEnable()
 	{
+/*		InputSystem.onDeviceChange += (device, change) => // this is for checking whether a new device is plugged in or out, or etc. however, as it seems, not if there simply is any change between control schemes.
+		{
+			switch (change)
+			{
+				case InputDeviceChange.Added:
+					break;
+				case InputDeviceChange.Removed:
+					break;
+				case InputDeviceChange.Disconnected:
+					break;
+				case InputDeviceChange.Reconnected:
+					break;
+				case InputDeviceChange.Enabled:
+					break;
+				case InputDeviceChange.Disabled:
+					break;
+				case InputDeviceChange.UsageChanged:
+					break;
+				case InputDeviceChange.ConfigurationChanged:
+					break;
+				case InputDeviceChange.Destroyed:
+					break;
+				default:
+					break;
+			}
+		};*/
 		_controls.Enable();
 		_doSprint = false;
 		_controls.Player.Sprint.started += ctx => _doSprint = true;
@@ -59,6 +93,8 @@ public class PlayerController : MonoBehaviour
 		if (StorageController.Instance == null)
 			Debug.LogWarning("StorageController.Instance is Null!");
 		StorageController.Instance.GoalAccomplished += SetHasEnergyTrue;
+
+		playerInput.onControlsChanged += OnControlsChanged;
 	}
 
 
@@ -68,8 +104,29 @@ public class PlayerController : MonoBehaviour
 			GetPlayerInput();
 
 		PlayerAnimation();
+	}
 
-		//mousePoint = _controls.Player.MousePoint.ReadValue<Vector2>();
+	private void OnControlsChanged(PlayerInput input)
+	{
+	// Here we can tell what Control Scheme is currently being used:
+		switch (input.currentControlScheme)
+		{
+			case "Gamepad":
+				currentControlScheme = ControlSchemes.Gamepad;
+				UIManager.Instance.TouchInputObjectGroupActivation(false);
+				break;
+			case "Touch":
+				currentControlScheme = ControlSchemes.Touch;
+				UIManager.Instance.TouchInputObjectGroupActivation(true);
+				break;
+			case "Keyboard and Mouse":
+				currentControlScheme = ControlSchemes.KeyboardAndMouse;
+				UIManager.Instance.TouchInputObjectGroupActivation(false);
+				break;
+			default:
+				break;
+		}
+		print($"control scheme changed now to: {input.currentControlScheme}");
 	}
 
 	private void FixedUpdate()
@@ -171,11 +228,34 @@ public class PlayerController : MonoBehaviour
 	private void GetPlayerInput()
 	{
 		_movement = _controls.Player.Movement.ReadValue<Vector2>();
-		mousePoint = _controls.Player.MousePoint.ReadValue<Vector2>();
+		aimPoint = _controls.Player.AimPoint.ReadValue<Vector2>();
 
 		_horizontal = _movement.x;
 		_vertical = _movement.y;
 		//print($"horizontal: {horizontal}\nvertical: {vertical}");
+
+		// Touch sprint:
+		if (/*currentControlScheme == ControlSchemes.Touch && */(Mathf.Abs(_moveDigitalJoystick.position.x) >= 70f || Mathf.Abs(_moveDigitalJoystick.position.y) >= 70f))
+		{
+			_doSprint = true;
+		}
+		else if (/*currentControlScheme == ControlSchemes.Touch && */(Mathf.Abs(_moveDigitalJoystick.position.x) < 70f || Mathf.Abs(_moveDigitalJoystick.position.y) < 70f))
+		{
+			_doSprint = false;
+		}
+
+		AimHelper();
+	}
+
+	private void AimHelper()
+	{
+		//aimBall.eulerAngles = new Vector3(0f, 0f, Mathf.Atan2(mousePoint.x, mousePoint.y) * -180 / Mathf.PI + 90f);
+		aimChild.localPosition = aimPoint;
+		Vector3 aimParentPosition = _transform.position;
+		aimParentPosition.y = _transform.position.y + aimParentYOffset;
+		aimParent.position = aimParentPosition;
+
+		//mousePoint = _controls.Player.MousePoint.ReadValue<Vector2>();
 	}
 
 	/// <summary>
@@ -250,7 +330,7 @@ public class PlayerController : MonoBehaviour
 			return;
 		}
 
-		BowBehaviour.Instance.ReleaseArrow(mousePoint);
+		BowBehaviour.Instance.ReleaseArrow(aimPoint);
 	}
 
 	private void SetHasEnergyFalse() => _hasEnergy = false;
@@ -471,5 +551,7 @@ public class PlayerController : MonoBehaviour
 		MobController.Instance.OnClearMobs -= ClearInteractablesInRangeList;
 		EnergyController.Instance.EnergyDepleted -= SetHasEnergyFalse;
 		StorageController.Instance.GoalAccomplished -= SetHasEnergyTrue;
+
+		playerInput.onControlsChanged -= OnControlsChanged;
 	}
 }

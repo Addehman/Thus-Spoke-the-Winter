@@ -46,7 +46,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "MousePoint",
+                    "name": "AimPoint",
                     "type": "Value",
                     "id": "1855275b-a413-46bb-86df-d38d7c111f30",
                     "expectedControlType": "Vector2",
@@ -249,6 +249,17 @@
                 },
                 {
                     "name": "",
+                    "id": "096d445d-4c08-4c1a-8aa3-36505c77a104",
+                    "path": "<Touchscreen>/primaryTouch/tap",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "edb29882-9b2f-4e97-967e-eb70c0ea043a",
                     "path": "<Keyboard>/#(e)",
                     "interactions": "",
@@ -293,12 +304,23 @@
                 },
                 {
                     "name": "",
+                    "id": "e8385389-6936-46d9-bc1e-a6eb861de551",
+                    "path": "<Touchscreen>/press",
+                    "interactions": "Hold(duration=0.5)",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "ShootArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "a4eca385-fcda-4d1d-b58c-adce63086909",
                     "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "MousePoint",
+                    "action": "AimPoint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -309,7 +331,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "MousePoint",
+                    "action": "AimPoint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

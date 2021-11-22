@@ -13,7 +13,8 @@ public class UIManager : MonoBehaviour
 	[SerializeField] private Image _energyBar;
 	[SerializeField] private Animator _animator;
 	[SerializeField] private PlayerController _player;
-	[SerializeField] private GameObject _inventoryGfx;
+	[SerializeField] private GameObject _inventoryGfx, _touchControlsObjectGroup;
+	//public bool isTouchActive = false;
 
 	private bool isInventoryActive = false;
 
@@ -93,6 +94,11 @@ public class UIManager : MonoBehaviour
 	{
 		isInventoryActive = false;
 		_inventoryGfx.SetActive(isInventoryActive);
+	}
+
+	public void TouchInputObjectGroupActivation(bool isActive)
+	{
+		_touchControlsObjectGroup.SetActive(isActive);
 	}
 
 	private void OnDestroy()
