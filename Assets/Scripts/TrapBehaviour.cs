@@ -65,6 +65,7 @@ public class TrapBehaviour : MonoBehaviour, IInteractable
 		_gameObject.SetActive(false);
 		TrapController.Instance.PickUpTrap(this);
 		PickupTrap?.Invoke(_gameObject, this);
+		state = TrapState.Untriggered;
 		
 		if (state == TrapState.Triggered)
 		{
