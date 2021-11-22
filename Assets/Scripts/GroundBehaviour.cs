@@ -9,14 +9,15 @@ public class GroundBehaviour : MonoBehaviour
 	[SerializeField] private Color spring, summer, fall, winter;
 
 
-	private void Awake()
-	{
-		UpdateGFX(SeasonController.Instance.currentSeason);
-	}
+	//private void Awake()
+	//{
+	//	UpdateGFX(SeasonController.Instance.currentSeason);
+	//}
 
 	void Start()
 	{
 		/*print($"{this} was Started");*/
+		UpdateGFX(SeasonController.Instance.currentSeason);
 		SeasonController.Instance.UpdateSeason += UpdateGFX;
 	}
 

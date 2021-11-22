@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private bool _hasEnergy = true;
 	[SerializeField] private bool _doSprint, _arrowCanceled = false;
 	[SerializeField] private RectTransform _moveDigitalJoystick;
+	[SerializeField] private Vector2 _movement;
 
 	public Transform aimParent, aimChild;
 	public event Action<GameObject> ResourceGathered;
@@ -30,7 +31,6 @@ public class PlayerController : MonoBehaviour
 	private Animator _animator;
 	//private SpriteRenderer _spriteRenderer;
 	private Rigidbody _rb;
-	private Vector2 _movement;
 	private float _horizontal, _vertical;
 
 
@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
 
 		_controls = new InputMaster();
 		_controls.Player.Movement.ReadValue<Vector2>();
+		_controls.Player.MousePoint.ReadValue<Vector2>();
 		_controls.Player.AimPoint.ReadValue<Vector2>();
 	}
 
@@ -114,14 +115,17 @@ public class PlayerController : MonoBehaviour
 			case "Gamepad":
 				currentControlScheme = ControlSchemes.Gamepad;
 				UIManager.Instance.TouchInputObjectGroupActivation(false);
+				aimPoint = Vector2.zero;
 				break;
 			case "Touch":
 				currentControlScheme = ControlSchemes.Touch;
 				UIManager.Instance.TouchInputObjectGroupActivation(true);
+				aimPoint = Vector2.zero;
 				break;
 			case "Keyboard and Mouse":
 				currentControlScheme = ControlSchemes.KeyboardAndMouse;
 				UIManager.Instance.TouchInputObjectGroupActivation(false);
+				aimPoint = Vector2.zero;
 				break;
 			default:
 				break;
@@ -228,18 +232,18 @@ public class PlayerController : MonoBehaviour
 	private void GetPlayerInput()
 	{
 		_movement = _controls.Player.Movement.ReadValue<Vector2>();
-		aimPoint = _controls.Player.AimPoint.ReadValue<Vector2>();
+		aimPoint = /*_controls.Player.MousePoint.ReadValue<Vector2>() + _controls.Player.AimPoint.ReadValue<Vector2>()*/currentControlScheme == ControlSchemes.KeyboardAndMouse ? _controls.Player.MousePoint.ReadValue<Vector2>() : _controls.Player.AimPoint.ReadValue<Vector2>();
 
 		_horizontal = _movement.x;
 		_vertical = _movement.y;
 		//print($"horizontal: {horizontal}\nvertical: {vertical}");
 
 		// Touch sprint:
-		if (/*currentControlScheme == ControlSchemes.Touch && */(Mathf.Abs(_moveDigitalJoystick.position.x) >= 70f || Mathf.Abs(_moveDigitalJoystick.position.y) >= 70f))
+		if (currentControlScheme == ControlSchemes.Touch && (Mathf.Abs(_moveDigitalJoystick.position.x) >= 70f || Mathf.Abs(_moveDigitalJoystick.position.y) >= 70f))
 		{
 			_doSprint = true;
 		}
-		else if (/*currentControlScheme == ControlSchemes.Touch && */(Mathf.Abs(_moveDigitalJoystick.position.x) < 70f || Mathf.Abs(_moveDigitalJoystick.position.y) < 70f))
+		else if (currentControlScheme == ControlSchemes.Touch && (Mathf.Abs(_moveDigitalJoystick.position.x) < 70f || Mathf.Abs(_moveDigitalJoystick.position.y) < 70f))
 		{
 			_doSprint = false;
 		}

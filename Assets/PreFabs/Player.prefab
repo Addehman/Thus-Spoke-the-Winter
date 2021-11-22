@@ -206,6 +206,7 @@ MonoBehaviour:
   _hasEnergy: 1
   _doSprint: 0
   _arrowCanceled: 0
+  _moveDigitalJoystick: {fileID: 0}
   aimParent: {fileID: 0}
   aimChild: {fileID: 0}
   aimPoint: {x: 0, y: 0}
@@ -338,7 +339,7 @@ MonoBehaviour:
     m_ActionId: 975ff4be-615a-4496-baa8-eafb6728cb1e
     m_ActionName: Player/CancelArrow[/Mouse/rightButton,/Keyboard/tab,/Keyboard/escape,/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}

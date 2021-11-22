@@ -1983,14 +1983,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 1076928753723853447, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
-      propertyPath: m_DefaultControlScheme
-      value: Touch
-      objectReference: {fileID: 0}
-    - target: {fileID: 1076928753723853447, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
-      propertyPath: m_NeverAutoSwitchControlSchemes
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6948897311830590201, guid: 33d1c695be0690f43b88e1c566a93e40, type: 3}
       propertyPath: _camera
       value: 
@@ -2127,6 +2119,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 326001287, guid: ddc55158a9c0b1f408ec4c268d0e6edc, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 559306177, guid: ddc55158a9c0b1f408ec4c268d0e6edc, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1869510460, guid: ddc55158a9c0b1f408ec4c268d0e6edc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

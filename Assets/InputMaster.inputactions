@@ -46,7 +46,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "AimPoint",
+                    "name": "MousePoint",
                     "type": "Value",
                     "id": "1855275b-a413-46bb-86df-d38d7c111f30",
                     "expectedControlType": "Vector2",
@@ -66,6 +66,14 @@
                     "type": "Button",
                     "id": "975ff4be-615a-4496-baa8-eafb6728cb1e",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "AimPoint",
+                    "type": "Value",
+                    "id": "c942a219-20a9-42a5-bd32-524ecef97478",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
                 }
@@ -320,18 +328,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "AimPoint",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "57e09b26-dd09-4336-87cc-99dd482c9053",
-                    "path": "<Gamepad>/rightStick",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "AimPoint",
+                    "action": "MousePoint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -442,6 +439,17 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "CancelArrow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0d9f942a-55e9-4441-b1cb-62b47bbaaca5",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "AimPoint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
