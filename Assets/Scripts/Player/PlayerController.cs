@@ -218,7 +218,7 @@ public class PlayerController : MonoBehaviour
 		if (other.TryGetComponent(out TrapBehaviour trap))
 		{
 			trap.OnCollect -= OnInteractableDestroy;
-			trap.PickupTrap += RemoveTrapFromInteractablesList;
+			trap.PickupTrap -= RemoveTrapFromInteractablesList;
 			return;
 		}
 	}

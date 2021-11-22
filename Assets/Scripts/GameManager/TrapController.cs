@@ -32,13 +32,12 @@ public class TrapController : MonoBehaviour
 
 	public event Action<Vector3> OnSpawnSavedTraps;
 	public event Action<int> UpdateTrapUI;
-	public bool isMobTrapped = false;
 	public int totalTrapCount = 3;
 
 	private Dictionary<int, List<int>> _savedTrapsDict = new Dictionary<int, List<int>>();
 	private List<int> _tempSavedTrapsList;
-	private List<float> _startTime;
-	private List<float> _timeToCatch;
+	private float[] _startTime;
+	private float[] _timeToCatch;
 	private int _currentSeed;
 
 
@@ -59,8 +58,8 @@ public class TrapController : MonoBehaviour
 
 		totalTrapCount = 3;
 		_availableTraps = totalTrapCount;
-		_startTime = new List<float>();
-		_timeToCatch = new List<float>();
+		_startTime = new float[3];
+		_timeToCatch = new float[3];
 
 		UpdateCurrentSeed(SeedGenerator.Instance.currentSeed);
 	}
@@ -87,7 +86,7 @@ public class TrapController : MonoBehaviour
 				trap.TryGetComponent(out TrapBehaviour trapBehav);
 				trap.isPlaced = true;
 				SaveTrapToDictionary(trapBehav.listIndex);
-				SetStartTime();
+				SetStartTime(trapBehav.listIndex);
 				SetTimeToCatch(trap);
 			}
 		}
@@ -123,16 +122,16 @@ public class TrapController : MonoBehaviour
 
 	//Need this to take into account which index we want to set the startTime for since we want to be able to pick up traps later on.
 
-	private void SetStartTime()
+	private void SetStartTime(int trapIndex)
 	{
-		_startTime.Add(Time.time);
+		_startTime[trapIndex] = Time.time;
 	}
 
 	private void SetTimeToCatch(TrapBehaviour trap)
 	{
 		float randomTime = UnityEngine.Random.Range(_minRandomCatchTime, _maxRandomCatchTime);
 
-		_timeToCatch.Add(randomTime);
+		_timeToCatch[trap.listIndex] = randomTime;
 		trap.timeUntilCatch = randomTime;
 	}
 
@@ -190,13 +189,9 @@ public class TrapController : MonoBehaviour
 				// Check if the trap have been out long enough, and make sure that there is no dead mobs lying around, and that it's not the cabin scene.
 				if (HasTrapCaughtAnimal(result[i]))
 				{
-					//newTrap.TryGetComponent(out TrapBehaviour trap);
-					newTrap.SetTrapToTriggered();
-					//isMobTrapped = true;
-					//newTrap.gameObject.name = "CAUGHT ANIMAL";
-					//MobController.Instance.SpawnTrappedMob(newTrap);
-					//ChangeSprite etc.
-				}
+                    //newTrap.TryGetComponent(out TrapBehaviour trap);
+                    newTrap.SetTrapToTriggered();
+                }
 			}
 		}
 	}
@@ -297,7 +292,6 @@ public class TrapController : MonoBehaviour
 				{
 					if (trap.state == TrapState.Triggered)
 					{
-						isMobTrapped = true;
 						return true;
 					}
 				}

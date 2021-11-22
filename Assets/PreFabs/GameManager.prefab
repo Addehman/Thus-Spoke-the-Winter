@@ -315,8 +315,7 @@ MonoBehaviour:
     prefabs:
     - {fileID: 5062927351200187593, guid: cfbee0a8fd6ec2e4e9de8fef18c54218, type: 3}
   _availableTraps: 0
-  _minRandomCatchTime: 60
+  _minRandomCatchTime: 30
   _maxRandomCatchTime: 300
   trapHolder: []
-  isMobTrapped: 0
   totalTrapCount: 3
