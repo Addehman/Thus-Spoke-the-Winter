@@ -1,19 +1,10 @@
 fileFormatVersion: 2
-guid: ec40e7c616fb9f345ab3bee6b84ce672
+guid: 0630fa8b3cbdefa48b579a2a0cd5646c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5642473314915429152
-    second: deadBunnies_brown_and_white_with_tail_0
-  - first:
-      213: -2419998530775134297
-    second: deadBunnies_brown_and_white_with_tail_1
-  - first:
-      213: 7872372894513023906
-    second: deadBunnies_brown_and_white_with_tail_2
-  - first:
-      213: -6570397437860716536
-    second: deadBunnies_brown_and_white_with_tail_3
+      213: 2170673317880925770
+    second: StorageInfo_PopupBubble_0
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -58,7 +49,7 @@ TextureImporter:
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 300
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -115,13 +106,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: deadBunnies_brown_and_white_with_tail_0
+      name: StorageInfo_PopupBubble_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 77
-        width: 35
-        height: 21
+        x: 6
+        y: 0
+        width: 87
+        height: 94
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -129,71 +120,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 02ba726b5971e4e40800000000000000
-      internalID: 5642473314915429152
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: deadBunnies_brown_and_white_with_tail_1
-      rect:
-        serializedVersion: 2
-        x: 47
-        y: 59
-        width: 41
-        height: 38
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7af4e2078207a6ed0800000000000000
-      internalID: -2419998530775134297
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: deadBunnies_brown_and_white_with_tail_2
-      rect:
-        serializedVersion: 2
-        x: 3
-        y: 53
-        width: 35
-        height: 21
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2abccdc1079404d60800000000000000
-      internalID: 7872372894513023906
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: deadBunnies_brown_and_white_with_tail_3
-      rect:
-        serializedVersion: 2
-        x: 40
-        y: 15
-        width: 41
-        height: 38
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 800ec2b775241d4a0800000000000000
-      internalID: -6570397437860716536
+      spriteID: a4e06b3c1e7cf1e10800000000000000
+      internalID: 2170673317880925770
       vertices: []
       indices: 
       edges: []

@@ -15,10 +15,16 @@ public class StorageHandler : MonoBehaviour, IInteractable
 
 	public void OnInteract()
 	{
-		if (type == StorageType.Wood) 
+		if (type == StorageType.Wood)
+		{
 			IncomingWood?.Invoke();
-		else if (type == StorageType.Food)
+			UIManager.Instance.UpdateStorageStatusUI("Wood Stack", StorageController.Instance.woodStorage, type);
+		}
+		else
+		{
 			IncomingFood?.Invoke();
+			UIManager.Instance.UpdateStorageStatusUI("Food Stash", StorageController.Instance.foodStorage, type);
+		}
 	}
 
 	private void OnDestroy()

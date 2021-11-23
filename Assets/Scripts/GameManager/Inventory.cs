@@ -137,24 +137,25 @@ public class Inventory : MonoBehaviour
 		}
 		else if (obj.TryGetComponent(out TrapBehaviour trapBehav))
 		{
-            switch (trapBehav.type)
-            {
-                case ResourceType.bunny:
+			switch (trapBehav.type)
+			{
+				case ResourceType.bunny:
 					gatheredBunnyMeat += trapBehav.resourceAmount;
-                    break;
-                default:
-                    break;
-            }
-        }
+					break;
+				default:
+					break;
+			}
+		}
 
 		wood += gatheredWood;
+
 		blueberry += gatheredBlueberry;
 		lingonberry += gatheredLingonberry;
 		apple += gatheredApple;
 		mushroom += gatheredMushroom;
 		bunnyMeat += gatheredBunnyMeat;
 
-		food = (blueberry + lingonberry + apple + mushroom + bunnyMeat);
+		food = blueberry + lingonberry + apple + mushroom + bunnyMeat;
 
 
 		InventoryCapacityFailsafe(gatheredWood, gatheredBlueberry, gatheredLingonberry,
@@ -189,8 +190,8 @@ public class Inventory : MonoBehaviour
 	}*/
 
 
-	void InventoryCapacityFailsafe(int gatheredWood, int gatheredBlueberry, int gatheredLingonberry,
-		int gatheredApple, int gatheredMushroom, int gatheredVenison)
+	private void InventoryCapacityFailsafe(int gatheredWood, int gatheredBlueberry, int gatheredLingonberry,
+		int gatheredApple, int gatheredMushroom, int gatheredBunnyMeat)
 	{
 		if (inventoryMaxCapacity - (wood + food) < 0)
 		{
@@ -217,10 +218,12 @@ public class Inventory : MonoBehaviour
 			{
 				mushroom += correction;
 			}
-			else if (gatheredVenison > 0)
+			else if (gatheredBunnyMeat > 0)
 			{
-				venison += correction;
+				bunnyMeat += correction;
 			}
+
+			food = blueberry + lingonberry + apple + mushroom + bunnyMeat;
 
 			print("Inventory is full");
 		}

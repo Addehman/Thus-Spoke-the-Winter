@@ -20,7 +20,7 @@ MonoBehaviour:
   earlyFall_Sprite: {fileID: 0}
   lateFall_Sprite: {fileID: 0}
   winter_Sprite: {fileID: 0}
-  depleted_Sprite: {fileID: 3609007194328432440, guid: 6d6805a5fbb9294469461d953edfcb2e, type: 3}
+  depleted_Sprite: {fileID: -2419998530775134297, guid: ec40e7c616fb9f345ab3bee6b84ce672, type: 3}
   type: 9
   health: 10
   damage: 5

@@ -92,8 +92,6 @@ public class PlayerController : MonoBehaviour
 		FoodController.Instance.OnClearFoods += ClearInteractablesInRangeList;
 		MobController.Instance.OnClearMobs += ClearInteractablesInRangeList;
 		EnergyController.Instance.EnergyDepleted += SetHasEnergyFalse;
-		if (StorageController.Instance == null)
-			Debug.LogWarning("StorageController.Instance is Null!");
 		StorageController.Instance.GoalAccomplished += SetHasEnergyTrue;
 
 		playerInput.onControlsChanged += OnControlsChanged;
@@ -182,6 +180,17 @@ public class PlayerController : MonoBehaviour
 			trap.PickupTrap += RemoveTrapFromInteractablesList;
 			return;
 		}
+
+		if (other.TryGetComponent(out StorageHandler storage))
+		{
+			if (storage.type == StorageType.Wood)
+				UIManager.Instance.UpdateStorageStatusUI("Wood Stack", StorageController.Instance.woodStorage, storage.type);
+			else
+				UIManager.Instance.UpdateStorageStatusUI("Food Stash", StorageController.Instance.foodStorage, storage.type);
+
+			UIManager.Instance.StorageStatusUIActivation(true);
+			return;
+		}
 	}
 
 	private void OnTriggerExit(Collider other)
@@ -220,6 +229,12 @@ public class PlayerController : MonoBehaviour
 		{
 			trap.OnCollect -= OnInteractableDestroy;
 			trap.PickupTrap -= RemoveTrapFromInteractablesList;
+			return;
+		}
+
+		if (other.TryGetComponent(out StorageHandler storage))
+		{
+			UIManager.Instance.StorageStatusUIActivation(false);
 			return;
 		}
 	}
@@ -300,7 +315,10 @@ public class PlayerController : MonoBehaviour
 		int index = GetIndexFromList(_interactablesInRange, nearestObject);
 
 		// Here we make sure that if the energy is depleted, then we shouldn't be able to gather anymore resource, thus no interaction with either food or tree objects.
-		if (!_hasEnergy && (_interactablesInRange[index].TryGetComponent(out TreeBehaviour tree) || _interactablesInRange[index].TryGetComponent(out FoodBehaviour food))) return;
+		if (!_hasEnergy && (_interactablesInRange[index].TryGetComponent(out TreeBehaviour _)
+					  || _interactablesInRange[index].TryGetComponent(out FoodBehaviour _)
+					  || _interactablesInRange[index].TryGetComponent(out MobBehaviour _)
+					  || _interactablesInRange[index].TryGetComponent(out TrapBehaviour _))) return;
 
 		var interactable = _interactablesInRange[index].GetComponent<IInteractable>();
 		if (interactable == null) return;
@@ -312,7 +330,7 @@ public class PlayerController : MonoBehaviour
 
 	private void ChargeArrow()
 	{
-		if (lockInput) return; 
+		if (lockInput || !_hasEnergy) return; 
 
 		_arrowCanceled = false;
 		BowBehaviour.Instance.ChargeArrow();
@@ -320,7 +338,7 @@ public class PlayerController : MonoBehaviour
 
 	private void ReleaseArrow(bool doShoot)
 	{
-		if (lockInput) return;
+		if (lockInput || !_hasEnergy) return;
 
 		if (!doShoot)
 		{

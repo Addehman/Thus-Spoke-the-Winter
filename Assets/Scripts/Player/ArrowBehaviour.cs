@@ -101,11 +101,11 @@ public class ArrowBehaviour : MonoBehaviour
 			// In the case mentioned just above, then the arrow object shouldn't be disabled either. It would be a nice effect if the arrow was stuck to what it hit.
 			// _transform.parent = other.transform; 
 			mob.OnDestruction();
-			_gameObject.SetActive(false);
+			//_gameObject.SetActive(false);
 
 			_rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
 			_rb.isKinematic = true;
-			_transform.parent = arrowOffset;
+			_transform.parent = mob.transform;
 		}
 		else
 		{

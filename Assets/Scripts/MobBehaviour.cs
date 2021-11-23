@@ -115,6 +115,14 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 		print($"{_gameObject} was butchered and harvested.");
 		_gameObject.SetActive(false);
 		OnButcher?.Invoke(_gameObject);
+		foreach (Transform obj in _transform)
+		{
+			if (obj.TryGetComponent(out ArrowBehaviour arrow))
+			{
+				obj.gameObject.SetActive(false);
+				obj.transform.parent = arrow.arrowOffset;
+			}
+		}
 	}
 
 	public void IsDepleted(bool isDepleted)

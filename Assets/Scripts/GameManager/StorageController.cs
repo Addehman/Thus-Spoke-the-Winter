@@ -16,12 +16,12 @@ public class StorageController : MonoBehaviour
 	public event Action UpdateUI, GoalAccomplished, GameOver;
 
 	[SerializeField] private Inventory _inventory;
-	[SerializeField] private int woodDayGoal, foodDayGoal, woodWinterGoal = 300, foodWinterGoal = 300;
 	[Space(10)]
 	[SerializeField] private DayGoalValues _dayGoalValues;
 	[Space(10)]
 	public int woodStorage;
 	public int foodStorage;
+	public int woodDayGoal, foodDayGoal, woodWinterGoal = 300, foodWinterGoal = 300;
 
 	private StorageHandler woodStorageHandler, foodStorageHandler;
 

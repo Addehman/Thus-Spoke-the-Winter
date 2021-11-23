@@ -9,14 +9,16 @@ public class UIManager : MonoBehaviour
 	private static UIManager _instance;
 	public static UIManager Instance { get { return _instance; } }
 
-	[SerializeField] private TextMeshProUGUI _inventoryText, _foodWoodCountTxt, _trapCounterTxt, _currentSeedTxt, _worldPositionTxt;
+	[SerializeField] private TextMeshProUGUI _inventoryText, _foodWoodCountTxt, _trapCounterTxt, _currentSeedTxt, 
+		_worldPositionTxt, _storageTypeTxt, _storageStatusNumbersTxt;
 	[SerializeField] private Image _energyBar;
 	[SerializeField] private Animator _animator;
 	[SerializeField] private PlayerController _player;
-	[SerializeField] private GameObject _inventoryGfx, _touchControlsObjectGroup;
-	//public bool isTouchActive = false;
+	[SerializeField] private GameObject _inventoryGroup, _touchControlsObjectGroup, _statsGroup;
+	[SerializeField] private RectTransform _storageStatusGroup;
 
 	private bool _isInventoryActive = false, _isStatsActive = false;
+	private Vector2 _woodStorageStatusUI = new Vector2(-70f, 80f), _foodStorageStatusUI = new Vector2(225f, 75f);
 
 
 	private void Awake()
@@ -40,6 +42,9 @@ public class UIManager : MonoBehaviour
 
 		_currentSeedTxt.text = $"Current Seed: -1";
 		_worldPositionTxt.text = $"World Position:\nX=5000 , Y=5000";
+
+		_inventoryGroup.SetActive(false);
+		_storageStatusGroup.gameObject.SetActive(false);
 	}
 
 	private void UnlockPlayerInput() // Being called from animation event
@@ -91,13 +96,13 @@ public class UIManager : MonoBehaviour
 		if (_player.lockInput) return;
 
 		_isInventoryActive = !_isInventoryActive;
-		_inventoryGfx.SetActive(_isInventoryActive);
+		_inventoryGroup.SetActive(_isInventoryActive);
 	}
 
 	private void CloseInventory(Latitude noUse = Latitude.North)
 	{
 		_isInventoryActive = false;
-		_inventoryGfx.SetActive(_isInventoryActive);
+		_inventoryGroup.SetActive(_isInventoryActive);
 	}
 
 	public void TouchInputObjectGroupActivation(bool isActive)
@@ -114,8 +119,23 @@ public class UIManager : MonoBehaviour
 	public void ToggleStatsActive()
 	{
 		_isStatsActive = !_isStatsActive;
-		_currentSeedTxt.gameObject.SetActive(_isStatsActive);
-		_worldPositionTxt.gameObject.SetActive(_isStatsActive);
+		_statsGroup.SetActive(_isStatsActive);
+	}
+
+	public void StorageStatusUIActivation(bool active)
+	{
+		_storageStatusGroup.gameObject.SetActive(active);
+	}
+
+	public void UpdateStorageStatusUI(string storageTypeTitle, int currentAmount, StorageType type)
+	{
+		_storageTypeTxt.text = $"{storageTypeTitle}";
+		_storageStatusNumbersTxt.text = $"{currentAmount}\n{StorageController.Instance.foodDayGoal}\n{StorageController.Instance.foodWinterGoal}";
+
+		if (type == StorageType.Wood)
+			_storageStatusGroup.localPosition = _woodStorageStatusUI;
+		else
+			_storageStatusGroup.localPosition = _foodStorageStatusUI;
 	}
 
 	private void OnDestroy()
