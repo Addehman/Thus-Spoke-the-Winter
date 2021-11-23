@@ -76,6 +76,14 @@
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "ToggleStats",
+                    "type": "Button",
+                    "id": "19bcdbd4-cc23-4ba9-b668-c36f651cbeab",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -450,6 +458,17 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "AimPoint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "af7410f8-3bcb-4b18-9d17-dc4149dbcb4d",
+                    "path": "<Keyboard>/f3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "ToggleStats",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

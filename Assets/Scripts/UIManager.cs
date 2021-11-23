@@ -9,14 +9,14 @@ public class UIManager : MonoBehaviour
 	private static UIManager _instance;
 	public static UIManager Instance { get { return _instance; } }
 
-	[SerializeField] private TextMeshProUGUI _inventoryText, _foodWoodCountTxt, _trapCounterTxt;
+	[SerializeField] private TextMeshProUGUI _inventoryText, _foodWoodCountTxt, _trapCounterTxt, _currentSeedTxt, _worldPositionTxt;
 	[SerializeField] private Image _energyBar;
 	[SerializeField] private Animator _animator;
 	[SerializeField] private PlayerController _player;
 	[SerializeField] private GameObject _inventoryGfx, _touchControlsObjectGroup;
 	//public bool isTouchActive = false;
 
-	private bool isInventoryActive = false;
+	private bool _isInventoryActive = false, _isStatsActive = false;
 
 
 	private void Awake()
@@ -34,8 +34,12 @@ public class UIManager : MonoBehaviour
 		StorageController.Instance.UpdateUI += UpdateInventoryUI;
 		TrapController.Instance.UpdateTrapUI += UpdateTrapUI;
 		ScreenWrap.Instance.PlayerTraveling += CloseInventory;
+		SeedGenerator.Instance.SendSeed += UpdateUIStats;
 		UpdateInventoryUI();
 		CloseInventory();
+
+		_currentSeedTxt.text = $"Current Seed: -1";
+		_worldPositionTxt.text = $"World Position:\nX=5000 , Y=5000";
 	}
 
 	private void UnlockPlayerInput() // Being called from animation event
@@ -86,19 +90,32 @@ public class UIManager : MonoBehaviour
 	{
 		if (_player.lockInput) return;
 
-		isInventoryActive = !isInventoryActive;
-		_inventoryGfx.SetActive(isInventoryActive);
+		_isInventoryActive = !_isInventoryActive;
+		_inventoryGfx.SetActive(_isInventoryActive);
 	}
 
 	private void CloseInventory(Latitude noUse = Latitude.North)
 	{
-		isInventoryActive = false;
-		_inventoryGfx.SetActive(isInventoryActive);
+		_isInventoryActive = false;
+		_inventoryGfx.SetActive(_isInventoryActive);
 	}
 
 	public void TouchInputObjectGroupActivation(bool isActive)
 	{
 		_touchControlsObjectGroup.SetActive(isActive);
+	}
+
+	private void UpdateUIStats(int seed)
+	{
+		_currentSeedTxt.text = $"Current Seed: {seed}";
+		_worldPositionTxt.text = $"World Position:\nX={SeedGenerator.Instance.position.x} , Y={SeedGenerator.Instance.position.y}";
+	}
+
+	public void ToggleStatsActive()
+	{
+		_isStatsActive = !_isStatsActive;
+		_currentSeedTxt.gameObject.SetActive(_isStatsActive);
+		_worldPositionTxt.gameObject.SetActive(_isStatsActive);
 	}
 
 	private void OnDestroy()

@@ -89,6 +89,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ToggleStats"",
+                    ""type"": ""Button"",
+                    ""id"": ""19bcdbd4-cc23-4ba9-b668-c36f651cbeab"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -465,6 +473,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""action"": ""AimPoint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""af7410f8-3bcb-4b18-9d17-dc4149dbcb4d"",
+                    ""path"": ""<Keyboard>/f3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""ToggleStats"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -521,6 +540,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
         m_Player_CancelArrow = m_Player.FindAction("CancelArrow", throwIfNotFound: true);
         m_Player_AimPoint = m_Player.FindAction("AimPoint", throwIfNotFound: true);
+        m_Player_ToggleStats = m_Player.FindAction("ToggleStats", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -579,6 +599,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Inventory;
     private readonly InputAction m_Player_CancelArrow;
     private readonly InputAction m_Player_AimPoint;
+    private readonly InputAction m_Player_ToggleStats;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -592,6 +613,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
         public InputAction @CancelArrow => m_Wrapper.m_Player_CancelArrow;
         public InputAction @AimPoint => m_Wrapper.m_Player_AimPoint;
+        public InputAction @ToggleStats => m_Wrapper.m_Player_ToggleStats;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -628,6 +650,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @AimPoint.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAimPoint;
                 @AimPoint.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAimPoint;
                 @AimPoint.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAimPoint;
+                @ToggleStats.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleStats;
+                @ToggleStats.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleStats;
+                @ToggleStats.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleStats;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -659,6 +684,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @AimPoint.started += instance.OnAimPoint;
                 @AimPoint.performed += instance.OnAimPoint;
                 @AimPoint.canceled += instance.OnAimPoint;
+                @ToggleStats.started += instance.OnToggleStats;
+                @ToggleStats.performed += instance.OnToggleStats;
+                @ToggleStats.canceled += instance.OnToggleStats;
             }
         }
     }
@@ -701,5 +729,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnInventory(InputAction.CallbackContext context);
         void OnCancelArrow(InputAction.CallbackContext context);
         void OnAimPoint(InputAction.CallbackContext context);
+        void OnToggleStats(InputAction.CallbackContext context);
     }
 }
