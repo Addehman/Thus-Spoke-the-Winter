@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 
 
 public enum ControlSchemes
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
 	//private SpriteRenderer _spriteRenderer;
 	private Rigidbody _rb;
 	private float _horizontal, _vertical;
+	//private InputActionReference actionReference; // use later for hold interactions in touch
 
 
 	private void Awake()
@@ -95,6 +97,23 @@ public class PlayerController : MonoBehaviour
 		StorageController.Instance.GoalAccomplished += SetHasEnergyTrue;
 
 		playerInput.onControlsChanged += OnControlsChanged;
+
+		// Android Long touch / Hold
+		//actionReference.action.Enable();
+		//actionReference.action.started += ctx =>
+		//{
+		//	if (ctx.interaction is HoldInteraction)
+		//	{
+		//		ChargeArrow();
+		//	}
+		//};
+		//actionReference.action.canceled += ctx =>
+		//{
+		//	if (ctx.interaction is HoldInteraction)
+		//	{
+		//		ReleaseArrow(true);
+		//	}
+		//};
 	}
 
 
@@ -576,5 +595,7 @@ public class PlayerController : MonoBehaviour
 		StorageController.Instance.GoalAccomplished -= SetHasEnergyTrue;
 
 		playerInput.onControlsChanged -= OnControlsChanged;
+
+		//actionReference.action.Disable();
 	}
 }

@@ -207,6 +207,7 @@ MonoBehaviour:
   _doSprint: 0
   _arrowCanceled: 0
   _moveDigitalJoystick: {fileID: 0}
+  _movement: {x: 0, y: 0}
   aimParent: {fileID: 0}
   aimChild: {fileID: 0}
   aimPoint: {x: 0, y: 0}
@@ -243,10 +244,7 @@ MonoBehaviour:
   borderRight: 1
   borderTop: 0.95
   borderBottom: -0.05
-  extraStepVertical: 0.05
   extraStepHorizontal: 0.01
-  entryTop: 2
-  entryBottom: -1
   _playerViewPortPos: {x: 0, y: 0, z: 0}
   _hasEnergy: 1
   _seedGenerator: {fileID: 0}

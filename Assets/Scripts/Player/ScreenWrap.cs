@@ -8,7 +8,7 @@ public class ScreenWrap : MonoBehaviour
 
 	public event Action<Latitude> PlayerTraveling;
 	[SerializeField] private float borderLeft = 0f, borderRight = 1f, borderTop = 0.95f, 
-	borderBottom = -0.05f, extraStepVertical = 0.05f, extraStepHorizontal = 0.01f, entryTop = 2f, entryBottom = -1f;
+	borderBottom = -0.05f, extraStepHorizontal = 0.01f;
 
 	private Transform _transform;
 	private Camera _cam;
@@ -80,7 +80,7 @@ public class ScreenWrap : MonoBehaviour
 				ConvertPosFromViewPortToWorldPoint(false, false, borderTop, Latitude.North);
 				return;
 			}
-			ConvertPosFromViewPortToWorldPoint(true, false, -0.9f/* + extraStepVertical*/, Latitude.North);
+			ConvertPosFromViewPortToWorldPoint(true, false, -0.9f, Latitude.North);
 		}
 		else if (_playerViewPortPos.y < borderBottom)
 		{
@@ -90,7 +90,7 @@ public class ScreenWrap : MonoBehaviour
 				return;
 			}
 
-			ConvertPosFromViewPortToWorldPoint(true, false, 1.9f/* - extraStepVertical*/, Latitude.South);
+			ConvertPosFromViewPortToWorldPoint(true, false, 1.9f, Latitude.South);
 		}
 	}
 

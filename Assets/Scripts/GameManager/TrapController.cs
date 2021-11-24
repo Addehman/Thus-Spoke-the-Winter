@@ -30,7 +30,7 @@ public class TrapController : MonoBehaviour
 	[SerializeField] private float _minRandomCatchTime = 60f, _maxRandomCatchTime = 300f;
 	[SerializeField] private TrapBehaviour[] trapHolder;
 
-	public event Action<Vector3> OnSpawnSavedTraps;
+	//public event Action<Vector3> OnSpawnSavedTraps;
 	public event Action<int> UpdateTrapUI;
 	public int totalTrapCount = 3;
 

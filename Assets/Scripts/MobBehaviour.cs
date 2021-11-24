@@ -7,7 +7,7 @@ public class MobBehaviour : MonoBehaviour, IInteractable
 	[SerializeField] private ResourceDataSO _data;
 	[SerializeField] private Camera _camera;
 
-	public event Action<GameObject> OnButcher, OnDestruct;
+	public event Action<GameObject> OnButcher/*, OnDestruct*/;
 
 	public Status status = Status.Alive;
 	public ResourceType type;
