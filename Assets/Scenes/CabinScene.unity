@@ -2272,6 +2272,10 @@ PrefabInstance:
       propertyPath: _screenWrap
       value: 
       objectReference: {fileID: 332712203595213403}
+    - target: {fileID: 5314860584786985286, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
+      propertyPath: currentSeason
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5394431023272021232, guid: a0bdb241a725ae447b12b4a55b1574a4, type: 3}
       propertyPath: _player
       value: 
